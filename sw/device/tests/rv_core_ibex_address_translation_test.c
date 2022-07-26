@@ -47,6 +47,35 @@ extern void make_lower_case(char *input);
 extern const uint32_t kGetNameFnSize;
 extern const uint32_t kMakeLowerCaseFnSize;
 
+// Stores whether an access fault exception has fired.
+static volatile bool access_fault = false;
+
+/**
+ * Overrides the default OTTF exception handler.
+ *
+ * Taken from `sw/device/tests/sram_ctrl_execution_test_ret.c`.
+ * Look here for explaination.
+ */
+void ottf_exception_handler(void) {
+  uintptr_t mepc_stack_addr = (uintptr_t)OT_FRAME_ADDR();
+
+  uintptr_t ret_addr = *(uintptr_t *)(mepc_stack_addr + OTTF_WORD_SIZE);
+
+  uint32_t mcause = ibex_mcause_read();
+  ottf_exc_id_t exception_id = mcause & kIdMax;
+
+  switch (exception_id) {
+    case kInstrAccessFault:
+      LOG_INFO("Instruction access fault handler");
+      access_fault = true;
+      *(uintptr_t *)mepc_stack_addr = ret_addr;
+      break;
+    default:
+      LOG_FATAL("Unexpected exception id = 0x%x", exception_id);
+      abort();
+  }
+}
+
 /**
  * Takes a unsigned 32bit integer and rounds it to the next power of 2.
  * Algorithm explained here:
@@ -196,6 +225,27 @@ bool test_main(void) {
   // Run get_name() from virtual memory and check the result.
   ((str_fn_t)kRemapAddr)(test_str);
   CHECK_STR_EQ(test_str, EXPECTED_RESULT_MAKE_LOWER_CASE);
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Check address translation no longer occurs after being disabled.
+  /////////////////////////////////////////////////////////////////////////////
+  //
+  // Disable all address translation.
+  for (size_t slot_i; slot_i < 2; ++slot_i) {
+    for (size_t bus_i; bus_i < 2; ++bus_i) {
+      CHECK_DIF_OK(dif_rv_core_ibex_disable_addr_translation(
+          &ibex_core, kSlots[slot_i], kBuses[bus_i]));
+    }
+  }
+
+  // Ensure there hasn't already been an access fault.
+  CHECK(!access_fault);
+
+  // Try to run the remap address as a function.
+  ((str_fn_t)kRemapAddr)(test_str);
+
+  // Ensure the exception has fired.
+  CHECK(access_fault);
 
   return true;
 }

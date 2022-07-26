@@ -1379,18 +1379,18 @@ opentitan_functest(
 opentitan_functest(
     name = "rv_core_ibex_address_translation_test",
     srcs = [
+        "rv_core_ibex_address_translation_test.S",
         "rv_core_ibex_address_translation_test.c",
-        "rv_core_ibex_address_translation_test.S"
     ],
     deps = [
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
         "//sw/device/lib/base:memory",
         "//sw/device/lib/base:mmio",
-        "//sw/device/lib/runtime:log",
+        "//sw/device/lib/dif:rv_core_ibex",
         "//sw/device/lib/runtime:ibex",
-        "//sw/device/lib/testing/test_framework:ottf_main",
+        "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:flash_ctrl_testutils",
-        "//sw/device/lib/dif:rv_core_ibex"
+        "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
 

@@ -275,8 +275,8 @@ bool test_main(void) {
   /////////////////////////////////////////////////////////////////////////////
   //
   // Disable all address translation.
-  for (size_t slot_i; slot_i < 2; ++slot_i) {
-    for (size_t bus_i; bus_i < 2; ++bus_i) {
+  for (size_t slot_i = 0; slot_i < 2; ++slot_i) {
+    for (size_t bus_i = 0; bus_i < 2; ++bus_i) {
       CHECK_DIF_OK(dif_rv_core_ibex_disable_addr_translation(
           &ibex_core, kSlots[slot_i], kBuses[bus_i]));
     }

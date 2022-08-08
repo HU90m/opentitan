@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load("//rules:opentitan.bzl", "OPENTITAN_CPU")
-load("//rules:opentitan_test.bzl", "cw310_params", "dv_params", "opentitan_functest", "verilator_params")
+load("//rules:opentitan_test.bzl", "cw310_params", "opentitan_functest", "verilator_params")
 
 # TODO(lowRISC:opentitan#13180): this is a temporary solution to enable writing
 # manufacturer specific tests in the `manufacturer_test_hooks` repository that
@@ -1436,18 +1436,6 @@ opentitan_functest(
         "rv_core_ibex_address_translation_test.S",
         "rv_core_ibex_address_translation_test.c",
     ],
-    cw310 = cw310_params(
-        # FIXME #13215
-        tags = ["broken"],
-    ),
-    dv = dv_params(
-        # FIXME #13215
-        tags = ["broken"],
-    ),
-    verilator = verilator_params(
-        # FIXME #13215
-        tags = ["broken"],
-    ),
     deps = [
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
         "//sw/device/lib/base:memory",

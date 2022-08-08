@@ -189,14 +189,15 @@ bool test_main(void) {
   dif_flash_ctrl_state_t flash_ctrl = init_flash();
 
   // Move the toy functions to their aligned addresses.
-  CHECK(!flash_ctrl_testutils_erase_and_write_page(
+  CHECK(flash_ctrl_testutils_erase_and_write_page(
       /*flash_state=*/&flash_ctrl,
       /*byte_address=*/(uint32_t)make_lower_case_addr,
       /*partition_id=*/0,
       /*data=*/(uint32_t *)make_lower_case,
       /*partition_type=*/kDifFlashCtrlPartitionTypeData,
       /*word_count=*/kMakeLowerCaseFnSize / 4));
-  CHECK(!flash_ctrl_testutils_erase_and_write_page(
+
+  CHECK(flash_ctrl_testutils_erase_and_write_page(
       /*flash_state=*/&flash_ctrl,
       /*byte_address=*/(uint32_t)get_name_addr,
       /*partition_id=*/0,

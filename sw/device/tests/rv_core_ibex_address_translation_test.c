@@ -179,11 +179,16 @@ void enable_slot(dif_rv_core_ibex_t *ibex_core,
 
 bool test_main(void) {
   // Calculate 2-byte aligned addresses to put a copy of the toy functions in.
-  uintptr_t flash_mem_end_addr = TOP_EARLGREY_FLASH_CTRL_MEM_BASE_ADDR +
-                                 TOP_EARLGREY_FLASH_CTRL_MEM_SIZE_BYTES;
-  uintptr_t offset = 0x1000;
-  uintptr_t make_lower_case_addr = flash_mem_end_addr - offset;
-  uintptr_t get_name_addr = flash_mem_end_addr - (2 * offset);
+  const uintptr_t flash_mem_end_addr = TOP_EARLGREY_FLASH_CTRL_MEM_BASE_ADDR +
+                                       TOP_EARLGREY_FLASH_CTRL_MEM_SIZE_BYTES;
+  const uintptr_t offset = 0x1000;
+  const uintptr_t make_lower_case_addr = flash_mem_end_addr - offset;
+  const uintptr_t get_name_addr = flash_mem_end_addr - (2 * offset);
+
+  CHECK(kMakeLowerCaseFnSize <= offset,
+        "make_lower_case() function is too big for the flash memory provided.");
+  CHECK(kGetNameFnSize <= offset,
+        "get_name() function is too big for the flash memory provided.");
 
   // Initiate the flash controller.
   dif_flash_ctrl_state_t flash_ctrl = init_flash();

@@ -23,7 +23,7 @@
 
 OTTF_DEFINE_TEST_CONFIG();
 
-// A function which takes a string as it's only argument.
+// A function which takes a string as its only argument.
 typedef void (*str_fn_t)(char *);
 
 /**

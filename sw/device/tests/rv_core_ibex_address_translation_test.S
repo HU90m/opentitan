@@ -21,14 +21,14 @@ make_lower_case_loop:
   addi a0, a0, 1
   lb t2, 0(a0)
 
-  // break from loop if the end of the given string is reached
+  // Break from the loop if the end of the given string is reached.
   beqz t2, make_lower_case_end
 
-  // if not a capital letter skip
+  // If not a capital letter, skip.
   bltu t2, t0, make_lower_case_loop
   bgtu t2, t1, make_lower_case_loop
 
-  // makes character lower case
+  // Make character lower case.
   xori t2, t2, 0x20
   sb t2, 0(a0)
   j make_lower_case_loop
@@ -54,29 +54,29 @@ kMakeLowerCaseFnSize:
   .globl get_name
   .type get_name, @function
 get_name:
-  // a0: beginning of string
-  // t0: beginning of replace string
+  // a0: beginning of string.
+  // t0: beginning of replace string.
   lui t0, %hi(name)
   addi t0, t0, %lo(name)
 
-  // t1: relative string pointer (cursor)
+  // t1: relative string pointer (cursor).
   mv t1, zero
 
 get_name_loop:
-  // load current givent string character
-  // and break if it is the last (NULL) character
+  // Load current character from the string
+  // and break if it is the last (NULL) character.
   add t2, t1, a0
   lb t4, 0(t2)
   beqz t4, get_name_end
 
-  // move the charater from the constant string into the given string
+  // Move the charater from the constant string into the given string.
   add t3, t1, t0
   lb t4, 0(t3)
   sb t4, 0(t2)
-  // break if that was the last character (NULL) of the constant string
+  // Break if that was the last character (NULL) of the constant string.
   beqz t4, get_name_end
 
-  // increment string pointer
+  // Increment string pointer.
   addi t1, t1, 1
   j get_name_loop
 

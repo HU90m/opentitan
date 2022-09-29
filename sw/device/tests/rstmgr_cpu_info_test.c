@@ -37,7 +37,15 @@ OTTF_DEFINE_TEST_CONFIG();
 extern const uint32_t _ottf_interrupt_vector, handler_exception;
 
 /**
- * Cpu dump struct index
+ * CPU info dump index map:
+ *     0: current.exception_addr
+ *     1: current.exception_pc
+ *     2: current.last_data_addr
+ *     3: current.next_pc
+ *     4: current.pc
+ *     5: previous.exception_addr
+ *     6: previous.exception_pc
+ *     7: previous_valid
  */
 enum {
   kCpuDumpIdxCurrentExceptionAddr = 0,
@@ -55,20 +63,6 @@ enum {
  */
 OT_SECTION(".non_volatile_scratch")
 dif_rstmgr_cpu_info_dump_segment_t exp_dump[kCpuDumpSize];
-
-/**
- *  Dump structure:
- *    0: current.exception_addr
- *    1: current.exception_pc
- *    2: current.last_data_addr
- *   *3: current.next_pc
- *   *4: current.pc
- *    5: previous.exception_addr
- *    6: previous.exception_pc
- *    7: previous_valid
- */
-static dif_rstmgr_cpu_info_dump_segment_t dump[kCpuDumpSize];
-static dif_rstmgr_cpu_info_dump_segment_t temp_dump[kCpuDumpSize];
 
 static dif_flash_ctrl_state_t flash_ctrl;
 
@@ -97,6 +91,8 @@ static void read_error(void) {
  * Overrides the default OTTF exception handler.
  */
 void ottf_exception_handler(void) {
+  dif_rstmgr_cpu_info_dump_segment_t temp_dump[kCpuDumpSize];
+
   // The exception address ends up being the same since both are
   // are referencing the same read function
   temp_dump[kCpuDumpIdxCurrentExceptionPc] =
@@ -171,40 +167,15 @@ bool test_main(void) {
     CHECK_DIF_OK(dif_pwrmgr_set_request_sources(&pwrmgr, kDifPwrmgrReqTypeReset,
                                                 kDifPwrmgrResetRequestSourceTwo,
                                                 kDifToggleEnabled));
-
     // Setup the wdog bark and bite timeouts.
     aon_timer_testutils_watchdog_config(&aon_timer, bark_cycles, bite_cycles,
                                         false);
-
     // Enable cpu info
     CHECK_DIF_OK(dif_rstmgr_cpu_info_set_enabled(&rstmgr, kDifToggleEnabled));
     read_error();
   } else {
     LOG_INFO("Comes back after bite");
-
-    size_t dump_size;
-
-    CHECK_DIF_OK(dif_rstmgr_cpu_info_get_size(&rstmgr, &dump_size));
-
-    CHECK(dump_size == kCpuDumpSize,
-          "The cpu dump size (= %d) isn't the expected cpu dump size of %d",
-          dump_size, kCpuDumpSize);
-
-    CHECK_DIF_OK(dif_rstmgr_cpu_info_dump_read(
-        &rstmgr, &dump[0], DIF_RSTMGR_CPU_INFO_MAX_SIZE, &dump_size));
-
-    CHECK(dump_size == kCpuDumpSize,
-          "The segment size (= %d) isn't the expected cpu dump size of %d",
-          dump_size, kCpuDumpSize);
-
-    for (int i = 0; i < dump_size; ++i) {
-      LOG_INFO("Observed crash dump:%d: 0x%x", i, dump[i]);
-    }
-
-    for (size_t i = 0; i < dump_size; ++i) {
-      CHECK(exp_dump[i] == dump[i], "field mismatch: exp = 0x%x, obs = 0x%x",
-            exp_dump[i], dump[i]);
-    }
+    rstmgr_testutils_compare_cpu_info(&rstmgr, exp_dump, kCpuDumpSize);
   }
 
   // Turn off the AON timer hardware completely before exiting.

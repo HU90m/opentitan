@@ -31,8 +31,10 @@ OTTF_DEFINE_TEST_CONFIG();
 // non existing address
 #define kIllegalAddr1 0x4041FFF0u
 #define kIllegalAddr2 0x40003618u
-#define kSkipComp 0x12345678u
 #define kCpuDumpSize 8
+
+// Declaring the labels used to calculate the expected current and next pc.
+extern const uint32_t _ottf_interrupt_vector, handler_exception;
 
 /**
  * Cpu dump struct index
@@ -64,18 +66,9 @@ dif_rstmgr_cpu_info_dump_segment_t exp_dump[kCpuDumpSize];
  *    5: previous.exception_addr
  *    6: previous.exception_pc
  *    7: previous_valid
- *
- * Observed cpu dump will be collected after watch dog bite,
- * exp cpu dump will be created at the 'ottf_exception_handler'.
- * Following fields are current code specific and
- * will be skipped comparison.
- *
- *  current.next_pc, current.pc, current.last_data_addr
  */
 static dif_rstmgr_cpu_info_dump_segment_t dump[kCpuDumpSize];
-static dif_rstmgr_cpu_info_dump_segment_t temp_dump[kCpuDumpSize] = {
-    kSkipComp, kSkipComp, kSkipComp, kSkipComp,
-    kSkipComp, kSkipComp, kSkipComp, kSkipComp};
+static dif_rstmgr_cpu_info_dump_segment_t temp_dump[kCpuDumpSize];
 
 static dif_flash_ctrl_state_t flash_ctrl;
 
@@ -109,11 +102,23 @@ void ottf_exception_handler(void) {
   temp_dump[kCpuDumpIdxCurrentExceptionPc] =
       (dif_rstmgr_cpu_info_dump_segment_t)ibex_mepc_read();
   temp_dump[kCpuDumpIdxCurrentExceptionAddr] = kIllegalAddr2;
-
+  temp_dump[kCpuDumpIdxCurrentLastDataAddr] = kIllegalAddr2;
   temp_dump[kCpuDumpIdxPreviousExceptionPc] =
       temp_dump[kCpuDumpIdxCurrentExceptionPc];
   temp_dump[kCpuDumpIdxPreviousExceptionAddr] = kIllegalAddr1;
   temp_dump[kCpuDumpIdxPreviousValid] = 1;
+
+  // The current behaviour after a double fault is to capture, in the CPU info
+  // dump, the interrupt vector below the one which was taken to jump to the
+  // exception handler as the current PC and the start of the exception handler
+  // as the next PC. This feels wrong. However, with a lack of a clear
+  // definition of what these values should contain, the test enforces this
+  // behaviour so that regressions can be caught. This behaviour will be double
+  // checked at a later date.
+  temp_dump[kCpuDumpIdxCurrentPc] =
+      (dif_rstmgr_cpu_info_dump_segment_t)&_ottf_interrupt_vector + 4;
+  temp_dump[kCpuDumpIdxCurrentNextPc] =
+      (dif_rstmgr_cpu_info_dump_segment_t)&handler_exception;
 
   CHECK(flash_ctrl_testutils_write(
       &flash_ctrl, (uintptr_t)exp_dump - TOP_EARLGREY_FLASH_CTRL_MEM_BASE_ADDR,
@@ -177,22 +182,28 @@ bool test_main(void) {
   } else {
     LOG_INFO("Comes back after bite");
 
-    size_t seg_size;
+    size_t dump_size;
+
+    CHECK_DIF_OK(dif_rstmgr_cpu_info_get_size(&rstmgr, &dump_size));
+
+    CHECK(dump_size == kCpuDumpSize,
+          "The cpu dump size (= %d) isn't the expected cpu dump size of %d",
+          dump_size, kCpuDumpSize);
 
     CHECK_DIF_OK(dif_rstmgr_cpu_info_dump_read(
-        &rstmgr, &dump[0], DIF_RSTMGR_CPU_INFO_MAX_SIZE, &seg_size));
+        &rstmgr, &dump[0], DIF_RSTMGR_CPU_INFO_MAX_SIZE, &dump_size));
 
-    for (int i = 0; i < seg_size; ++i) {
+    CHECK(dump_size == kCpuDumpSize,
+          "The segment size (= %d) isn't the expected cpu dump size of %d",
+          dump_size, kCpuDumpSize);
+
+    for (int i = 0; i < dump_size; ++i) {
       LOG_INFO("Observed crash dump:%d: 0x%x", i, dump[i]);
     }
 
-    for (size_t i = 0; i < seg_size; ++i) {
-      dif_rstmgr_cpu_info_dump_segment_t rdata = exp_dump[i];
-
-      if (rdata != kSkipComp) {
-        CHECK(rdata == dump[i], "field mismatch: exp = 0x%x, obs = 0x%x", rdata,
-              dump[i]);
-      }
+    for (size_t i = 0; i < dump_size; ++i) {
+      CHECK(exp_dump[i] == dump[i], "field mismatch: exp = 0x%x, obs = 0x%x",
+            exp_dump[i], dump[i]);
     }
   }
 

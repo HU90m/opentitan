@@ -3,17 +3,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "sw/device/lib/base/abs_mmio.h"
+#include "sw/device/lib/base/macros.h"
 #include "sw/device/lib/base/mmio.h"
 #include "sw/device/lib/dif/dif_pwrmgr.h"
 #include "sw/device/lib/dif/dif_rstmgr.h"
-#include "sw/device/lib/runtime/ibex.h"
+#include "sw/device/lib/dif/dif_rv_core_ibex.h"
 #include "sw/device/lib/runtime/log.h"
 #include "sw/device/lib/testing/aon_timer_testutils.h"
-#include "sw/device/lib/testing/flash_ctrl_testutils.h"
 #include "sw/device/lib/testing/rstmgr_testutils.h"
 #include "sw/device/lib/testing/test_framework/check.h"
 #include "sw/device/lib/testing/test_framework/ottf_isrs.h"
-#include "sw/device/lib/testing/test_framework/ottf_macros.h"
 #include "sw/device/lib/testing/test_framework/ottf_main.h"
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
@@ -29,129 +28,99 @@ OTTF_DEFINE_TEST_CONFIG();
  */
 
 // non existing address
-#define kIllegalAddr1 0x4041FFF0u
-#define kIllegalAddr2 0x40003618u
+static const uint8_t *kIllegalAddr1 = (uint8_t *)0xA041FFF0u;
+static const uint8_t *kIllegalAddr2 = (uint8_t *)0xA0003618u;
 #define kCpuDumpSize 8
 
 // Declaring the labels used to calculate the expected current and next pc.
 extern const uint32_t _ottf_interrupt_vector, handler_exception;
 
-/**
- * CPU info dump index map:
- *     0: current.exception_addr
- *     1: current.exception_pc
- *     2: current.last_data_addr
- *     3: current.next_pc
- *     4: current.pc
- *     5: previous.exception_addr
- *     6: previous.exception_pc
- *     7: previous_valid
- */
-enum {
-  kCpuDumpIdxCurrentExceptionAddr = 0,
-  kCpuDumpIdxCurrentExceptionPc = 1,
-  kCpuDumpIdxCurrentLastDataAddr = 2,
-  kCpuDumpIdxCurrentNextPc = 3,
-  kCpuDumpIdxCurrentPc = 4,
-  kCpuDumpIdxPreviousExceptionAddr = 5,
-  kCpuDumpIdxPreviousExceptionPc = 6,
-  kCpuDumpIdxPreviousValid = 7,
-};
+//
+extern const char kDoubleFaultFirstAddrLower[], kDoubleFaultFirstAddrUpper[],
+    kDoubleFaultSecondAddrLower[], kDoubleFaultSecondAddrUpper[];
 
 /**
- * Reserve expected cpu dump area in flash
+ * This variable is used to ensure loads from an address aren't optimised out.
  */
-OT_SECTION(".non_volatile_scratch")
-dif_rstmgr_cpu_info_dump_segment_t exp_dump[kCpuDumpSize];
-
-static dif_flash_ctrl_state_t flash_ctrl;
-
-// Count number of faluts
-static volatile uint32_t global_error_cnt;
-
-// Access non-existing address
-// Each call will create a fault
-static void read_error(void) {
-  uint32_t addr;
-  global_error_cnt++;
-
-  if (global_error_cnt == 1) {
-    addr = kIllegalAddr1;
-  } else {
-    LOG_INFO("double fault");
-    addr = kIllegalAddr2;
-  }
-  // I can't add a new variable to call mmio_
-  // because mmio call will never be returned.
-  // Use current variable, just to avoid unused error.
-  addr = mmio_region_read32(mmio_region_from_addr(addr), 0);
-}
+volatile uint8_t addr_val;
 
 /**
  * Overrides the default OTTF exception handler.
  */
 void ottf_exception_handler(void) {
-  dif_rstmgr_cpu_info_dump_segment_t temp_dump[kCpuDumpSize];
+  OT_ADDRESSABLE_LABEL(kDoubleFaultSecondAddrLower);
+  addr_val = *kIllegalAddr2;
+  OT_ADDRESSABLE_LABEL(kDoubleFaultSecondAddrUpper);
+}
 
-  // The exception address ends up being the same since both are
-  // are referencing the same read function
-  temp_dump[kCpuDumpIdxCurrentExceptionPc] =
-      (dif_rstmgr_cpu_info_dump_segment_t)ibex_mepc_read();
-  temp_dump[kCpuDumpIdxCurrentExceptionAddr] = kIllegalAddr2;
-  temp_dump[kCpuDumpIdxCurrentLastDataAddr] = kIllegalAddr2;
-  temp_dump[kCpuDumpIdxPreviousExceptionPc] =
-      temp_dump[kCpuDumpIdxCurrentExceptionPc];
-  temp_dump[kCpuDumpIdxPreviousExceptionAddr] = kIllegalAddr1;
-  temp_dump[kCpuDumpIdxPreviousValid] = 1;
+static dif_rv_core_ibex_crash_dump_info_t
+get_dump(const dif_rstmgr_t *rstmgr, const dif_rv_core_ibex_t *ibex) {
+  size_t size_read;
+  dif_rstmgr_cpu_info_dump_segment_t dump[DIF_RSTMGR_CPU_INFO_MAX_SIZE];
 
-  // The current behaviour after a double fault is to capture, in the CPU info
-  // dump, the interrupt vector below the one which was taken to jump to the
-  // exception handler as the current PC and the start of the exception handler
-  // as the next PC. This feels wrong. However, with a lack of a clear
-  // definition of what these values should contain, the test enforces this
-  // behaviour so that regressions can be caught. This behaviour will be double
-  // checked at a later date.
-  temp_dump[kCpuDumpIdxCurrentPc] =
-      (dif_rstmgr_cpu_info_dump_segment_t)&_ottf_interrupt_vector + 4;
-  temp_dump[kCpuDumpIdxCurrentNextPc] =
-      (dif_rstmgr_cpu_info_dump_segment_t)&handler_exception;
+  CHECK_DIF_OK(dif_rstmgr_cpu_info_dump_read(
+      rstmgr, dump, DIF_RSTMGR_CPU_INFO_MAX_SIZE, &size_read));
+  CHECK(size_read == kCpuDumpSize,
+        "The observed cpu info dump's size was %d, "
+        "but it was expected to be %d",
+        size_read, kCpuDumpSize);
 
-  CHECK(flash_ctrl_testutils_write(
-      &flash_ctrl, (uintptr_t)exp_dump - TOP_EARLGREY_FLASH_CTRL_MEM_BASE_ADDR,
-      0, temp_dump, kDifFlashCtrlPartitionTypeData, kCpuDumpSize));
+  dif_rv_core_ibex_crash_dump_info_t output;
+  CHECK_DIF_OK(
+      dif_rv_core_ibex_parse_crash_dump(ibex, dump, size_read, &output));
+  return output;
+}
 
-  for (size_t i = 0; i < kCpuDumpSize; ++i) {
-    dif_rstmgr_cpu_info_dump_segment_t rdata = exp_dump[i];
-    LOG_INFO("Expected dump:%d: 0x%x", i, rdata);
-  }
-
-  read_error();
+static void check_current_values(dif_rv_core_ibex_crash_dump_info_t *obs_dump,
+                                 uint32_t last_exception_addr,
+                                 uint32_t mpec_lower, uint32_t mpec_upper,
+                                 uint32_t last_data_addr, uint32_t curr_pc,
+                                 uint32_t next_pc) {
+  dif_rv_core_ibex_crash_dump_state_t observed = obs_dump->fault_stage;
+  CHECK(last_exception_addr == observed.mtval,
+        "Last Exception Access Addr: Expected 0x%x != Observed 0x%x",
+        last_exception_addr, observed.mtval);
+  CHECK(curr_pc == observed.mcpc, "Current PC: Expected 0x%x != Observed 0x%x",
+        curr_pc, observed.mcpc);
+  CHECK(next_pc == observed.mnpc, "Next PC: Expected 0x%x != Observed 0x%x",
+        next_pc, observed.mnpc);
+  CHECK(last_data_addr == observed.mdaa,
+        "Last Data Access Addr: Expected 0x%x != Observed 0x%x", last_data_addr,
+        observed.mdaa);
+  CHECK(
+      mpec_lower <= observed.mpec && observed.mpec < mpec_upper,
+      "The Observed MPEC, 0x%x, was not in the expected range of [0x%x, 0x%x)",
+      observed.mpec, mpec_lower, mpec_upper);
+}
+static void check_previous_values(dif_rv_core_ibex_crash_dump_info_t *obs_dump,
+                                  uint32_t last_exception_addr,
+                                  uint32_t mpec_lower, uint32_t mpec_upper) {
+  dif_rv_core_ibex_previous_crash_dump_state_t observed =
+      obs_dump->previous_fault_state;
+  CHECK(last_exception_addr == observed.mtval,
+        "Last Exception Access Addr: Expected 0x%x != Observed 0x%x",
+        last_exception_addr, observed.mtval);
+  CHECK(mpec_lower <= observed.mpec && observed.mpec < mpec_upper,
+        "The Observed Previous MPEC, 0x%x, "
+        "was not in the expected range of [0x%x, 0x%x)",
+        observed.mpec, mpec_lower, mpec_upper);
 }
 
 bool test_main(void) {
   dif_rstmgr_t rstmgr;
   dif_aon_timer_t aon_timer;
   dif_pwrmgr_t pwrmgr;
+  dif_rv_core_ibex_t ibex;
 
+  // Initialize Handles
   CHECK_DIF_OK(dif_rstmgr_init(
       mmio_region_from_addr(TOP_EARLGREY_RSTMGR_AON_BASE_ADDR), &rstmgr));
   CHECK_DIF_OK(dif_aon_timer_init(
       mmio_region_from_addr(TOP_EARLGREY_AON_TIMER_AON_BASE_ADDR), &aon_timer));
   CHECK_DIF_OK(dif_pwrmgr_init(
       mmio_region_from_addr(TOP_EARLGREY_PWRMGR_AON_BASE_ADDR), &pwrmgr));
-  // Initialize flash_ctrl
-  CHECK_DIF_OK(dif_flash_ctrl_init_state(
-      &flash_ctrl,
-      mmio_region_from_addr(TOP_EARLGREY_FLASH_CTRL_CORE_BASE_ADDR)));
-
-  // Enable flash access
-  flash_ctrl_testutils_default_region_access(&flash_ctrl,
-                                             /*rd_en*/ true,
-                                             /*prog_en*/ true,
-                                             /*erase_en*/ true,
-                                             /*scramble_en*/ false,
-                                             /*ecc_en*/ false,
-                                             /*he_en*/ false);
+  CHECK_DIF_OK(dif_rv_core_ibex_init(
+      mmio_region_from_addr(TOP_EARLGREY_RV_CORE_IBEX_CFG_BASE_ADDR), &ibex));
 
   dif_rstmgr_reset_info_bitfield_t rst_info;
   rst_info = rstmgr_testutils_reason_get();
@@ -159,7 +128,6 @@ bool test_main(void) {
   if (rst_info == kDifRstmgrResetInfoPor) {
     LOG_INFO("Booting for the first time, setting wdog");
 
-    global_error_cnt = 0;
     uint32_t bark_cycles = aon_timer_testutils_get_aon_cycles_from_us(100);
     uint32_t bite_cycles = aon_timer_testutils_get_aon_cycles_from_us(100);
 
@@ -172,10 +140,39 @@ bool test_main(void) {
                                         false);
     // Enable cpu info
     CHECK_DIF_OK(dif_rstmgr_cpu_info_set_enabled(&rstmgr, kDifToggleEnabled));
-    read_error();
+
+    OT_ADDRESSABLE_LABEL(kDoubleFaultFirstAddrLower);
+    addr_val = *kIllegalAddr1;
+    OT_ADDRESSABLE_LABEL(kDoubleFaultFirstAddrUpper);
   } else {
     LOG_INFO("Comes back after bite");
-    rstmgr_testutils_compare_cpu_info(&rstmgr, exp_dump, kCpuDumpSize);
+
+    dif_rv_core_ibex_crash_dump_info_t dump = get_dump(&rstmgr, &ibex);
+
+    CHECK(dump.double_fault == kDifToggleEnabled,
+          "CPU Info dump doesn't show a double fault has happened.");
+
+    // The current behaviour after a double fault is to capture, in the CPU info
+    // dump, the interrupt vector below the one which was taken to jump to the
+    // exception handler as the current PC and the start of the exception
+    // handler as the next PC. This feels wrong. However, with a lack of a clear
+    // definition of what these values should contain, the test enforces this
+    // behaviour so that regressions can be caught. This behaviour will be
+    // double checked at a later date.
+    uint32_t curr_pc = (uint32_t)&_ottf_interrupt_vector + 4;
+    uint32_t next_pc = (uint32_t)&handler_exception;
+
+    check_current_values(&dump,
+                         /*last_exception_addr=*/(uint32_t)kIllegalAddr2,
+                         /*mpec_lower=*/(uint32_t)kDoubleFaultSecondAddrLower,
+                         /*mpec_upper=*/(uint32_t)kDoubleFaultSecondAddrUpper,
+                         /*last_data_addr=*/(uint32_t)kIllegalAddr2,
+                         /*curr_pc=*/curr_pc,
+                         /*next_pc=*/next_pc);
+    check_previous_values(&dump,
+                          /*last_exception_addr=*/(uint32_t)kIllegalAddr1,
+                          /*mpec_lower=*/(uint32_t)kDoubleFaultFirstAddrLower,
+                          /*mpec_upper=*/(uint32_t)kDoubleFaultFirstAddrUpper);
   }
 
   // Turn off the AON timer hardware completely before exiting.

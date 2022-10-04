@@ -28,7 +28,7 @@ OTTF_DEFINE_TEST_CONFIG();
  *  and the test collects / checks the cpu_info from the rstmgr.
  */
 
-// Non-existent Addresses
+// Unmapped Addresses
 static const uint8_t *kIllegalAddr0 = (uint8_t *)0xA0A0DEAFu;
 static const uint8_t *kIllegalAddr1 = (uint8_t *)0xA041FFF0u;
 static const uint8_t *kIllegalAddr2 = (uint8_t *)0xA0003618u;

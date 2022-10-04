@@ -73,12 +73,13 @@ void ottf_exception_handler(void) {
     // a known value (the address of addr_val).
     addr_val = 1;
     OT_ADDRESSABLE_LABEL(kSingleFaultAddrCurrentPc);
-    wait_for_interrupt(); // wait for the reset
+    wait_for_interrupt();  // wait for the reset
     OT_ADDRESSABLE_LABEL(kSingleFaultAddrNextPc);
     addr_val = 2;
   }
-  LOG_ERROR("This should be unreachable; a reset or another fault should have "
-            "occured.");
+  LOG_ERROR(
+      "This should be unreachable; a reset or another fault should have "
+      "occured.");
 }
 
 /**
@@ -87,8 +88,8 @@ void ottf_exception_handler(void) {
  * @param ibex A handle to the ibex.
  * @return The cpu info crash dump.
  */
-static dif_rv_core_ibex_crash_dump_info_t
-get_dump(const dif_rv_core_ibex_t *ibex) {
+static dif_rv_core_ibex_crash_dump_info_t get_dump(
+    const dif_rv_core_ibex_t *ibex) {
   size_t size_read;
   dif_rstmgr_cpu_info_dump_segment_t dump[DIF_RSTMGR_CPU_INFO_MAX_SIZE];
 
@@ -181,92 +182,94 @@ bool test_main(void) {
       mmio_region_from_addr(TOP_EARLGREY_RV_CORE_IBEX_CFG_BASE_ADDR), &ibex));
 
   switch (rstmgr_testutils_reason_get()) {
-  case kDifRstmgrResetInfoPor: // The first power-up.
-    LOG_INFO("Triggering single fault.");
+    case kDifRstmgrResetInfoPor:  // The first power-up.
+      LOG_INFO("Triggering single fault.");
 
-    // Enable cpu info.
-    CHECK_DIF_OK(dif_rstmgr_cpu_info_set_enabled(&rstmgr, kDifToggleEnabled));
+      // Enable cpu info.
+      CHECK_DIF_OK(dif_rstmgr_cpu_info_set_enabled(&rstmgr, kDifToggleEnabled));
 
-    double_fault = false;
-    OT_ADDRESSABLE_LABEL(kSingleFaultAddrLower);
-    addr_val = *kIllegalAddr0;
-    OT_ADDRESSABLE_LABEL(kSingleFaultAddrUpper);
-    LOG_ERROR(
-        "This should be unreachable; a single fault should have occured.");
-    break;
+      double_fault = false;
+      OT_ADDRESSABLE_LABEL(kSingleFaultAddrLower);
+      addr_val = *kIllegalAddr0;
+      OT_ADDRESSABLE_LABEL(kSingleFaultAddrUpper);
+      LOG_ERROR(
+          "This should be unreachable; a single fault should have occured.");
+      break;
 
-  case kDifRstmgrResetInfoSw: // The power-up after the single fault.
-    LOG_INFO("Checking CPU info dump after single fault.");
+    case kDifRstmgrResetInfoSw:  // The power-up after the single fault.
+      LOG_INFO("Checking CPU info dump after single fault.");
 
-    dump = get_dump(&ibex);
+      dump = get_dump(&ibex);
 
-    CHECK(dump.double_fault == kDifToggleDisabled,
+      CHECK(
+          dump.double_fault == kDifToggleDisabled,
           "CPU Info dump shows a double fault after experiencing only a single "
           "fault.");
 
-    check_current_values(&dump,
-                         /*last_exception_addr=*/(uint32_t)kIllegalAddr0,
-                         /*mpec_lower=*/(uint32_t)kSingleFaultAddrLower,
-                         /*mpec_upper=*/(uint32_t)kSingleFaultAddrUpper,
-                         /*last_data_addr=*/(uint32_t)&addr_val,
-                         /*curr_pc=*/(uint32_t)kSingleFaultAddrCurrentPc,
-                         /*next_pc=*/(uint32_t)kSingleFaultAddrNextPc);
+      check_current_values(&dump,
+                           /*last_exception_addr=*/(uint32_t)kIllegalAddr0,
+                           /*mpec_lower=*/(uint32_t)kSingleFaultAddrLower,
+                           /*mpec_upper=*/(uint32_t)kSingleFaultAddrUpper,
+                           /*last_data_addr=*/(uint32_t)&addr_val,
+                           /*curr_pc=*/(uint32_t)kSingleFaultAddrCurrentPc,
+                           /*next_pc=*/(uint32_t)kSingleFaultAddrNextPc);
 
-    LOG_INFO("Setting up watch dog and triggering a double fault.");
-    uint32_t bark_cycles = aon_timer_testutils_get_aon_cycles_from_us(100);
-    uint32_t bite_cycles = aon_timer_testutils_get_aon_cycles_from_us(100);
+      LOG_INFO("Setting up watch dog and triggering a double fault.");
+      uint32_t bark_cycles = aon_timer_testutils_get_aon_cycles_from_us(100);
+      uint32_t bite_cycles = aon_timer_testutils_get_aon_cycles_from_us(100);
 
-    // Set wdog as a reset source.
-    CHECK_DIF_OK(dif_pwrmgr_set_request_sources(&pwrmgr, kDifPwrmgrReqTypeReset,
-                                                kDifPwrmgrResetRequestSourceTwo,
-                                                kDifToggleEnabled));
-    // Setup the wdog bark and bite timeouts.
-    aon_timer_testutils_watchdog_config(&aon_timer, bark_cycles, bite_cycles,
-                                        false);
-    // Enable cpu info
-    CHECK_DIF_OK(dif_rstmgr_cpu_info_set_enabled(&rstmgr, kDifToggleEnabled));
+      // Set wdog as a reset source.
+      CHECK_DIF_OK(dif_pwrmgr_set_request_sources(
+          &pwrmgr, kDifPwrmgrReqTypeReset, kDifPwrmgrResetRequestSourceTwo,
+          kDifToggleEnabled));
+      // Setup the wdog bark and bite timeouts.
+      aon_timer_testutils_watchdog_config(&aon_timer, bark_cycles, bite_cycles,
+                                          false);
+      // Enable cpu info
+      CHECK_DIF_OK(dif_rstmgr_cpu_info_set_enabled(&rstmgr, kDifToggleEnabled));
 
-    double_fault = true;
-    OT_ADDRESSABLE_LABEL(kDoubleFaultFirstAddrLower);
-    addr_val = *kIllegalAddr1;
-    OT_ADDRESSABLE_LABEL(kDoubleFaultFirstAddrUpper);
-    LOG_ERROR(
-        "This should be unreachable; a double fault should have occured.");
-    break;
+      double_fault = true;
+      OT_ADDRESSABLE_LABEL(kDoubleFaultFirstAddrLower);
+      addr_val = *kIllegalAddr1;
+      OT_ADDRESSABLE_LABEL(kDoubleFaultFirstAddrUpper);
+      LOG_ERROR(
+          "This should be unreachable; a double fault should have occured.");
+      break;
 
-  case kDifRstmgrResetInfoWatchdog: // The power-up after the double fault.
-    LOG_INFO("Checking CPU info dump after double fault.");
+    case kDifRstmgrResetInfoWatchdog:  // The power-up after the double fault.
+      LOG_INFO("Checking CPU info dump after double fault.");
 
-    dump = get_dump(&ibex);
+      dump = get_dump(&ibex);
 
-    CHECK(dump.double_fault == kDifToggleEnabled,
-          "CPU Info dump doesn't show a double fault has happened.");
+      CHECK(dump.double_fault == kDifToggleEnabled,
+            "CPU Info dump doesn't show a double fault has happened.");
 
-    // The current behaviour after a double fault is to capture, in the CPU info
-    // dump, the interrupt vector below the one which was taken to jump to the
-    // exception handler as the current PC and the start of the exception
-    // handler as the next PC. This feels wrong. However, with a lack of a clear
-    // definition of what these values should contain, the test enforces this
-    // behaviour so that regressions can be caught. This behaviour will be
-    // double checked at a later date.
-    uint32_t curr_pc = (uint32_t)&_ottf_interrupt_vector + 4;
-    uint32_t next_pc = (uint32_t)&handler_exception;
+      // The current behaviour after a double fault is to capture, in the CPU
+      // info dump, the interrupt vector below the one which was taken to jump
+      // to the exception handler as the current PC and the start of the
+      // exception handler as the next PC. This feels wrong. However, with a
+      // lack of a clear definition of what these values should contain, the
+      // test enforces this behaviour so that regressions can be caught. This
+      // behaviour will be double checked at a later date.
+      uint32_t curr_pc = (uint32_t)&_ottf_interrupt_vector + 4;
+      uint32_t next_pc = (uint32_t)&handler_exception;
 
-    check_current_values(&dump,
-                         /*last_exception_addr=*/(uint32_t)kIllegalAddr2,
-                         /*mpec_lower=*/(uint32_t)kDoubleFaultSecondAddrLower,
-                         /*mpec_upper=*/(uint32_t)kDoubleFaultSecondAddrUpper,
-                         /*last_data_addr=*/(uint32_t)kIllegalAddr2,
-                         /*curr_pc=*/curr_pc,
-                         /*next_pc=*/next_pc);
-    check_previous_values(&dump,
-                          /*last_exception_addr=*/(uint32_t)kIllegalAddr1,
-                          /*mpec_lower=*/(uint32_t)kDoubleFaultFirstAddrLower,
-                          /*mpec_upper=*/(uint32_t)kDoubleFaultFirstAddrUpper);
-    break;
-  default:
-    LOG_ERROR("Device was reset by an unexpected source.");
-    break;
+      check_current_values(&dump,
+                           /*last_exception_addr=*/(uint32_t)kIllegalAddr2,
+                           /*mpec_lower=*/(uint32_t)kDoubleFaultSecondAddrLower,
+                           /*mpec_upper=*/(uint32_t)kDoubleFaultSecondAddrUpper,
+                           /*last_data_addr=*/(uint32_t)kIllegalAddr2,
+                           /*curr_pc=*/curr_pc,
+                           /*next_pc=*/next_pc);
+      check_previous_values(
+          &dump,
+          /*last_exception_addr=*/(uint32_t)kIllegalAddr1,
+          /*mpec_lower=*/(uint32_t)kDoubleFaultFirstAddrLower,
+          /*mpec_upper=*/(uint32_t)kDoubleFaultFirstAddrUpper);
+      break;
+    default:
+      LOG_ERROR("Device was reset by an unexpected source.");
+      break;
   }
 
   // Turn off the AON timer hardware completely before exiting.

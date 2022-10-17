@@ -27,12 +27,11 @@ OTTF_DEFINE_TEST_CONFIG();
  *  and the test collects / checks the cpu_info from the rstmgr.
  */
 
-#define kCpuDumpSize 8
-
-// Unmapped Addresses.
+// CPU Dump Size and Unmapped Addresses.
 enum {
-  kIllegalAddr1 = 0xF0000001,
-  kIllegalAddr2 = 0xF0000002,
+  kCpuDumpSize = 8,
+  kIllegalAddr1 = 0xF0000004,
+  kIllegalAddr2 = 0xF0000008,
 };
 
 // Declaring the labels used to calculate the expected current and next pc.
@@ -47,7 +46,7 @@ extern const char kDoubleFaultSecondAddrUpper[];
 /**
  * This variable is used to ensure loads from an address aren't optimised out.
  */
-volatile uint8_t addr_val;
+volatile static uint32_t addr_val;
 
 /**
  * Overrides the default OTTF exception handler.
@@ -58,6 +57,13 @@ void ottf_exception_handler(void) {
   OT_ADDRESSABLE_LABEL(kDoubleFaultSecondAddrUpper);
 }
 
+/**
+ * Gets, parses and returns the cpu info crash dump.
+ *
+ * @param rstmgr A handle to the reset manager.
+ * @param ibex A handle to the ibex.
+ * @return The cpu info crash dump.
+ */
 static dif_rv_core_ibex_crash_dump_info_t get_dump(
     const dif_rstmgr_t *rstmgr, const dif_rv_core_ibex_t *ibex) {
   size_t size_read;
@@ -76,21 +82,36 @@ static dif_rv_core_ibex_crash_dump_info_t get_dump(
   return output;
 }
 
+/**
+ * Holds the expected cpu info dump values for the current state.
+ */
 typedef struct rstmgr_cpu_info_test_exp_state {
-  uint32_t mtval;   // The last exception address.
-  uint32_t mpec_l;  // The last exception PC lower bound
-  uint32_t mpec_u;  // The last exception PC upper bound
-  uint32_t mdaa;    // The last data access address.
-  uint32_t mnpc;    // The next PC.
-  uint32_t mcpc;    // The current PC.
+  uint32_t mtval;   ///< The last exception address.
+  uint32_t mpec_l;  ///< The last exception PC lower bound.
+  uint32_t mpec_u;  ///< The last exception PC upper bound.
+  uint32_t mdaa;    ///< The last data access address.
+  uint32_t mnpc;    ///< The next PC.
+  uint32_t mcpc;    ///< The current PC.
 } rstmgr_cpu_info_test_exp_state_t;
 
+/**
+ * Holds the expected cpu info dump values for the previous state.
+ */
 typedef struct rstmgr_cpu_info_test_exp_prev_state {
-  uint32_t mtval;   // The exception address for the previous crash.
-  uint32_t mpec_l;  // The last exception PC lower bound for the previous crash.
-  uint32_t mpec_u;  // The last exception PC upper bound for the previous crash.
+  uint32_t mtval;  ///< The exception address for the previous crash.
+  uint32_t
+      mpec_l;  ///< The last exception PC lower bound for the previous crash.
+  uint32_t
+      mpec_u;  ///< The last exception PC upper bound for the previous crash.
 } rstmgr_cpu_info_test_exp_prev_state_t;
 
+/**
+ * Checks the 'current' section of the cpu info dump against the given expected
+ * values.
+ *
+ * @param obs_state The cpu info crash dump's current state values.
+ * @param exp_state The expected values of the current state.
+ */
 static void check_state(dif_rv_core_ibex_crash_dump_state_t obs_state,
                         rstmgr_cpu_info_test_exp_state_t exp_state) {
   CHECK(exp_state.mtval == obs_state.mtval,
@@ -111,6 +132,13 @@ static void check_state(dif_rv_core_ibex_crash_dump_state_t obs_state,
       obs_state.mpec, exp_state.mpec_l, exp_state.mpec_u);
 }
 
+/**
+ * Checks the 'previous' section of the cpu info dump against the given expected
+ * values.
+ *
+ * @param obs_prev_state The cpu info crash dump's previous state values.
+ * @param exp_prev_state The expected values of the previous state.
+ */
 static void check_prev_state(
     dif_rv_core_ibex_previous_crash_dump_state_t obs_prev_state,
     rstmgr_cpu_info_test_exp_prev_state_t exp_prev_state) {
@@ -140,8 +168,7 @@ bool test_main(void) {
   CHECK_DIF_OK(dif_rv_core_ibex_init(
       mmio_region_from_addr(TOP_EARLGREY_RV_CORE_IBEX_CFG_BASE_ADDR), &ibex));
 
-  dif_rstmgr_reset_info_bitfield_t rst_info;
-  rst_info = rstmgr_testutils_reason_get();
+  dif_rstmgr_reset_info_bitfield_t rst_info = rstmgr_testutils_reason_get();
 
   if (rst_info == kDifRstmgrResetInfoPor) {
     LOG_INFO("Booting for the first time, setting wdog");

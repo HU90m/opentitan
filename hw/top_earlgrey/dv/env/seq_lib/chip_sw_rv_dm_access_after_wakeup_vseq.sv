@@ -9,15 +9,14 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
 
   virtual task pre_start();
     super.pre_start();
-    cfg.chip_vif.pwrb_in_if.drive(1'b1);    // off
+    cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing power button
   endtask
 
   virtual task body();
-    uint                timeout_long = 10_000_000;
-    bit [7:0] false[] = '{0, 0, 0, 0};
+    uint      timeout_long  = 10_000_000;
+    uint      timeout_short = 1_000_000;
+    bit [7:0] false[]       = '{0, 0, 0, 0};
 
-
-    //uint                timeout_short = 1_000_000;
     super.body();
 
     // Give the pin a default value.
@@ -33,9 +32,18 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     `uvm_info(`gfn, "Handing back to software.", UVM_LOW)
     sw_symbol_backdoor_overwrite("kSequenceRunning", false);
 
-    // @6.3ms
-    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Control Back.");,
-                 "Timed out waiting for acknowledgement of hand-back", timeout_long)
+
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Sleeping... ZZZZZZ");,
+                 "Timed out waiting for device to sleep", timeout_long)
+
+    `uvm_info(`gfn, "Pushing power button.", UVM_LOW)
+    cfg.chip_vif.pwrb_in_if.drive(1'b0); // pressing
+
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Waking up.");,
+                 "Timed out waiting for device to wakeup", timeout_short)
+
+    `uvm_info(`gfn, "Releasing power button.", UVM_LOW)
+    cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing
 
  endtask : body
 

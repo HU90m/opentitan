@@ -101,5 +101,9 @@ bool test_main(void) {
   // Clean up wakeup source after sleep.
   CHECK_DIF_OK(dif_sysrst_ctrl_ulp_wakeup_clear_status(&sysrst_ctrl));
 
+  kSequenceRunning = true;
+  while (!kSequenceRunning) {
+  }
+
   return true;
 }

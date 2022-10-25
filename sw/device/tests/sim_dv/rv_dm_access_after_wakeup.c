@@ -6,6 +6,7 @@
 #include "sw/device/lib/dif/dif_pwrmgr.h"
 #include "sw/device/lib/dif/dif_rv_plic.h"
 #include "sw/device/lib/dif/dif_sysrst_ctrl.h"
+#include "sw/device/lib/runtime/ibex.h"
 #include "sw/device/lib/runtime/irq.h"
 #include "sw/device/lib/runtime/log.h"
 #include "sw/device/lib/testing/aon_timer_testutils.h"
@@ -24,16 +25,22 @@
 
 OTTF_DEFINE_TEST_CONFIG();
 
-// This location will be update from SV to contain the expected alert.
-static volatile uint32_t kSequenceRunning;
+enum {
+  kSoftwareBarrierTimeoutUsec = 24,
+};
 
+// This location will be update from SV
+static volatile const uint8_t kSoftwareBarrier = 0;
+
+// Handle to the plic
 dif_rv_plic_t rv_plic;
 
 /**
  * External interrupt handler.
+ *
+ * Simply claim the interrupt and does nothing else.
  */
 void ottf_external_isr(void) {
-  LOG_INFO("In external ISR");
   dif_rv_plic_irq_id_t plic_irq_id;
   CHECK_DIF_OK(dif_rv_plic_irq_claim(&rv_plic, kTopEarlgreyPlicTargetIbex0,
                                      &plic_irq_id));
@@ -58,21 +65,19 @@ bool test_main(void) {
       mmio_region_from_addr(TOP_EARLGREY_SYSRST_CTRL_AON_BASE_ADDR),
       &sysrst_ctrl));
 
-  kSequenceRunning = true;
   LOG_INFO("Handover to sequence.");
-  while (!kSequenceRunning) {
-  }
+  IBEX_SPIN_FOR(kSoftwareBarrier == 1, kSoftwareBarrierTimeoutUsec);
 
   // Enable all the AON interrupts used in this test.
   rv_plic_testutils_irq_range_enable(&rv_plic, kTopEarlgreyPlicTargetIbex0,
                                      kTopEarlgreyPlicIrqIdPwrmgrAonWakeup,
                                      kTopEarlgreyPlicIrqIdPwrmgrAonWakeup);
 
-  // Enable pwrmgr interrupt
+  // Enable pwrmgr interrupt.
   CHECK_DIF_OK(dif_pwrmgr_irq_set_enabled(&pwrmgr, kDifPwrmgrIrqWakeup,
                                           kDifToggleEnabled));
 
-  // Set up power button as wake up source
+  // Set up power button as wake up source.
   dif_sysrst_ctrl_input_change_config_t config = {
       .input_changes = kDifSysrstCtrlInputPowerButtonH2L,
       .debounce_time_threshold = 1,  // 5us
@@ -83,7 +88,7 @@ bool test_main(void) {
       &pinmux, kTopEarlgreyPinmuxPeripheralInSysrstCtrlAonPwrbIn,
       kTopEarlgreyPinmuxInselIor13));
 
-  // Put to sleep
+  // Put to sleep.
   dif_pwrmgr_domain_config_t cfg;
   CHECK_DIF_OK(dif_pwrmgr_get_domain_config(&pwrmgr, &cfg));
   cfg = cfg & (kDifPwrmgrDomainOptionIoClockInLowPower |
@@ -101,9 +106,8 @@ bool test_main(void) {
   // Clean up wakeup source after sleep.
   CHECK_DIF_OK(dif_sysrst_ctrl_ulp_wakeup_clear_status(&sysrst_ctrl));
 
-  kSequenceRunning = true;
-  while (!kSequenceRunning) {
-  }
+  // Wait for sequence to finish before returning.
+  IBEX_SPIN_FOR(kSoftwareBarrier == 2, kSoftwareBarrierTimeoutUsec);
 
   return true;
 }

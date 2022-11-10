@@ -14,7 +14,7 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     cfg.m_jtag_riscv_agent_cfg.is_rv_dm = 1;
     // Release power button.
     cfg.chip_vif.pwrb_in_if.drive(1'b1);
-  endtask
+  endtask : pre_start
 
   virtual task body();
     uint           timeout_long       = 10_000_000;
@@ -30,6 +30,10 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Handover to sequence.");,
                  "Timed out waiting first handover.", timeout_long)
 
+    // Attempt to activate RV_DM via JTAG.
+    csr_wr(.ptr(cfg.jtag_dmi_ral.dmcontrol.dmactive), .value(1), .blocking(1), .predict(1));
+    cfg.clk_rst_vif.wait_clks(5);
+
     // Write a value to the DMI program buffer.
     cfg.jtag_dmi_ral.progbuf[0].write(
       status,
@@ -41,6 +45,21 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     );
     `DV_CHECK_EQ(status, UVM_IS_OK,
       "Could not write to the RV_DM DMI program buffer 0 register")
+
+    // Read the program buffer and check it still has the value that was
+    // written to it.
+    cfg.jtag_dmi_ral.progbuf[0].read(
+      status,
+      data,
+      .path(UVM_FRONTDOOR),
+      .parent(this),
+      .fname(`__FILE__),
+      .lineno(`__LINE__)
+    );
+    `DV_CHECK_EQ(status, UVM_IS_OK,
+      "Could not read from the RV_DM DMI program buffer 0 register")
+    `DV_CHECK_EQ(data, 'hDEAF,
+      "RV_DM DMI program does not contain the expected value.")
 
     // Allow the software to continue execution.
     software_barrier[0] = 1;
@@ -63,7 +82,7 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing power button
 
     // Read the program buffer and check it still has the value that was
-    // written to it.
+    // written to it before the sleep.
     cfg.jtag_dmi_ral.progbuf[0].read(
       status,
       data,
@@ -73,9 +92,9 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
       .lineno(`__LINE__)
     );
     `DV_CHECK_EQ(status, UVM_IS_OK,
-      "Could not read from the RV_DM DMI program buffer 0 register")
+      "Could not read from the RV_DM DMI program buffer 0 register after sleep.")
     `DV_CHECK_EQ(data, 'hDEAF,
-      "RV_DM DMI program does not contain the expected value.")
+      "RV_DM DMI program does not contain the expected value after sleep.")
 
     // Allow the software to continue execution.
     software_barrier[0] = 2;

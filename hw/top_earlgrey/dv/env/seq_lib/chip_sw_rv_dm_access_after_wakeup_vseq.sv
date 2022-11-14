@@ -9,42 +9,19 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
 
   virtual task pre_start();
     super.pre_start();
-    // Set up JTAG RV_DM TAP.
-    cfg.chip_vif.tap_straps_if.drive(JtagTapRvDm);
-    cfg.m_jtag_riscv_agent_cfg.is_rv_dm = 1;
     // Release power button.
     cfg.chip_vif.pwrb_in_if.drive(1'b1);
   endtask : pre_start
 
-  // Attempt to activate RV_DM via JTAG.
   task activate_jtag_dmi();
+    // Set up JTAG RV_DM TAP.
+    cfg.chip_vif.tap_straps_if.drive(JtagTapRvDm);
+    cfg.m_jtag_riscv_agent_cfg.is_rv_dm = 1;
+
+    // Attempt to activate RV_DM via JTAG.
     csr_wr(.ptr(cfg.jtag_dmi_ral.dmcontrol.dmactive), .value(1), .blocking(1), .predict(1));
     cfg.clk_rst_vif.wait_clks(5);
   endtask : activate_jtag_dmi
-
-  // Write to the RV DM's Program Buffer's first word via the JTAG DMI frontdoor
-  // and check the value has successfully been written.
-  task write_and_readback_check(uvm_reg_data_t exp_data, string error_suffix);
-    csr_wr(
-      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
-      .value(exp_data),
-      .blocking(1),
-      .path(UVM_FRONTDOOR)
-    );
-    readback_check(exp_data, error_suffix);
-  endtask : write_and_readback_check
-
-  task readback_check(uvm_reg_data_t exp_data, string error_suffix);
-    uvm_reg_data_t obs_data;
-    csr_rd(
-      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
-      .value(obs_data),
-      .blocking(1),
-      .path(UVM_FRONTDOOR)
-    );
-    `DV_CHECK_EQ(obs_data, exp_data,
-      {"RV_DM DMI progbuf[0] does not contain the expected value ", error_suffix})
-  endtask : readback_check
 
   virtual task body();
     uint           timeout_long       = 10_000_000;
@@ -58,7 +35,15 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
                  "Timed out waiting for software setup.", timeout_long)
 
     activate_jtag_dmi();
-    write_and_readback_check(exp_data, "straight after write.");
+    csr_wr(
+      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
+      .value(exp_data),
+      .path(UVM_FRONTDOOR));
+    csr_rd_check(
+      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
+      .compare_value(exp_data),
+      .path(UVM_FRONTDOOR),
+      .err_msg("straight after write."));
 
     // Allow the software to continue execution.
     software_barrier[0] = 1;
@@ -80,7 +65,13 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     `uvm_info(`gfn, "Releasing power button.", UVM_LOW)
     cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing power button
 
-    readback_check(exp_data, "after sleep.");
+    // Check the program buffer retained the expected value after a normal
+    // sleep.
+    csr_rd_check(
+      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
+      .compare_value(exp_data),
+      .path(UVM_FRONTDOOR),
+      .err_msg("after normal sleep."));
 
     // Allow the software to continue execution.
     software_barrier[0] = 2;
@@ -105,7 +96,15 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
 
     activate_jtag_dmi();
     exp_data = $urandom();
-    write_and_readback_check(exp_data, "after deep sleep.");
+    csr_wr(
+      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
+      .value(exp_data),
+      .path(UVM_FRONTDOOR));
+    csr_rd_check(
+      .ptr(cfg.jtag_dmi_ral.progbuf[0]),
+      .compare_value(exp_data),
+      .path(UVM_FRONTDOOR),
+      .err_msg("after deep sleep."));
 
     // Allow the software to continue execution.
     software_barrier[0] = 3;

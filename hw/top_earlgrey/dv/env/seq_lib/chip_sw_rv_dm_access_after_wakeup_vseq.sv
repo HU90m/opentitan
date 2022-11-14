@@ -16,7 +16,14 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     cfg.chip_vif.pwrb_in_if.drive(1'b1);
   endtask : pre_start
 
+  // Attempt to activate RV_DM via JTAG.
+  task activate_jtag_dmi();
+    csr_wr(.ptr(cfg.jtag_dmi_ral.dmcontrol.dmactive), .value(1), .blocking(1), .predict(1));
+    cfg.clk_rst_vif.wait_clks(5);
+  endtask : activate_jtag_dmi
 
+  // Write to the RV DM's Program Buffer's first word via the JTAG DMI frontdoor
+  // and check the value has successfully been written.
   task write_and_readback_check(uvm_reg_data_t exp_data, string error_suffix);
     csr_wr(
       .ptr(cfg.jtag_dmi_ral.progbuf[0]),
@@ -47,33 +54,28 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
 
     super.body();
 
-    `uvm_info(`gfn, "Started RV DM Sequence", UVM_LOW)
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Software Setup.");,
+                 "Timed out waiting for software setup.", timeout_long)
 
-    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Handover to sequence.");,
-                 "Timed out waiting first handover.", timeout_long)
-
-    // Attempt to activate RV_DM via JTAG.
-    csr_wr(.ptr(cfg.jtag_dmi_ral.dmcontrol.dmactive), .value(1), .blocking(1), .predict(1));
-    cfg.clk_rst_vif.wait_clks(5);
-
+    activate_jtag_dmi();
     write_and_readback_check(exp_data, "straight after write.");
 
     // Allow the software to continue execution.
     software_barrier[0] = 1;
-    `uvm_info(`gfn, "Handing back to software.", UVM_LOW)
+    `uvm_info(`gfn, "SoftwareBarrier = 1", UVM_LOW)
     sw_symbol_backdoor_overwrite("kSoftwareBarrier", software_barrier);
 
     // Wait for the software to fall asleep.
-    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Sleeping... ZZZZZZ");,
-                 "Timed out waiting for device to sleep", timeout_short)
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Entering normal sleep.");,
+                 "Timed out waiting for device to enter normal sleep.", timeout_short)
 
     // Press the power button to wake up the device.
     `uvm_info(`gfn, "Pushing power button.", UVM_LOW)
     cfg.chip_vif.pwrb_in_if.drive(1'b0); // pressing power button
 
     // Wait for the software to wake up.
-    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Waking up.");,
-                 "Timed out waiting for device to wakeup", timeout_short)
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Waking up from normal sleep.");,
+                 "Timed out waiting for device to wakeup from normal sleep.", timeout_short)
 
     `uvm_info(`gfn, "Releasing power button.", UVM_LOW)
     cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing power button
@@ -82,7 +84,32 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
 
     // Allow the software to continue execution.
     software_barrier[0] = 2;
-    `uvm_info(`gfn, "Handing back to software.", UVM_LOW)
+    `uvm_info(`gfn, "SoftwareBarrier = 2", UVM_LOW)
+    sw_symbol_backdoor_overwrite("kSoftwareBarrier", software_barrier);
+
+
+    // Wait for the software to fall asleep.
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Entering deep sleep.");,
+                 "Timed out waiting for device to enter deep sleep.", timeout_short)
+
+    // Press the power button to wake up the device.
+    `uvm_info(`gfn, "Pushing power button.", UVM_LOW)
+    cfg.chip_vif.pwrb_in_if.drive(1'b0); // pressing power button
+
+    // Wait for the software to wake up.
+    `DV_SPINWAIT(wait(cfg.sw_logger_vif.printed_log == "Waking up from deep sleep.");,
+                 "Timed out waiting for device to wakeup from deep sleep.", timeout_long)
+
+    `uvm_info(`gfn, "Releasing power button.", UVM_LOW)
+    cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing power button
+
+    activate_jtag_dmi();
+    exp_data = $urandom();
+    write_and_readback_check(exp_data, "after deep sleep.");
+
+    // Allow the software to continue execution.
+    software_barrier[0] = 3;
+    `uvm_info(`gfn, "SoftwareBarrier = 3", UVM_LOW)
     sw_symbol_backdoor_overwrite("kSoftwareBarrier", software_barrier);
 
   endtask : body

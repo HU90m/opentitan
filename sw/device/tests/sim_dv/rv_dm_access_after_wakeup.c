@@ -11,6 +11,7 @@
 #include "sw/device/lib/runtime/log.h"
 #include "sw/device/lib/testing/aon_timer_testutils.h"
 #include "sw/device/lib/testing/pwrmgr_testutils.h"
+#include "sw/device/lib/testing/rstmgr_testutils.h"
 #include "sw/device/lib/testing/rv_plic_testutils.h"
 #include "sw/device/lib/testing/test_framework/check.h"
 #include "sw/device/lib/testing/test_framework/ottf_main.h"
@@ -46,6 +47,21 @@ void ottf_external_isr(void) {
                                      &plic_irq_id));
 }
 
+// Put the device to sleep.
+static void put_to_sleep(dif_pwrmgr_t *pwrmgr, bool deep_sleep) {
+  dif_pwrmgr_domain_config_t cfg;
+  CHECK_DIF_OK(dif_pwrmgr_get_domain_config(pwrmgr, &cfg));
+  cfg = cfg & (kDifPwrmgrDomainOptionIoClockInLowPower |
+               kDifPwrmgrDomainOptionUsbClockInLowPower |
+               kDifPwrmgrDomainOptionUsbClockInActivePower) |
+        (!deep_sleep ? kDifPwrmgrDomainOptionMainPowerInLowPower : 0);
+
+  pwrmgr_testutils_enable_low_power(pwrmgr, kDifPwrmgrWakeupRequestSourceOne,
+                                    cfg);
+  LOG_INFO("Sleeping... ZZZZZZ");
+  wait_for_interrupt();
+}
+
 bool test_main(void) {
   // Enable global and external IRQ at Ibex.
   irq_global_ctrl(true);
@@ -65,49 +81,45 @@ bool test_main(void) {
       mmio_region_from_addr(TOP_EARLGREY_SYSRST_CTRL_AON_BASE_ADDR),
       &sysrst_ctrl));
 
-  LOG_INFO("Handover to sequence.");
-  IBEX_SPIN_FOR(kSoftwareBarrier == 1, kSoftwareBarrierTimeoutUsec);
+  switch (rstmgr_testutils_reason_get()) {
+    case kDifRstmgrResetInfoPor:  // The first power-up.
+      LOG_INFO("Handover to sequence.");
+      IBEX_SPIN_FOR(kSoftwareBarrier == 1, kSoftwareBarrierTimeoutUsec);
 
-  // Enable all the AON interrupts used in this test.
-  rv_plic_testutils_irq_range_enable(&rv_plic, kTopEarlgreyPlicTargetIbex0,
-                                     kTopEarlgreyPlicIrqIdPwrmgrAonWakeup,
-                                     kTopEarlgreyPlicIrqIdPwrmgrAonWakeup);
+      // Enable all the AON interrupts used in this test.
+      rv_plic_testutils_irq_range_enable(&rv_plic, kTopEarlgreyPlicTargetIbex0,
+                                         kTopEarlgreyPlicIrqIdPwrmgrAonWakeup,
+                                         kTopEarlgreyPlicIrqIdPwrmgrAonWakeup);
 
-  // Enable pwrmgr interrupt.
-  CHECK_DIF_OK(dif_pwrmgr_irq_set_enabled(&pwrmgr, kDifPwrmgrIrqWakeup,
-                                          kDifToggleEnabled));
+      // Enable pwrmgr interrupt.
+      CHECK_DIF_OK(dif_pwrmgr_irq_set_enabled(&pwrmgr, kDifPwrmgrIrqWakeup,
+                                              kDifToggleEnabled));
 
-  // Set up power button as wake up source.
-  dif_sysrst_ctrl_input_change_config_t config = {
-      .input_changes = kDifSysrstCtrlInputPowerButtonH2L,
-      .debounce_time_threshold = 1,  // 5us
-  };
-  CHECK_DIF_OK(
-      dif_sysrst_ctrl_input_change_detect_configure(&sysrst_ctrl, config));
-  CHECK_DIF_OK(dif_pinmux_input_select(
-      &pinmux, kTopEarlgreyPinmuxPeripheralInSysrstCtrlAonPwrbIn,
-      kTopEarlgreyPinmuxInselIor13));
+      // Set up power button as wake up source.
+      dif_sysrst_ctrl_input_change_config_t config = {
+          .input_changes = kDifSysrstCtrlInputPowerButtonH2L,
+          .debounce_time_threshold = 1,  // 5us
+      };
+      CHECK_DIF_OK(
+          dif_sysrst_ctrl_input_change_detect_configure(&sysrst_ctrl, config));
+      CHECK_DIF_OK(dif_pinmux_input_select(
+          &pinmux, kTopEarlgreyPinmuxPeripheralInSysrstCtrlAonPwrbIn,
+          kTopEarlgreyPinmuxInselIor13));
 
-  // Put to sleep.
-  dif_pwrmgr_domain_config_t cfg;
-  CHECK_DIF_OK(dif_pwrmgr_get_domain_config(&pwrmgr, &cfg));
-  cfg = cfg & (kDifPwrmgrDomainOptionIoClockInLowPower |
-               kDifPwrmgrDomainOptionUsbClockInLowPower |
-               kDifPwrmgrDomainOptionUsbClockInActivePower) |
-        kDifPwrmgrDomainOptionMainPowerInLowPower;
+      put_to_sleep(&pwrmgr, false);
+      LOG_INFO("Waking up.");
 
-  pwrmgr_testutils_enable_low_power(&pwrmgr, kDifPwrmgrWakeupRequestSourceOne,
-                                    cfg);
+      // Clean up wakeup source after sleep.
+      CHECK_DIF_OK(dif_sysrst_ctrl_ulp_wakeup_clear_status(&sysrst_ctrl));
 
-  LOG_INFO("Sleeping... ZZZZZZ");
-  wait_for_interrupt();
-  LOG_INFO("Waking up.");
+      // Wait for sequence to finish before returning.
+      IBEX_SPIN_FOR(kSoftwareBarrier == 2, kSoftwareBarrierTimeoutUsec);
 
-  // Clean up wakeup source after sleep.
-  CHECK_DIF_OK(dif_sysrst_ctrl_ulp_wakeup_clear_status(&sysrst_ctrl));
+      return true;
 
-  // Wait for sequence to finish before returning.
-  IBEX_SPIN_FOR(kSoftwareBarrier == 2, kSoftwareBarrierTimeoutUsec);
-
-  return true;
+    default:
+      CHECK(false, "Device was reset by an unexpected source.");
+      break;
+  }
+  return false;
 }

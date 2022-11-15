@@ -63,7 +63,8 @@ static void put_to_sleep(dif_pwrmgr_t *pwrmgr, bool deep_sleep) {
 
   pwrmgr_testutils_enable_low_power(pwrmgr, kDifPwrmgrWakeupRequestSourceOne,
                                     cfg);
-  LOG_INFO("%s", deep_sleep ? "Entering deep sleep." : "Entering normal sleep.");
+  LOG_INFO("%s",
+           deep_sleep ? "Entering deep sleep." : "Entering normal sleep.");
   wait_for_interrupt();
 }
 
@@ -87,7 +88,7 @@ bool test_main(void) {
       &sysrst_ctrl));
 
   switch (rstmgr_testutils_reason_get()) {
-    case kDifRstmgrResetInfoPor: // The first power-up.
+    case kDifRstmgrResetInfoPor:  // The first power-up.
       LOG_INFO("Software Setup.");
       // Wait for sequence to run its checks.
       IBEX_SPIN_FOR(kSoftwareBarrier == 1, kSoftwareBarrierTimeoutUsec);
@@ -126,7 +127,7 @@ bool test_main(void) {
       put_to_sleep(&pwrmgr, /*deep_sleep=*/true);
       break;
 
-    case kDifRstmgrResetInfoLowPowerExit: // The power up after deep sleep.
+    case kDifRstmgrResetInfoLowPowerExit:  // The power up after deep sleep.
       LOG_INFO("Waking up from deep sleep.");
 
       // Wait for sequence to finish before returning.

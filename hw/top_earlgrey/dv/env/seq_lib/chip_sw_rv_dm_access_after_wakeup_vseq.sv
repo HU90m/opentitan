@@ -94,6 +94,8 @@ class chip_sw_rv_dm_access_after_wakeup_vseq extends chip_sw_base_vseq;
     `uvm_info(`gfn, "Releasing power button.", UVM_LOW)
     cfg.chip_vif.pwrb_in_if.drive(1'b1); // releasing power button
 
+    // We must reset the agent side also to stay synchronized with the design
+    cfg.m_jtag_riscv_agent_cfg.m_jtag_agent_cfg.vif.do_trst_n(2);
     activate_jtag_dmi();
     exp_data = $urandom();
     csr_wr(

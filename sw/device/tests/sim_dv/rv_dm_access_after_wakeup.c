@@ -135,7 +135,7 @@ bool test_main(void) {
       return true;
 
     default:
-      CHECK(false, "Device was reset by an unexpected source.");
+      LOG_ERROR("Device was reset by an unexpected source.");
       break;
   }
   return false;

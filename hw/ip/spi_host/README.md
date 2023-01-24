@@ -1,8 +1,6 @@
----
-title: "SPI_HOST HWIP Technical Specification"
----
+# SPI_HOST HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies SPI_HOST hardware IP (HWIP) functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification/index.md" >}})

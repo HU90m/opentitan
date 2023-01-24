@@ -1,8 +1,6 @@
----
-title: "USB 2.0 Full-Speed Device HWIP Technical Specification"
----
+# USB 2.0 Full-Speed Device HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the USB device hardware IP functionality.
 This IP block implements a Full-Speed device according to the [USB 2.0 specification.](https://www.usb.org/document-library/usb-20-specification)

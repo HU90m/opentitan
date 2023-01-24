@@ -1,8 +1,6 @@
----
-title: "Clock Manager HWIP Technical Specification"
----
+# Clock Manager HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the functionality of the OpenTitan clock manager.
 

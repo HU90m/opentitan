@@ -1,8 +1,6 @@
----
-title: "Power Manager HWIP Technical Specification"
----
+# Power Manager HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the functionality of the OpenTitan power manager.
 

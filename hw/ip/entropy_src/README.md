@@ -1,8 +1,6 @@
----
-title: "ENTROPY_SRC HWIP Technical Specification"
----
+# ENTROPY_SRC HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies ENTROPY_SRC hardware IP functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification" >}})

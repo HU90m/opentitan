@@ -1,8 +1,6 @@
----
-title: "Pattern Generator HWIP Technical Specification"
----
+# Pattern Generator HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the functionality of the pattern generator hardware IP (HWIP).
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification/index.md" >}})

@@ -1,8 +1,6 @@
----
-title: "CSRNG HWIP Technical Specification"
----
+# CSRNG HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the Cryptographically Secure Random Number Generator (CSRNG) hardware IP functionality.
 Due to the importance of secure random number generation (RNG), it is a topic which is extensively covered in security standards.

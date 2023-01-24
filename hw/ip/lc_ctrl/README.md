@@ -1,9 +1,7 @@
----
-title: "Life Cycle Controller Technical Specification"
----
+# Life Cycle Controller Technical Specification
 
 
-# Overview
+## Overview
 
 This document specifies the functionality of the life cycle controller.
 The life cycle controller is a module that is a peripheral on the chip interconnect bus, and thus follows the [Comportability Specification]({{< relref "doc/rm/comportability_specification" >}}).

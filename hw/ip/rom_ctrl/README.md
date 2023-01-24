@@ -1,8 +1,6 @@
----
-title: ROM Controller Technical Specification
----
+# ROM Controller Technical Specification
 
-# Overview
+## Overview
 
 This document describes the ROM controller (`rom_ctrl`).
 This module attaches as a peripheral to the system bus, and thus follows the [Comportability Specification]({{< relref "doc/rm/comportability_specification" >}}).

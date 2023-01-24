@@ -1,9 +1,7 @@
----
-title: "AES HWIP Technical Specification"
----
+# AES HWIP Technical Specification
 
 
-# Overview
+## Overview
 
 This document specifies the AES hardware IP functionality.
 [Advanced Encryption Standard (AES)](https://www.nist.gov/publications/advanced-encryption-standard-aes) is the primary symmetric encryption and decryption mechanism used in OpenTitan protocols.

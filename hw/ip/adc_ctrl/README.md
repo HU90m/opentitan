@@ -1,8 +1,6 @@
----
-title: "Analog to Digital Converter Control Interface"
----
+# Analog to Digital Converter Control Interface
 
-# Overview
+## Overview
 
 This document specifies the ADC controller IP functionality.
 This IP block implements control and filter logic for an analog block that implements a dual ADC.

@@ -1,8 +1,6 @@
----
-title: "PWM HWIP Technical Specification"
----
+# PWM HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies PWM hardware IP (HWIP) functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification/index.md" >}})

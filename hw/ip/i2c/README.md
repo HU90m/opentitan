@@ -1,9 +1,7 @@
----
-title: "I2C HWIP Technical Specification"
----
+# I2C HWIP Technical Specification
 
 
-# Overview
+## Overview
 
 This document specifies I2C hardware IP functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification/index.md" >}})

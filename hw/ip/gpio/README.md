@@ -1,8 +1,6 @@
----
-title: "GPIO HWIP Technical Specification"
----
+# GPIO HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies GPIO hardware IP functionality. This
 module conforms to the [Comportable guideline for peripheral device

@@ -1,8 +1,6 @@
----
-title: "AON Timer Technical Specification"
----
+# AON Timer Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the Always-On ("AON") Timer IP functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification" >}})

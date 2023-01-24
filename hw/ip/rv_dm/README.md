@@ -1,7 +1,5 @@
----
-title: "RISC-V Debug System Wrapper Technical Specification"
----
-# Overview
+# RISC-V Debug System Wrapper Technical Specification
+## Overview
 
 This document specifies the RISC-V Debug System wrapper functionality.
 

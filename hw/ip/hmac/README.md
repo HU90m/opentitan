@@ -1,8 +1,6 @@
----
-title: "HMAC HWIP Technical Specification"
----
+# HMAC HWIP Technical Specification"
 
-# Overview
+## Overview
 
 This document specifies HMAC hardware IP functionality. This module conforms to
 the [OpenTitan guideline for peripheral device functionality.]({{< relref "doc/rm/comportability_specification" >}})

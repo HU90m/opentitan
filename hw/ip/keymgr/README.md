@@ -1,8 +1,6 @@
----
-title: "Key Manager HWIP Technical Specification"
----
+# Key Manager HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the functionality of the OpenTitan key manager.
 

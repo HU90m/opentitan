@@ -1,8 +1,6 @@
----
-title: "Flash Controller HWIP Technical Specification"
----
+# Flash Controller HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document describes the flash controller functionality.
 The flash controller is broken down into 3 major components

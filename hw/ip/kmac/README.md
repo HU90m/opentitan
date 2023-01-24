@@ -1,8 +1,6 @@
----
-title: "KMAC HWIP Technical Specification"
----
+# KMAC HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies the Keccak Message Authentication Code (KMAC) and Secure Hashing Algorithm 3 (SHA3) hardware IP functionality.
 This module conforms to the OpenTitan guideline for peripheral device functionality.

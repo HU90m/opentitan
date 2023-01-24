@@ -1,8 +1,6 @@
----
-title: "Bus Specification"
----
+# Bus Specification
 
-# Overview
+## Overview
 
 This document specifies the bus functionality within a Comportable top level
 system. This includes the bus protocol and all hardware IP that supports

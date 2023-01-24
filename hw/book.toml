@@ -1,0 +1,6 @@
+[book]
+authors = ["lowRISC"]
+language = "en"
+multilingual = false
+src = "."
+title = "OpenTitan Documentation"

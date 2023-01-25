@@ -1,4 +1,6 @@
-# Using I2C host for SMBus commands
+---
+title: Using I2C host for SMBus commands
+---
 
 The I2C host can generate all the SMBus commands listed in the Rev 3.0 SMBus specification.
 

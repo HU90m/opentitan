@@ -6,4 +6,6 @@ src = "."
 title = "OpenTitan Documentation"
 
 [output.html]
+theme = "../doc/theme"
+default-theme = "opentitan-light"
 fold = { enable = true, level = 1 }

@@ -1,11 +1,11 @@
 # Formal Verification Setup
 
-_Before following this guide, make sure you've followed the [dependency installation and software build instructions]({{< relref "getting_started" >}})._
+_Before following this guide, make sure you've followed the [dependency installation and software build instructions](index.md)._
 
 This document aims to enable a contributor to get started with a formal verification effort within the OpenTitan project.
 While most of the focus is on development of a testbench from scratch, it should also be useful to understand how to contribute to an existing effort.
 
-Please refer to the [OpenTitan Assertions]({{< relref "hw/formal/doc" >}}) for information on how formal verification is done in OpenTitan.
+Please refer to the [OpenTitan Assertions](FIXME/hw/formal/doc) for information on how formal verification is done in OpenTitan.
 
 ## Formal property verification (FPV)
 
@@ -15,13 +15,13 @@ There are three sets of FPV jobs in OpenTitan. They are all under the directory 
 * `top_earlgrey_fpv_prim_cfgs.hjson`: List of prim targets (such as counters, fifos, etc) that are usually imported by an IP.
 * `top_earlgrey_fpv_sec_cm_cfgs.hjson`: List of IPs that contains standard security countermeasure assertions. This FPV environment only proves these security countermeasure assertions. Detailed description of this FPV use case is documented in [Running FPV on security blocks for common countermeasure primitives]({{< relref "hw/formal/doc#running-fpv-on-security-blocks-for-common-countermeasure-primitives" >}}).
 
-To automatically create a FPV testbench, it is recommended to use the [fpvgen]({{< relref "util/fpvgen/doc" >}}) tool to create a template.
+To automatically create a FPV testbench, it is recommended to use the [fpvgen](FIXME/util/fpvgen/doc) tool to create a template.
 To run the FPV tests in `dvsim`, please add the target to the corresponding `top_earlgrey_fpv_{category}_cfgs.hjson` file , then run with command:
 ```console
 util/dvsim/dvsim.py hw/top_earlgrey/formal/top_earlgrey_fpv_{category}_cfgs.hjson --select-cfgs {target_name}
 ```
 
-It is recommended to add the FPV target to [lint]({{< relref "hw/lint/doc" >}}) script `hw/top_earlgrey/lint/top_earlgrey_fpv_lint_cfgs.hjson` to quickly find typos.
+It is recommended to add the FPV target to [lint](FIXME/hw/lint/doc) script `hw/top_earlgrey/lint/top_earlgrey_fpv_lint_cfgs.hjson` to quickly find typos.
 
 ## Formal connectivity verification
 

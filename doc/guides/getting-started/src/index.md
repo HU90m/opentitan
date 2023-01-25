@@ -23,7 +23,7 @@ git clone https://github.com/lowRISC/opentitan.git
 ```
 
 If you wish to *contribute* to OpenTitan you will need to make a fork on GitHub and may wish to clone the fork instead.
-We have some [notes for using GitHub]({{< relref "github_notes.md" >}}) which explain how to work with your own fork (and perform many other GitHub tasks) in the OpenTitan context.
+We have some [notes for using GitHub](FIXME/github_notes.md) which explain how to work with your own fork (and perform many other GitHub tasks) in the OpenTitan context.
 
 ***Note: throughout the documentation `$REPO_TOP` refers to the path where the OpenTitan repository is checked out.***
 Unless you've specified some other name in the clone, `$REPO_TOP` will be a directory called `opentitan`.
@@ -58,7 +58,7 @@ have a minimum of **32GiB of physical RAM** and at least **512GiB of SSD/HDD sto
 A number of software packages from the distribution's package manager are required.
 On Ubuntu 20.04, the required packages can be installed with the following command.
 
-{{< pkgmgr_cmd "apt" >}}
+FIXME: apt command
 
 Some tools in this repository are written in Python 3 and require Python dependencies to be installed through `pip`.
 We recommend installing the latest version of `pip` and `setuptools` (especially if on older systems such as Ubuntu 18.04) using:
@@ -159,13 +159,13 @@ Unless you know you need the FPGA or DV guides, you can skip this step.*
 In order to run the software, we need to have some way to emulate an OpenTitan chip.
 There are a few different options depending on your equipment and use-case.
 Follow the guide(s) that applies to you:
-* **Option 1 (Verilator setup, recommended for new users):** [Verilator guide]({{< relref "setup_verilator.md" >}}), or
-* Option 2 (FPGA setup): [FPGA guide]({{< relref "setup_fpga.md" >}}), or
-* Option 3 (design verification setup): [DV guide]({{< relref "setup_dv.md" >}})
+* **Option 1 (Verilator setup, recommended for new users):** [Verilator guide](setup_verilator.md), or
+* Option 2 (FPGA setup): [FPGA guide](setup_fpga.md), or
+* Option 3 (design verification setup): [DV guide](setup_dv.md)
 
 ## Step 5: Build OpenTitan Software
 
-Follow the [dedicated guide]({{< relref "build_sw" >}}) to build OpenTitan's software and run tests.
+Follow the [dedicated guide](build_sw.md) to build OpenTitan's software and run tests.
 
 ## Step 6: Optional Additional Steps
 
@@ -184,7 +184,7 @@ It also may make sense to stick with the basic setup and come back to these step
 ### Step 6a: Install Verible (optional)
 
 Verible is an open source SystemVerilog style linter and formatting tool.
-The style linter is relatively mature and we use it as part of our [RTL design flow]({{< relref "doc/ug/design" >}}).
+The style linter is relatively mature and we use it as part of our [RTL design flow](FIXME/doc/ug/design).
 The formatter is still under active development, and hence its usage is more experimental in OpenTitan.
 
 You can download and build Verible from scratch as explained on the [Verible GitHub page](https://github.com/google/verible/).
@@ -217,15 +217,15 @@ sudo mv verible-${VERIBLE_VERSION}/* /tools/verible/${VERIBLE_VERSION}/
 
 After installation you need to add `/tools/verible/$VERIBLE_VERSION/bin` to your `PATH` environment variable.
 
-Note that we currently use version {{< tool_version "verible" >}}, but it is expected that this version is going to be updated frequently, since the tool is under active development.
+Note that we currently use version (FIXME: verible version), but it is expected that this version is going to be updated frequently, since the tool is under active development.
 
 ### Step 6b: Install OpenOCD (optional)
 
-See the [OpenOCD install guide]({{< relref "install_openocd.md" >}}).
+See the [OpenOCD install guide](install_openocd.md).
 
 ### Step 6c: Set up formal verification (optional)
 
-See the [formal verification setup guide]({{< relref "setup_formal.md" >}})
+See the [formal verification setup guide](setup_formal.md)
 
 ### Step 6d: Set up Siemens Questa (optional)
 ￼
@@ -240,17 +240,17 @@ As you may have guessed, there are several other pieces of hardware and software
 If you are interested in these, check out the additional resources below.
 
 ### General
-* [Documentation Index]({{< relref "doc/_index.md" >}})
-* [Directory Structure]({{< relref "doc/ug/directory_structure.md" >}})
-* [GitHub Notes]({{< relref "doc/ug/github_notes.md" >}})
-* [Building Documentation]({{< relref "doc/ug/documentation.md" >}})
-* [Design Methodology within OpenTitan]({{< relref "doc/ug/design.md" >}})
+* [Documentation Index](FIXME/doc/_index.md)
+* [Directory Structure](FIXME/doc/ug/directory_structure.md)
+* [GitHub Notes](FIXME/doc/ug/github_notes.md)
+* [Building Documentation](FIXME/doc/ug/documentation.md)
+* [Design Methodology within OpenTitan](FIXME/doc/ug/design.md)
 
 ### Hardware
-* [Designing Hardware]({{< relref "doc/ug/hw_design.md" >}})
-* [OpenTitan Hardware]({{< relref "/hw" >}})
+* [Designing Hardware](FIXME/doc/ug/hw_design.md)
+* [OpenTitan Hardware](FIXME/hw)
 
 ### Software
-* [OpenTitan Software]({{< relref "/sw" >}})
-* [Writing and Building Software for OTBN]({{< relref "otbn_sw.md" >}})
-* [Rust for Embedded C Programmers]({{< relref "rust_for_c.md" >}})
+* [OpenTitan Software](FIXME/sw)
+* [Writing and Building Software for OTBN](FIXME/otbn_sw.md)
+* [Rust for Embedded C Programmers](FIXME/rust_for_c.md)

@@ -1,6 +1,6 @@
 # Verilator Setup
 
-_Before following this guide, make sure you've followed the [dependency installation instructions]({{< relref "getting_started" >}})._
+_Before following this guide, make sure you've followed the [dependency installation instructions](index.md)._
 
 ## About Verilator
 
@@ -17,7 +17,7 @@ Note that Verilator 4.210 will not build with GCC 12.0 or later, so it will need
 The example below assumes gcc-11 and g++-11 are installed on the system.
 
 ```console
-export VERILATOR_VERSION={{< tool_version "verilator" >}}
+export VERILATOR_VERSION=(FIXME: verilator version)
 
 git clone https://github.com/verilator/verilator.git
 cd verilator
@@ -166,7 +166,7 @@ echo 'h09 l31' > gpio0-write  # Pull the pin 9 high, and pin 31 low.
 The simulation includes a "virtual JTAG" port to which OpenOCD can connect using its `remote_bitbang` driver.
 All necessary configuration files are included in this repository.
 
-See the [OpenOCD install instructions]({{< relref "install_openocd.md" >}}) for guidance on installing OpenOCD.
+See the [OpenOCD install instructions](install_openocd.md) for guidance on installing OpenOCD.
 
 Run the simulation with Bazel, making sure to build the device software with debug symbols using
 ```console

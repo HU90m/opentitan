@@ -1,6 +1,6 @@
 # FPGA Setup
 
-_Before following this guide, make sure you've followed the [dependency installation and software build instructions]({{< relref "getting_started" >}})._
+_Before following this guide, make sure you've followed the [dependency installation and software build instructions](index.md)._
 
 Do you want to try out OpenTitan, but don't have a couple thousand or million dollars ready for an ASIC tapeout?
 Running OpenTitan on an FPGA board can be the answer!
@@ -15,7 +15,7 @@ To use the OpenTitan on an FPGA you need two things:
 Depending on the design/target combination that you want to synthesize you will need different tools and boards.
 Refer to the design documentation for information on what exactly is needed.
 
-* [Obtain an FPGA board]({{< relref "fpga_boards.md" >}})
+* [Obtain an FPGA board](fpga_boards.md)
 
 ## Obtain an FPGA bitstream
 
@@ -70,7 +70,7 @@ cd $REPO_TOP
 bazel build //hw/bitstream/vivado:fpga_cw310_rom
 ```
 
-Note, building these bitstreams will require Vivado be installed on your system, with access to the proper licenses, described [here]({{< relref "doc/getting_started/install_vivado" >}}).
+Note, building these bitstreams will require Vivado be installed on your system, with access to the proper licenses, described [here](install_vivado.md).
 For general software development on the FPGA, Vivado must still be installed, but the Lab Edition is sufficient.
 
 #### Dealing with FPGA Congestion Issues
@@ -111,7 +111,7 @@ fusesoc --cores-root . run --flag=fileset_top --target=synth --no-export --setup
 
 You can then navigate to the created project directory, and open Vivado
 ```console
-. /tools/Xilinx/Vivado/{{< tool_version "vivado" >}}/settings64.sh
+. /tools/Xilinx/Vivado/(FIXME: vivado version)/settings64.sh
 cd $REPO_TOP/build/lowrisc_systems_chip_earlgrey_cw310_0.1/synth-vivado/
 vivado
 ```
@@ -141,14 +141,14 @@ This should show which serial ports have been assigned, or if the board is havin
 If `dmesg` reports a problem you can trigger a *USB_RST* with *SW5*.
 When properly connected, `dmesg` should identify the board, not show any errors, and the status light should flash.
 They should be named `'/dev/ttyACM*'`, e.g. `/dev/ttyACM1`.
-To ensure that you have sufficient access permissions, set up the udev rules as explained in the [Vivado installation instructions]({{< relref "install_vivado" >}}).
+To ensure that you have sufficient access permissions, set up the udev rules as explained in the [Vivado installation instructions](install_vivado.md).
 
 You will then need to run this command to configure the board. You only need to run it once.
 ```console
 bazel run //sw/host/opentitantool -- --interface=cw310 fpga set-pll
 ```
 
-Check that it's working by [running the demo]({{< relref "#hello-world-demo" >}}) or a test, such as the `uart_smoketest` below.
+Check that it's working by [running the demo](#bootstrapping-the-demo-software) or a test, such as the `uart_smoketest` below.
 ```console
 cd $REPO_TOP
 bazel test --test_output=streamed //sw/device/tests:uart_smoketest_fpga_cw310_test_rom
@@ -245,7 +245,7 @@ I00001 test_rom.c:87] TestROM:6b2ca9a1
 I00002 test_rom.c:118] Test ROM complete, jumping to flash!
 ```
 
-#### Bootstrapping the demo software {#hello-world-demo}
+#### Bootstrapping the demo software
 
 The `hello_world` demo software shows off some capabilities of the OpenTitan hardware.
 To load `hello_world` into the FPGA on the ChipWhisperer CW310 board follow the steps shown below.
@@ -380,7 +380,7 @@ Note that the `reset_config` command may need to be adjusted for the particular 
 TRSTn is available on the 20-pin ARM JTAG header only.
 Use `srst_only` if the adapter only supports SRSTn.
 
-See the [install instructions]({{< relref "install_openocd" >}}) for guidance on installing OpenOCD.
+See the [install instructions](install_openocd.md) for guidance on installing OpenOCD.
 
 To actually debug through OpenOCD, it must either be connected through telnet or GDB.
 
@@ -412,7 +412,7 @@ riscv32-unknown-elf-gdb -ex "target extended-remote :3333" -ex "info reg" \
 
 The above will print out the contents of the registers upon successs.
 Note that you should have the RISC-V toolchain installed and on your `PATH`.
-For example, if you followed the [Getting Started]({{< relref "getting_started#step-3-install-the-lowrisc-risc-v-toolchain" >}}) instructions, then make sure `/tools/riscv/bin` is on your `PATH`.
+For example, if you followed the [Getting Started](index.md#step-3-install-the-lowrisc-risc-v-toolchain) instructions, then make sure `/tools/riscv/bin` is on your `PATH`.
 
 #### Common operations with GDB
 

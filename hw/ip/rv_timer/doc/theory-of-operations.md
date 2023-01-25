@@ -1,4 +1,6 @@
-# Theory of Operations
+---
+title: Theory of Operations
+---
 
 ## Block Diagram
 

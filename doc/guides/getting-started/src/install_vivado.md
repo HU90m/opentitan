@@ -24,7 +24,7 @@ When asked what edition to install, choose "Vivado HL Design Edition".
 _Note: If you are only developing software, you may select the "Lab Edition" instead._
 On the feature selection screen, select at least the following features:
 
-![Vivado features selection screen](features.png)
+![Vivado features selection screen](img/vivado_features.png)
 
 After installing Vivado, you will need to add Vivado's paths to your shell
 environment. See [Launching the Vivado IDE from the Command Line on Windows or

@@ -10,7 +10,7 @@ As shown in the diagram below, we currently support multiple build targets and w
 **However, if you are new to the project, we recommend simulation with Verilator.**
 This uses only free tools, and does not require any additional hardware such as an FPGA.
 
-![Getting Started Workflow](getting_started_workflow.svg)
+![Getting Started Workflow](img/getting_started_workflow.svg)
 
 This guide will focus on the Verilator workflow, but indicate when those following FPGA or DV workflows should do something different.
 Just keep in mind, if you're a new user and you don't know you're part of the FPGA or DV crowd, "Verilator" means you!

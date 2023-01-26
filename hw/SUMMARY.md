@@ -2,9 +2,9 @@
 
 [Introduction](./README.md)
 
-- [Tops](./tops.md)
-  - [Earlgrey](./top_earlgrey/README.md)
-  - [English Breakfast](./top_englishbreakfast/README.md)
+- [Top Earlgrey](./top_earlgrey/README.md)
+  - [Design](./top_earlgrey/doc/design/index.md)
+  - [Design Verification](./top_earlgrey/doc/dv/index.md)
 
 - [Hardware Blocks](./hw/ip/index.md)
   - [Analog to Digital Converter Control](./ip/adc_ctrl/README.md)

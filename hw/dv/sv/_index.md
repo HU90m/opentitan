@@ -1,6 +1,0 @@
----
-title: "SystemVerilog"
----
-
-## Content
-{{% sectionContent %}}

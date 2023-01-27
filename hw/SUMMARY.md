@@ -37,6 +37,7 @@
   - [Timer](./ip/rv_timer/README.md)
     - [User Reference](./ip/rv_timer/doc/user-ref.md)
     - [Theory of Operations](./ip/rv_timer/doc/theory-of-operations.md)
+    - [Design Verification](./ip/rv_timer/doc/dv/index.md)
   - [SPI Device](./ip/spi_device/README.md)
   - [SPI Host](./ip/spi_host/README.md)
   - [SRAM Controller](./ip/sram_ctrl/README.md)

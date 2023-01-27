@@ -1,6 +1,6 @@
 # Timer HWIP Technical Specification
 
-# Overview
+## Overview
 
 This document specifies RISC-V Timer hardware IP functionality. This module
 conforms to the

@@ -1,6 +1,4 @@
----
-title: User Reference
----
+# User Reference
 
 ## Initialization
 

@@ -1,6 +1,4 @@
----
-title: "Pattgen Checklist"
----
+# "Pattgen Checklist"
 
 This checklist is for [Hardware Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Pattgen peripheral.]({{<relref "." >}})
 All checklist items refer to the content in the [Checklist.]({{< relref "/doc/project/checklist.md" >}})

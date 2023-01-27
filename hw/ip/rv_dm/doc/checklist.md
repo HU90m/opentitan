@@ -1,6 +1,4 @@
----
-title: "RV_DM Checklist"
----
+# "RV_DM Checklist"
 
 This checklist is for [Hardware Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [RV_DM peripheral.]({{< relref "." >}})
 All checklist items refer to the content in the [Checklist.]({{< relref "/doc/project/checklist.md" >}})

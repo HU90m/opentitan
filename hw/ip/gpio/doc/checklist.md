@@ -1,6 +1,4 @@
----
-title: "GPIO Checklist"
----
+# "GPIO Checklist"
 
 This checklist is for [Hardware Stage]({{<relref "/doc/project/development_stages.md">}}) transitions for the [GPIO peripheral][GPIO Spec].
 All checklist items refer to the content in the [Checklist.]({{<relref "/doc/project/checklist.md">}})

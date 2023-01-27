@@ -1,6 +1,4 @@
----
-title: "JTAG DV UVM Agent"
----
+# "JTAG DV UVM Agent"
 
 JTAG UVM Agent is extended from the
 [DV library agent]({{<relref "hw/dv/sv/dv_lib/doc" >}}) classes, which

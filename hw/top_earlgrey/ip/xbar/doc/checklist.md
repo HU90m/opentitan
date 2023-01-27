@@ -1,6 +1,4 @@
----
-title: "TL-UL Checklist"
----
+# "TL-UL Checklist"
 
 This checklist is for [Hardware Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [TL-UL component.]({{<relref "/hw/ip/tlul/doc">}})
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

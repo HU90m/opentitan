@@ -1,4 +1,4 @@
-# "ENTROPY_SRC DV document"
+# Entropy Source DV document
 
 ## Goals
 * **DV**
@@ -8,15 +8,15 @@
   * Verify TileLink device protocol compliance with an SVA based testbench
 
 ## Current status
-* [Design & verification stage]({{< relref "hw" >}})
+* [Design & verification stage](../../../../index.html)
   * [HW development stages]({{< relref "doc/project/development_stages" >}})
 * [Simulation results](https://reports.opentitan.org/hw/ip/entropy_src/dv/latest/results.html)
 
 ## Design features
-For detailed information on ENTROPY_SRC design features, please see the [ENTROPY_SRC HWIP technical specification]({{< relref ".." >}}).
+For detailed information on ENTROPY_SRC design features, please see the [ENTROPY_SRC HWIP technical specification](../../index.html).
 
 ## Testbench architecture
-ENTROPY_SRC testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+ENTROPY_SRC testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](entropy_src_tb.svg)
@@ -24,18 +24,18 @@ ENTROPY_SRC testbench has been constructed based on the [CIP testbench architect
 ### Top level testbench
 Top level testbench is located at `hw/ip/entropy_src/dv/tb/tb.sv`. It instantiates the ENTROPY_SRC DUT module `hw/ip/entropy_src/rtl/entropy_src.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * ENTROPY_SRC IOs
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
-* Alerts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
+* Alerts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [common_ifs]({{< relref "hw/dv/sv/common_ifs" >}})
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [common_ifs](../../../../dv/sv/common_ifs/index.html)
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 <!--### Compile-time configurations
 TODO-->
@@ -56,18 +56,18 @@ function automatic entropy_phase_e convert_seed_idx_to_phase(int seed_idx,
 ```
 
 ### TL_agent
-ENTROPY_SRC testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+ENTROPY_SRC testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html)
 which provides the ability to drive and independently monitor random traffic via
 TL host interface into ENTROPY_SRC device.
 
 ###  Rng_agent
-Entropy_src testbench instantiates this PUSH_pull_agent({{< relref "hw/dv/sv/push_pull_agent/doc" >}}) which models the rng source.
+Entropy_src testbench instantiates this [PUSH_pull_agent](../../../../dv/sv/push_pull_agent/index.html) which models the rng source.
 
 ###  Csrng_agent
-Entropy_src testbench instantiates this push_PULL_agent({{< relref "hw/dv/sv/push_pull_agent/doc" >}}) which models the csrng module.
+Entropy_src testbench instantiates this [push_PULL_agent](../../../../dv/sv/push_pull_agent/index.html) which models the csrng module.
 
 ### UVM RAL Model
-The ENTROPY_SRC RAL model is created with the [`ralgen`]({{< relref "hw/dv/tools/ralgen/doc" >}}) FuseSoC generator script automatically when the simulation is at the build stage.
+The ENTROPY_SRC RAL model is created with the [`ralgen`]({{< relref "hw/dv/tools/ralgen/index.html) FuseSoC generator script automatically when the simulation is at the build stage.
 
 It can be created manually (separately) by running `make` in the `hw/` area.
 

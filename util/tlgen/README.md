@@ -97,14 +97,14 @@ Once all Nodes are visited, the tool completes traversing then moves to RTL gene
 
 Below shows an example of 2 Hosts and 2 Devices connectivity.
 
-![Example Topology](crossbar_example_1.svg)
+![Example Topology](./doc/img/crossbar_example_1.svg)
 
 Each circle represents a Node and an arrow represents an Edge that has downward direction.
 The tool starts from `H0` Node.
 As the Node has two downstream Edges and not Socket `1:N`, the tool creates Socket `1:N` based on the condition #5 above.
 Then repeat the process from Socket `1:N` Node's children Nodes, `D0` and `D1`.
 
-![Socket 1:N instantiated](crossbar_example_2.svg)
+![Socket 1:N instantiated](./doc/img/crossbar_example_2.svg)
 
 For `D0`, the tool creates Socket `M:1` based on the condition #4.
 It then visit its downstream Node, `D0` again.
@@ -113,18 +113,18 @@ So it reached the terminal Node.
 Then it visits `D1`.
 It repeats the same step (condition #4) as `D0`, which creates another Socket `M:1`.
 
-![Socket M:1 instantiated to D0, D1](crossbar_example_3.svg)
+![Socket M:1 instantiated to D0, D1](./doc/img/crossbar_example_3.svg)
 
 As all Nodes from `H0` have been visited, the tool repeats all steps from `H1`.
 It applies condition #3 above as `H1` has a peripheral clock rather than main clock.
 So the tool creates an Async FIFO and moves the pointer to the Node and repeats.
 
-![Async FIFO instantiated to H1](crossbar_example_4.svg)
+![Async FIFO instantiated to H1](./doc/img/crossbar_example_4.svg)
 
 The tool applies rule #5 as Async FIFO has multiple downstream Nodes (Edges) and it is not Socket `1:N`.
 The tool creates a Socket `1:N` and visits every downstream Node.
 
-![Socket 1:N instantiated to `AS_a`](crossbar_example_5.svg)
+![Socket 1:N instantiated to `AS_a`](./doc/img/crossbar_example_5.svg)
 
 Both Nodes have been processed, so no condition is hit.
 The tool completes traversing.

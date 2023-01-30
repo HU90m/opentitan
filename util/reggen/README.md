@@ -272,7 +272,7 @@ The sections below describe the hardware functionality of each register type bot
 
 The diagram below gives an overview of the register module, `name_reg_top`.
 
-![reg_top](reg_top.svg)
+![reg_top](./doc/img/reg_top.svg)
 
 In this diagram, the TL-UL bus is shown on the left.
 Logic then breaks down individual write requests and read requests based upon the assigned address of the bus requests.
@@ -420,7 +420,7 @@ There is a variant of this below, this is the default variant.
 This uses the `prim_subreg` with the connections shown.
 The connectivity to the hardware struct bundles are a function of the `hwaccess` and `hwqe` attributes, and will be discussed here as well.
 
-![subreg_rw](subreg_rw.svg)
+![subreg_rw](./doc/img/subreg_rw.svg)
 
 
 In this diagram, the maximum connection for subreg_rw is shown.
@@ -457,7 +457,7 @@ In this diagram the `q` is the `q` output to the hardware, while the `qs` is the
 The storage register is shown in the custom portion of the logic.
 Finally, note that no `de` input is required from the rest of the peripheral hardware, only the `d` is added to the struct bundle.
 
-![subreg_ext](subreg_ext.svg)
+![subreg_ext](./doc/img/subreg_ext.svg)
 
 Note the timing of `qe` is one cycle earlier in this model than in the non-hwext model.
 
@@ -491,11 +491,11 @@ These types are shown in the block diagrams below.
 Type `R0W1C` not shown is just a special case of `RW1C` where the q output is not sent back to the software read response mux, but the value `0` is sent instead.
 Note the `qe` is removed for readability but is available with the hwqe attribute.
 
-![subreg_rw1c](subreg_rw1c.svg)
+![subreg_rw1c](./doc/img/subreg_rw1c.svg)
 
-![subreg_rw0c](subreg_rw0c.svg)
+![subreg_rw0c](./doc/img/subreg_rw0c.svg)
 
-![subreg_rw1s](subreg_rw1s.svg)
+![subreg_rw1s](./doc/img/subreg_rw1s.svg)
 
 
 #### Simultaneous SW and HW access

@@ -1,6 +1,6 @@
 # Summary
 
-[Getting Started](index.md)
+[Getting Started](README.md)
 
 # Workflows
 

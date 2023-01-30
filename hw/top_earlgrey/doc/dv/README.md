@@ -14,7 +14,7 @@
     * Check for leakage of secure data into unsecure locations / paths and vice-versa using the Cadence SPV tool.
 
 ## Current status
-* [Design & verification stage]({{< relref "hw" >}})
+* [Design & verification stage](../../../index.html)
   * [HW development stages]({{< relref "doc/project/development_stages.md" >}})
 * [Simulation results](https://reports.opentitan.org/hw/top_earlgrey/dv/latest/results.html)
 

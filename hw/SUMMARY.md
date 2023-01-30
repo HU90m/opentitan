@@ -3,6 +3,7 @@
 [Introduction](./README.md)
 
 - [Top Earlgrey](./top_earlgrey/README.md)
+  - [Datasheet](./top_earlgrey/doc/README.md)
   - [Design](./top_earlgrey/doc/design/README.md)
   - [Design Verification](./top_earlgrey/doc/dv/README.md)
 

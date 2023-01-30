@@ -2,7 +2,7 @@
 
 ## Specification
 
-The specification of Earlgrey is located [here]({{< relref "doc" >}}).
+The specification of Earlgrey is located [here](./doc/index.html).
 
 ## Tool: TopGen
 

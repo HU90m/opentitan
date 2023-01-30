@@ -7,7 +7,15 @@
 ### Install Dependencies
 ```sh
 # Using you package manager of choice...
-sudo apt install mdbook hugo
+
+# Install hugo
+sudo apt install hugo
+
+# Install mdbook
+# 1) Install Rust
+# https://www.rust-lang.org/tools/install
+# 2) Then mdbook using cargo
+cargo install mdbook
 ```
 
 ### Top-Level Pages

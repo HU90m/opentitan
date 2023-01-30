@@ -3,8 +3,8 @@
 [Introduction](./README.md)
 
 - [Top Earlgrey](./top_earlgrey/README.md)
-  - [Design](./top_earlgrey/doc/design/index.md)
-  - [Design Verification](./top_earlgrey/doc/dv/index.md)
+  - [Design](./top_earlgrey/doc/design/README.md)
+  - [Design Verification](./top_earlgrey/doc/dv/README.md)
 
 - [Cores](./doc/cores.md)
   - [Ibex RISC-V Core Wrapper](./ip/rv_core_ibex/README.md)

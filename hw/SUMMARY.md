@@ -10,7 +10,7 @@
   - [Ibex RISC-V Core Wrapper](./ip/rv_core_ibex/README.md)
   - [OTBN](./ip/otbn/README.md)
 
-- [Hardware Blocks](./hw/ip/README.md)
+- [Hardware IP Blocks](./ip/README.md)
   - [Analog to Digital Converter Control](./ip/adc_ctrl/README.md)
     - [Theory of Operations](./ip/adc_ctrl/doc/theory-of-operations.md)
     - [User Reference](./ip/adc_ctrl/doc/user-ref.md)

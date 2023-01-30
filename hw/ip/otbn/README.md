@@ -521,7 +521,7 @@ Note there is no blanking on the base side (save for the CSRs as these provide a
 
 ## Block Diagram
 
-![OTBN architecture block diagram](otbn_blockarch.svg)
+![OTBN architecture block diagram](doc/otbn_blockarch.svg)
 
 ## Hardware Interfaces
 
@@ -631,7 +631,7 @@ Source: https://docs.google.com/drawings/d/1C0D4UriRk5pKGFoFtAXYLcJ1oBG1BCDd2omC
 
 Download the SVG from Google Draw, open it in Inkscape once and save it without changes to add width/height information to the image.
 -->
-![OTBN operational states](otbn_operational_states.svg)
+![OTBN operational states](doc/otbn_operational_states.svg)
 
 OTBN can be in different operational states.
 After reset (*init*), OTBN performs a secure wipe of the internal state and then becomes *idle*.

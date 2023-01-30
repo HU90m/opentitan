@@ -38,7 +38,7 @@ Even though the `pinmux` is referred to as one IP, it is logically split into tw
 The top-level module `pinmux` contains the CSRs accessible via the TL-UL interface, the main muxing matrix, retention registers, a set of programmable wakeup detectors, and the HW strap sampling and TAP / JTAG muxing logic.
 The chip-level module `padring` instantiates the bidirectional pads and connects the physical pad attributes.
 
-![Pinmux Block Diagram](pinmux_overview_block_diagram.svg)
+![Pinmux Block Diagram](doc/pinmux_overview_block_diagram.svg)
 
 ### MIO and DIO Signal Categories
 
@@ -131,7 +131,7 @@ This shows the connectivity available in all directions, as well as the control 
 Two example peripherals (`uart` and `spidev`) are attached to the `pinmux` in this example, one with one input and one output, the other with three inputs and one output.
 The diagram also shows the `padring` module which instantiates the bidirectional chip pads with output enable control.
 
-![Pinmux Block Diagram](pinmux_muxing_matrix.svg)
+![Pinmux Block Diagram](doc/pinmux_muxing_matrix.svg)
 
 Note that apart from selecting a specific input pad, the `periph_insel[*]` signals can also be used to tie the peripheral input to 0 or 1.
 Likewise, the output select signals `mio_outsel[*]` can also be used to constantly drive an output pin to 0/1 or to put it into high-Z state (default).

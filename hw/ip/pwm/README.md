@@ -71,7 +71,7 @@ Once the internal duty cycle reaches the target value, the internal duty cycle b
 
 ## Block Diagram
 
-![](pwm_block_diagram.svg)
+![](doc/pwm_block_diagram.svg)
 
 ## Hardware Interfaces
 

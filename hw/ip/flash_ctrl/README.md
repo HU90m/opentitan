@@ -9,7 +9,7 @@ The flash controller is broken down into 3 major components
 * Closed source vendor flash module
 
 A breakdown of the 3 can be seen below
-![Flash High Level Boundaries](flash_boundaries.svg)
+![Flash High Level Boundaries](doc/flash_boundaries.svg)
 
 
 This open source flash controller is divided into two partitions.
@@ -92,7 +92,7 @@ This includes but is not limited to:
 
 Note, there **can** be more than one information partition, and none of them are required to be the same size as the data partition.
 See the diagram below for an illustrative example.
-![Flash Example Partition](flash_partitions.svg)
+![Flash Example Partition](doc/flash_partitions.svg)
 
 Which type of partition is accessed is controlled through the {{< regref "CONTROL.PARTITION_SEL" >}} field.
 The current flash controller implements one type of information partition and thus is controlled by 1 bit only.
@@ -193,7 +193,7 @@ See [life cycle]({{< relref "hw/ip/lc_ctrl/doc/_index.md#iso_part_sw_rd_en-and-i
 
 ## Block Diagram
 
-![Flash Block Diagram](flash_block_diagram.svg)
+![Flash Block Diagram](doc/flash_block_diagram.svg)
 
 ### Flash Protocol Controller
 
@@ -492,7 +492,7 @@ Both ICV and ECC are configurable based on the various page and memory property 
 ##### Overall ICV and ECC Application
 
 The following diagram shows how the various ICV / ECC tags are applied and used through the life of a transactions.
-![Flash ECC_LIFE](flash_integrity.svg).
+![Flash ECC_LIFE](doc/flash_integrity.svg).
 
 Note that the ICV (integrity ECC) is calculated over the descrambled data and is only 4-bits, while the reliability ECC is calculated over both the scrambled data and the ICV.
 
@@ -545,7 +545,7 @@ When a read transaction is sent to flash, the following steps are taken:
 *  When the descrambling is complete, the descrambled text is pushed to the response queue.
 
 The following diagram shows how the flash read pipeline timing works.
-![Flash Read Pipeline](flash_read_pipeline.svg)
+![Flash Read Pipeline](doc/flash_read_pipeline.svg)
 
 
 In this example, the first two host requests trigger a full sequence.
@@ -680,7 +680,7 @@ In the case of program, the controller will stop writing to flash once all exist
 See detailed steps in theory of operation.
 The following is a diagram of the controller construction as well as its over connectivity with the flash module.
 
-![Flash Protocol Controller](flash_protocol_controller.svg)
+![Flash Protocol Controller](doc/flash_protocol_controller.svg)
 
 
 ### Host Read

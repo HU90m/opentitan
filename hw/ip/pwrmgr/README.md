@@ -45,7 +45,7 @@ The power manager performs the following functions:
 See the below high level block diagram that illustrates the connections between the power manager and various system components.
 Blocks outlined with a solid magenta line are always on; while blocks outlined with a dashed magenta line are a mix of components that are and those that are not.
 
-![Power Manager Connectivity Diagram](pwrmgr_connectivity.svg)
+![Power Manager Connectivity Diagram](doc/pwrmgr_connectivity.svg)
 
 ## Hardware Interfaces
 
@@ -62,7 +62,7 @@ The state machines are colored based on their clock domains.
 The green state machine is clocked by the normal fixed domain, while the orange state machine is clocked by the slow domain.
 Specific request / acknowledge signals are also highlighted in this color scheme to show where the two state machines communicate.
 
-![Power Manager FSMs](pwrmgr_fsms.svg)
+![Power Manager FSMs](doc/pwrmgr_fsms.svg)
 
 
 Note, most of the states are transitional states, and only the following state combinations are resting states.

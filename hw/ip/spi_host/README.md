@@ -667,7 +667,7 @@ To use this reset, assert {{< regref "CONTROL.SW_RST" >}}, and then wait for the
 
 ## Block Diagram
 
-![](spi_host_block_diagram.svg)
+![](doc/spi_host_block_diagram.svg)
 
 ## Hardware Interfaces
 
@@ -916,7 +916,7 @@ For this initial discussion it is assumed that every command consists of one sin
 Multi-segment commands are considered in the following sections.
 In this case the state machine can be simplified to the following figure.
 
-![](spi_host_fsm_simplified.svg)
+![](doc/spi_host_fsm_simplified.svg)
 
 The operation of the state machine is the same regardless of the polarity (CPOL) or phase (CPHA) of the current command.
 Commands with `CPOL==0` or `CPOL==1` are processed nearly identically, since the only difference is in the polarity of the `sck` output.
@@ -1204,7 +1204,7 @@ When a command segment is received in the `IdleCSBActive` state, it transitions 
 
 The following figure shows the complete state transition diagram of for the SPI_HOST FSM.
 
-![](spi_host_fsm_complete.svg)
+![](doc/spi_host_fsm_complete.svg)
 
 ### Skipped idle states
 
@@ -1219,7 +1219,7 @@ For clarity such transitions are left implicit in the diagram above.
 However they could also be explicitly added to the state diagram.
 For example, the implicit transitions around the `Idle` are shown in the following figure.
 
-![](spi_host_bypassable_state.svg)
+![](doc/spi_host_bypassable_state.svg)
 
 ### Stall
 

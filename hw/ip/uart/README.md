@@ -38,7 +38,7 @@ Additional features such as parity have been added.
 
 ## Block Diagram
 
-![UART Block Diagram](block_diagram.svg)
+![UART Block Diagram](doc/block_diagram.svg)
 
 ## Hardware Interfaces
 

@@ -22,7 +22,7 @@ The SRAM controller contains the SRAM data and address scrambling device and pro
 
 ## Block Diagram
 
-![SRAM Controller Block Diagram](sram_ctrl_blockdiag.svg)
+![SRAM Controller Block Diagram](doc/sram_ctrl_blockdiag.svg)
 
 As shown in the block diagram above, the SRAM controller contains a TL-UL adapter, an initialization LFSR, the CSR node, key request logic and an instance of `prim_ram_1p_scr` that implements the actual scrambling mechanism.
 
@@ -186,11 +186,11 @@ The register highlighted with orange is the scrambled data holding register, whi
 
 Note that this arrangement still allows full read/write throughput as illustrated in the alternating R/W sequence below.
 
-![SRAM Controller Sequencing](sram_ctrl_sequencing.svg)
+![SRAM Controller Sequencing](doc/sram_ctrl_sequencing.svg)
 
 However, due to the end-to-end bus integrity scheme, sub-word write accesses currently require a read-modify-write operation in order to recompute the integrity bits for the entire word, as illustrated in the diagram below.
 
-![SRAM Controller Sub-word Write](sram_ctrl_sub_word_write.svg)
+![SRAM Controller Sub-word Write](doc/sram_ctrl_sub_word_write.svg)
 
 Sub-word write accesses are therefore 3x slower than full-word write accesses.
 Read accesses however always take 1 cycle, no matter whether the access is a full-word or sub-word read operation.

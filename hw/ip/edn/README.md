@@ -83,4 +83,4 @@ In general, the OpenTitan random number subsystem consists of one `entropy_src`,
 The `entropy_src` only supports one connection to a CSRNG, but the CSRNG has multiple application interface ports for connecting to EDN's or other hardware blocks.
 The diagram below shows an example topology where two EDN modules are used to distribute `genbits` from the CSRNG to peripheral modules.
 
-![EDN Example Topology Diagram](edn_top_diag.svg)
+![EDN Example Topology Diagram](doc/edn_top_diag.svg)

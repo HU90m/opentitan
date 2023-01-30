@@ -104,7 +104,7 @@ For details on the masked implementation of the cipher core refer to [Security H
 Using an iterative architecture allows for a smaller circuit area at the cost of throughput.
 Employing a 128-bit wide data path allows to achieve the latency requirements of 12/14/16 clock cycles per 16B data block in AES-128/192/256 mode in the unmasked implementation, respectively.
 
-![AES unit block diagram (unmasked implementation) with shared data paths for encryption and decryption (using the Equivalent Inverse Cipher).](aes_block_diagram.svg)
+![AES unit block diagram (unmasked implementation) with shared data paths for encryption and decryption (using the Equivalent Inverse Cipher).](doc/aes_block_diagram.svg)
 
 Inside the cipher core, both the data paths for the actual cipher (left) and the round key generation (right) are shared between encryption and decryption.
 Consequently, the blocks shown in the diagram always implement the forward and backward (inverse) version of the corresponding operation.
@@ -345,7 +345,7 @@ The AES unit employs 1st-order masking of the AES cipher core.
 More precisely, both the cipher and the key expand data path use two shares.
 As shown in the block diagram below, the width of all registers and data paths basically doubles.
 
-![Block diagram of the masked AES cipher core.](aes_block_diagram_cipher_core_masked.svg)
+![Block diagram of the masked AES cipher core.](doc/aes_block_diagram_cipher_core_masked.svg)
 
 The initial key is provided in two shares via the register interface.
 The input data is provided in unmasked form and masked outside of the cipher core to obtain the two shares of the initial state.

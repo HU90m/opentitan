@@ -56,7 +56,7 @@ the ability to send the digest directly to a shared internal bus.
 
 ## Block Diagram
 
-![HMAC Block Diagram](hmac_block_diagram.svg)
+![HMAC Block Diagram](doc/hmac_block_diagram.svg)
 
 The HMAC block diagram above shows that the HMAC core converts the secret key
 registers into an inner padded key and an outer padded key which are fed to the
@@ -67,7 +67,7 @@ The message length is automatically updated to reflect the size of the outer
 padded key and first round digest result for the second round. See [Design
 Details](#design-details) for more information.
 
-![SHA-256 Block Diagram](sha2_block_diagram.svg)
+![SHA-256 Block Diagram](doc/sha2_block_diagram.svg)
 
 The SHA-256 (SHA-2) block diagram shows the message FIFO inside SHA-256, hash
 registers, digest registers, and SHA-256 compression function. The message FIFO
@@ -129,7 +129,7 @@ specification][sha256-spec] describes this in more detail. An example is shown
 below. The padding logic handles this so software only needs to write the actual
 message bits into the FIFO.
 
-![SHA-256 Message Padding](message_padding.svg)
+![SHA-256 Message Padding](doc/message_padding.svg)
 
 For instance, if the message is empty, the message length is 64-bit 0. In this
 case, the padding logic gives `0x80000000` into the SHA-256 module first. Then
@@ -160,7 +160,7 @@ software can push up to 16 entries to the FIFO for the next hash computation.
 
 ### HMAC computation
 
-![Two steps of HMAC](hmac_dataflow.svg)
+![Two steps of HMAC](doc/hmac_dataflow.svg)
 
 HMAC can be used with any hash algorithm but this version of HMAC IP only uses
 SHA-256. The first phase of HMAC calculates the SHA-256 hash of the inner

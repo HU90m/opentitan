@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+{{ partial "head.html" . }}
+
+<body>
+  {{ partial "header.html" . }}
+
+  <main id="main" role="main" class="main-body light-bg">
+    <h1 class="h1">{{ .Title }}</h1>
+    <p>
+    {{ .Content }}
+    </p>
+  </main>
+
+  {{ partial "footer.html" . }}
+
+  <script src="/js/theme-changer.js"></script>
+
+  <script>
+    // Enable JS features
+    document.documentElement.classList.remove('no-js');
+  </script>
+</body>
+
+</html>

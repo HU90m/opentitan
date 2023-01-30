@@ -91,3 +91,5 @@ compile_commands.json
 
 # mdbook builds into ./book directories, let's ignore them
 book
+
+.hugo_build.lock

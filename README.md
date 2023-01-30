@@ -2,6 +2,31 @@
 
 ![OpenTitan logo](https://docs.opentitan.org/doc/opentitan-logo.png)
 
+## Documentation Summary
+
+### Install Dependencies
+```sh
+# Using you package manager of choice...
+sudo apt install mdbook hugo
+```
+
+### Top-Level Pages
+```sh
+cd site/landing
+cd site/docs
+hugo serve # Start an local webserver hosting the build site
+```
+### Books
+```sh
+cd hw/ # Hardware books
+cd util/ # Tooling book
+cd sw/ # SW Book
+cd doc/books/project-governance # Project
+cd doc/books/security # Security
+cd doc/books/use-cases # Use-Cases
+mdbook serve  # Start an local webserver hosting the build site
+```
+
 ## About the project
 
 [OpenTitan](https://opentitan.org) is an open source silicon Root of Trust

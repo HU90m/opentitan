@@ -1,13 +1,9 @@
 # Entropy Source HWIP Technical Specification
 
-## Overview
-
 This document specifies ENTROPY_SRC hardware IP functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification" >}})
 
-
 ## Features
-
 
 - This revision provides an interface to an external physical random noise generator (also referred to as a physical true random number generator.
 The PTRNG external source is a physical true random noise source.

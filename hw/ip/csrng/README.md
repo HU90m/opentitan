@@ -1,7 +1,5 @@
 # CSRNG HWIP Technical Specification
 
-## Overview
-
 This document specifies the Cryptographically Secure Random Number Generator (CSRNG) hardware IP functionality.
 Due to the importance of secure random number generation (RNG), it is a topic which is extensively covered in security standards.
 This IP targets compliance with both [BSI's AIS31 recommendations for Common Criteria (CC)](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Zertifizierung/Interpretationen/AIS_31_Functionality_classes_for_random_number_generators_e.pdf), as well as [NIST's SP 800-90A](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf) and [NIST's SP 800-90C (Second Draft)](https://csrc.nist.gov/CSRC/media/Publications/sp/800-90c/draft/documents/sp800_90c_second_draft.pdf), both of which are referenced in [FIPS 140-3](https://csrc.nist.gov/publications/detail/fips/140/3/final).

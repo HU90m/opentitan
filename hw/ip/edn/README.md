@@ -1,7 +1,5 @@
 # EDN HWIP Technical Specification
 
-## Overview
-
 This document specifies EDN hardware IP functionality.
 This module conforms to the [Comportable guideline for peripheral functionality.]({{< relref "doc/rm/comportability_specification" >}})
 

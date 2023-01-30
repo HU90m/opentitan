@@ -90,7 +90,7 @@
   - [UART](./ip/uart/README.md)
   - [USB 2.0](./ip/usbdev/README.md)
 
-- [SystemVerilog Verification Infrastructure](./dv/sv/README.md)
+- [Common SystemVerilog and UVM Components](./dv/sv/README.md)
   - [ALERT_ESC Agent](./dv/sv/alert_esc_agent/README.md)
   - [Bus Params Package](./dv/sv/bus_params_pkg/README.md)
   - [Comportable IP Testbench Architecture](./dv/sv/cip_lib/README.md)

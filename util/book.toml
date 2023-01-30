@@ -2,5 +2,5 @@
 authors = ["lowRISC"]
 language = "en"
 multilingual = false
-src = "src"
-title = "Utility Tools"
+src = "."
+title = "Tools Documentation"

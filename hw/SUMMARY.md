@@ -12,6 +12,9 @@
 
 - [Hardware Blocks](./hw/ip/README.md)
   - [Analog to Digital Converter Control](./ip/adc_ctrl/README.md)
+    - [Theory of Operations](./ip/adc_ctrl/doc/theory-of-operations.md)
+    - [User Reference](./ip/adc_ctrl/doc/user-ref.md)
+    - [Design Verification](./ip/adc_ctrl/doc/dv/index.md)
   - [AES](./ip/aes/README.md)
   - [AON Timer](./ip/aon_timer/README.md)
   - [Clock Manager](./ip/clkmgr/README.md)

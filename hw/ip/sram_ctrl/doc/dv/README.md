@@ -1,4 +1,4 @@
-# "SRAM_CTRL DV document"
+# SRAM_CTRL Design Verification
 
 ## Goals
 * **DV**

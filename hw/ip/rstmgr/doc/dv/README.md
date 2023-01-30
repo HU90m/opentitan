@@ -1,4 +1,4 @@
-# "RSTMGR DV document"
+# RSTMGR Design Verification
 
 ## Goals
 * **DV**

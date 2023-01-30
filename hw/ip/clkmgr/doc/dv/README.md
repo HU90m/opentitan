@@ -1,4 +1,4 @@
-# "CLKMGR DV document"
+# CLKMGR Design Verification
 
 ## Goals
 * **DV**

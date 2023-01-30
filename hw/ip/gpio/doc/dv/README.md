@@ -1,4 +1,4 @@
-# "GPIO DV document"
+# GPIO Design Verification
 
 ## Goals
 * **DV**

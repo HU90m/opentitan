@@ -1,4 +1,4 @@
-# "LC_CTRL DV document"
+# LC_CTRL Design Verification
 
 ## Goals
 * **DV**

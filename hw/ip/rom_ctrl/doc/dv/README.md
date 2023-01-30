@@ -1,4 +1,4 @@
-# "ROM Controller DV document"
+# ROM Controller Design Verification
 
 ## Goals
 * **DV**

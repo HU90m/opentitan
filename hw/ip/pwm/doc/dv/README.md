@@ -1,4 +1,4 @@
-# "PWM DV document"
+# PWM Design Verification
 
 ## Goals
 * **DV**

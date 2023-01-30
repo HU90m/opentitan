@@ -1,4 +1,4 @@
-# "KMAC DV document"
+# KMAC Design Verification
 
 ## Goals
 * **DV**

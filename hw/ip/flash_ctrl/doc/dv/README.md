@@ -1,4 +1,4 @@
-# "FLASH_CTRL DV document"
+# FLASH_CTRL Design Verification
 
 ## Goals
 * **DV**

@@ -1,4 +1,4 @@
-# "PINMUX DV document"
+# PINMUX Design Verification
 
 ## Goals
 * **DV**:

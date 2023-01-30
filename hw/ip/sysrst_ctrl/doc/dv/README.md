@@ -1,4 +1,4 @@
-# "SYSRST_CTRL DV document"
+# SYSRST_CTRL Design Verification
 
 <!-- Copy this file to hw/ip/sysrst_ctrl/doc/dv/index.md and make changes as needed.
 For convenience 'sysrst_ctrl' in the document can be searched and replaced easily with the

@@ -1,4 +1,4 @@
-# "SPI Device DV document"
+# SPI Device Design Verification
 
 
 ## Goals

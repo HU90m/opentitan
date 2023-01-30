@@ -1,4 +1,4 @@
-# "PATTGEN DV document"
+# PATTGEN Design Verification
 
 ## Goals
 * **DV**

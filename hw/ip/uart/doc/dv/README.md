@@ -1,4 +1,4 @@
-# "UART DV document"
+# UART Design Verification
 
 
 ## Goals

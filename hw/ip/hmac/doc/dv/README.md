@@ -1,4 +1,4 @@
-# "HMAC DV document"
+# HMAC Design Verification
 
 ## Goals
 * **DV**

@@ -1,4 +1,4 @@
-# "USBDEV DV document"
+# USBDEV Design Verification
 
 ## Goals
 * **DV**

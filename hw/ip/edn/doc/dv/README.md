@@ -1,4 +1,4 @@
-# "EDN DV document"
+# EDN Design Verification
 
 ## Goals
 * **DV**

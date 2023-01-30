@@ -1,4 +1,4 @@
-# "CSRNG DV document"
+# CSRNG Design Verification
 
 ## Goals
 * **DV**

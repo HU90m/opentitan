@@ -1,4 +1,4 @@
-# "PWRMGR DV document"
+# PWRMGR Design Verification
 
 ## Goals
 * **DV**

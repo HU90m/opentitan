@@ -1,4 +1,4 @@
-# "OTP_CTRL DV document"
+# OTP_CTRL Design Verification
 
 ## Goals
 * **DV**

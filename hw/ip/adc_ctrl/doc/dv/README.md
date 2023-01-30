@@ -1,4 +1,4 @@
-# "ADC_CTRL DV document"
+# ADC_CTRL Design Verification
 
 ## Goals
 * **DV**

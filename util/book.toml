@@ -4,3 +4,6 @@ language = "en"
 multilingual = false
 src = "."
 title = "Tools Documentation"
+
+[output.html]
+site-url = "/books/tools/"

@@ -4,3 +4,6 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Use Cases"
+
+[output.html]
+site-url = "/books/use-cases/"

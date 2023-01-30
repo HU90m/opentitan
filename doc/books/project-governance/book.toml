@@ -4,3 +4,6 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Project Governance"
+
+[output.html]
+site-url = "/books/project-governance/"

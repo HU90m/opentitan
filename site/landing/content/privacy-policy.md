@@ -1,5 +1,6 @@
 ---
 title: "Website Privacy and Cookies Policy"
+layout: info
 aliases:
   - /privacy/
 ---

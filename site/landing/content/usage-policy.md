@@ -1,5 +1,6 @@
 ---
 title: "Website Usage Licence"
+layout: info
 aliases:
   - /usage/
 ---

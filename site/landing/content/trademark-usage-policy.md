@@ -1,5 +1,6 @@
 ---
 title: "OpenTitan Trademark Usage Policy"
+layout: info
 ---
 
 The OpenTitan trademarks and logos ("OpenTitan Trademarks") are licensed

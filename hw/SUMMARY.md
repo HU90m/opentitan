@@ -6,7 +6,11 @@
   - [Design](./top_earlgrey/doc/design/index.md)
   - [Design Verification](./top_earlgrey/doc/dv/index.md)
 
-- [Hardware Blocks](./hw/ip/index.md)
+- [Cores](./doc/cores.md)
+  - [Ibex RISC-V Core Wrapper](./ip/rv_core_ibex/README.md)
+  - [OTBN](./ip/otbn/README.md)
+
+- [Hardware Blocks](./hw/ip/README.md)
   - [Analog to Digital Converter Control](./ip/adc_ctrl/README.md)
   - [AES](./ip/aes/README.md)
   - [AON Timer](./ip/aon_timer/README.md)
@@ -30,7 +34,6 @@
   - [Key Manager](./ip/keymgr/README.md)
   - [KMAC](./ip/kmac/README.md)
   - [Life Cycle Controller](./ip/lc_ctrl/README.md)
-  - [OTBN](./ip/otbn/README.md)
   - [OTP Controller](./ip/otp_ctrl/README.md)
   - [Pattern Generator](./ip/pattgen/README.md)
   - [Pinmux](./ip/pinmux/README.md)
@@ -41,7 +44,6 @@
   - [Power Management](./ip/pwrmgr/README.md)
   - [ROM Control](./ip/rom_ctrl/README.md)
   - [Reset Manager](./ip/rstmgr/README.md)
-  - [Ibex RISC-V Core Wrapper](./ip/rv_core_ibex/README.md)
   - [RISC-V Debug Manager](./ip/rv_dm/README.md)
   - [Timer](./ip/rv_timer/README.md)
     - [User Reference](./ip/rv_timer/doc/user-ref.md)

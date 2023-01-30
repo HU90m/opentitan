@@ -10,7 +10,7 @@
 ## Current status
 * [Design & verification stage](../../../../index.html)
   * [HW development stages]({{< relref "doc/project/development_stages" >}})
-* [Simulation results](https://reports.opentitan.org/hw/ip/entropy_src/dv/latest/results.html)
+* [Simulation results](https://reports.opentitan.org/hw/ip/entropy_src/dv/latest/report.html)
 
 ## Design features
 For detailed information on ENTROPY_SRC design features, please see the [ENTROPY_SRC HWIP technical specification](../../index.html).

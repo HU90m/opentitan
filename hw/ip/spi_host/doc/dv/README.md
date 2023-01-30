@@ -10,7 +10,7 @@
 ## Current status
 * [Design & verification stage]({{< relref "hw" >}})
   * [HW development stages]({{< relref "doc/project/development_stages" >}})
-* [Simulation results](https://reports.opentitan.org/hw/ip/spi_host/dv/latest/results.html)
+* [Simulation results](https://reports.opentitan.org/hw/ip/spi_host/dv/latest/report.html)
 
 ## Design features
 For detailed information on SPI_HOST design features, please see the

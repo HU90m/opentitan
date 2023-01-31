@@ -100,6 +100,8 @@
             html.classList.add("sidebar-" + sidebar);
         </script>
 
+        {{> header}}
+
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
                 {{#toc}}{{/toc}}
@@ -110,7 +112,6 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                {{> header}}
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">

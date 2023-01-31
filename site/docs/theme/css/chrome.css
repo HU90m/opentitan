@@ -20,8 +20,7 @@ a > .hljs {
 
 /* Menu Bar */
 
-#menu-bar,
-#menu-bar-hover-placeholder {
+#menu-bar {
     z-index: 101;
     margin: auto calc(0px - var(--page-padding));
 }
@@ -35,18 +34,11 @@ a > .hljs {
     border-bottom-style: solid;
 }
 #menu-bar.sticky,
-.js #menu-bar-hover-placeholder:hover + #menu-bar,
 .js #menu-bar:hover,
 .js.sidebar-visible #menu-bar {
     position: -webkit-sticky;
     position: sticky;
     top: 0 !important;
-}
-#menu-bar-hover-placeholder {
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    height: var(--menu-bar-height);
 }
 #menu-bar.bordered {
     border-bottom-color: var(--table-border-color);
@@ -350,17 +342,13 @@ ul#searchresults span.teaser em {
 /* Sidebar */
 
 .sidebar {
-    position: fixed;
-    left: 0;
+    position: sticky;
     top: 0;
-    bottom: 0;
     width: var(--sidebar-width);
     font-size: 0.875em;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
-    background-color: var(--sidebar-bg);
-    color: var(--sidebar-fg);
 }
 .sidebar-resizing {
     -moz-user-select: none;
@@ -382,6 +370,9 @@ ul#searchresults span.teaser em {
     left: 0;
     right: 0;
     padding: 10px 10px;
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-fg);
 }
 .sidebar .sidebar-resize-handle {
     position: absolute;

@@ -1,6 +1,24 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
+
+command="build"
+
+case "$1" in
+	"build"|"build-local"|"serve")
+		command="$1"
+		;;
+	"help"|*)
+		echo "USAGE: $0 [command]"
+		echo ""
+		echo "commands:"
+		echo "	help: prints this message."
+		echo "	build: build the site and docs for prod"
+		echo "	build-local: build the site and docs for a localhost server"
+		echo "	serve: build and serve the site locally"
+		exit 0
+		;;
+esac
 
 # Check for mdbook dep
 if ! command -v mdbook >/dev/null; then
@@ -16,7 +34,7 @@ if ! command -v hugo >/dev/null; then
 fi
 
 # Get the project directory from the location of this script
-proj_root="$PWD/$(dirname $0)"
+proj_root="$PWD/$(dirname "$0")"
 
 # Create the output directory
 build_dir="$proj_root/build-docs"
@@ -46,7 +64,21 @@ for book_path in $mdbooks; do
 	mdbook build -d "$build_dir/$site_url" "$book_path"
 done
 
-# Path to Hugo site root
-hugo_path="site/landing"
+# Build up the args
+hugo_args=""
+hugo_args+=" --source $proj_root/site/landing/"
+hugo_args+=" --destination $build_dir/"
 
-hugo --source "$proj_root/site/landing/" --destination "$build_dir/"
+# If building or serving locally, set the baseURL to localhost
+if [ "$command" = "build-local" ] || [ "$command" = "serve" ]; then
+	hugo_args+=" --baseURL http://localhost:8000/"
+fi
+
+# Build website
+# shellcheck disable=SC2086
+hugo $hugo_args
+
+# If serving, run the python HTTP server
+if [ "$command" = "serve" ]; then
+	python -m http.server -d "$build_dir"
+fi

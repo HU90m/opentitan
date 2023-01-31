@@ -46,7 +46,7 @@
 
 .diagram.modern #always-on > .title {
     color: crimson;
-    justify-content: right;
+    text-align: right;
 }
 
 .diagram.modern #always-on > .outline {

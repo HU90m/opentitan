@@ -28,7 +28,7 @@
 
 .diagram.classic #always-on > .title {
     color: crimson;
-    justify-content: right;
+    text-align: right;
 }
 
 .diagram.classic #always-on > .outline {

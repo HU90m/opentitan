@@ -61,6 +61,9 @@ mdbooks="
 	doc/guides/rust-for-c-devs
 "
 
+# Apply custom config to insert the website theme
+export MDBOOK_OUTPUT__HTML__THEME="$proj_root/site/docs/theme/"
+
 # Build up Hugo arguments
 hugo_args=""
 hugo_args+=" --source $proj_root/site/landing/"

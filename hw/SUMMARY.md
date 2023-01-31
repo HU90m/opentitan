@@ -118,6 +118,6 @@
   - [SPI Agent](./dv/sv/spi_agent/README.md)
   - [String Utils](./dv/sv/str_utils/README.md)
   - [Test Vectors](./dv/sv/test_vectors/README.md)
-  - [TL Agent](./dv/sv/tl_agent/README.md)
+  - [Tile Link Agent](./dv/sv/tl_agent/README.md)
   - [UART Agent](./dv/sv/uart_agent/README.md)
   - [USB20 Agent](./dv/sv/usb20_agent/README.md)

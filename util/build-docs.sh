@@ -34,7 +34,7 @@ if ! command -v hugo >/dev/null; then
 fi
 
 # Get the project directory from the location of this script
-proj_root="$PWD/$(dirname "$0")"
+proj_root="$PWD/$(dirname "$0")/.."
 
 # Create the output directory
 build_dir="$proj_root/build-docs"

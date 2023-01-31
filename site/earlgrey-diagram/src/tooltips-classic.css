@@ -1,0 +1,23 @@
+.diagram.classic {
+    --tooltip-background: white;
+    --tooltip-border: #000;
+    --tooltip-arrow-size: 0.7em;
+}
+
+.diagram.classic .tooltip-box {
+    display: grid;
+    grid-template-areas: "title" "status";
+    border-radius: 5px;
+    gap: 0.5em;
+    color: #000;
+    text-align: center;
+}
+
+.diagram.classic .tooltip-box .tooltip-title {
+    font-weight: bold;
+    grid-area: title;
+}
+
+.diagram.classic .tooltip-box .tooltip-status {
+    grid-area: status;
+}

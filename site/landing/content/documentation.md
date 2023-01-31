@@ -2,6 +2,8 @@
 title: "Documentation"
 ---
 
+{{< earlgrey-diagram >}}
+
 * [Hardware Documentation](/books/hardware)
 * [Security Documentation](/books/security)
 * [Tools Documentation](/books/tools)

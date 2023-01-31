@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"start": "parcel src/earlgrey.html --host 0.0.0.0",
+		"build": "parcel build src/earlgrey.html",
+		"deploy": "cp dist/earlgrey.html ../landing/layouts/shortcodes/earlgrey-diagram.html"
+	},
+	"devDependencies": {
+		"parcel": "^2.8.3"
+	}
+}

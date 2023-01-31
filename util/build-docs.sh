@@ -43,6 +43,7 @@ mkdir -p "$build_dir"
 # List of mdbook roots to build
 mdbooks="
 	hw
+	sw
 	util
 	doc/books/project-governance
 	doc/books/security

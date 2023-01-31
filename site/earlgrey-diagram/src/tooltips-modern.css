@@ -11,6 +11,7 @@
     gap: 0.5em;
     color: #eee;
     text-align: center;
+    font-size: 0.9em;
 }
 
 .diagram.modern .tooltip-box .tooltip-title {

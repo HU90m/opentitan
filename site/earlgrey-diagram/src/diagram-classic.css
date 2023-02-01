@@ -1,3 +1,7 @@
+.diagram.classic {
+    background: white;
+}
+
 .diagram.classic #opentitan-logo {
     fill: #000;
     border-radius: 0.4em;

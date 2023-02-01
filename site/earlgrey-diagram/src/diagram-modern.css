@@ -1,3 +1,7 @@
+.diagram.classic {
+    background: white;
+}
+
 .diagram.modern .lowrisc-crossbar {
     stroke: rgba(0,0,0,0.1);
     stroke-width: 2px;

@@ -1,0 +1,24 @@
+.diagram.modern {
+    --tooltip-background: #333;
+    --tooltip-border: #222;
+    --tooltip-arrow-size: 0.7em;
+}
+
+.diagram.modern .tooltip-box {
+    display: grid;
+    grid-template-areas: "title" "status";
+    border-radius: 5px;
+    gap: 0.5em;
+    color: #eee;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.diagram.modern .tooltip-box .tooltip-title {
+    font-weight: bold;
+    grid-area: title;
+}
+
+.diagram.modern .tooltip-box .tooltip-status {
+    grid-area: status;
+}

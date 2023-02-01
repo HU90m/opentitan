@@ -65,6 +65,7 @@ hugo_args+=" --destination $build_dir/"
 # If building or serving locally, set the baseURL to localhost
 if [ "$command" = "build-local" ] || [ "$command" = "serve" ]; then
 	hugo_args+=" --baseURL http://localhost:8000/"
+	export HUGOxPARAMSxDOCS_URL="http://localhost:8000/doc"
 fi
 
 # Build website

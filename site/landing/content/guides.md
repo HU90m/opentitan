@@ -2,6 +2,6 @@
 title: "Guides"
 ---
 
-* [Getting started](/guides/getting-started)
-* [Contributing](/guides/contributing)
-* [Rust for Embedded C Developers](/guides/rust-for-c)
+* [Getting started](/doc/guides/getting-started)
+* [Contributing](/doc/guides/contributing)
+* [Rust for Embedded C Developers](/doc/guides/rust-for-c)

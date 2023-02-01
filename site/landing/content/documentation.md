@@ -4,9 +4,9 @@ title: "Documentation"
 
 {{< earlgrey-diagram >}}
 
-* [Hardware Documentation](/books/hardware)
-* [Software Documentation](/books/software)
-* [Security Documentation](/books/security)
-* [Tools Documentation](/books/tools)
-* [Project Governance](/books/project-governance)
-* [OpenTitan Use Cases](/books/use-cases)
+* [Hardware Documentation](/doc/hardware)
+* [Software Documentation](/doc/software)
+* [Security Documentation](/doc/security)
+* [Tools Documentation](/doc/tools)
+* [Project Governance](/doc/project-governance)
+* [OpenTitan Use Cases](/doc/use-cases)

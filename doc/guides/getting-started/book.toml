@@ -6,4 +6,4 @@ src = "src"
 title = "Getting Started"
 
 [output.html]
-site-url = "/doc/guides/getting-started/"
+site-url = "/guides/getting-started/"

@@ -6,4 +6,4 @@ src = "src"
 title = "Use Cases"
 
 [output.html]
-site-url = "/doc/use-cases/"
+site-url = "/use-cases/"

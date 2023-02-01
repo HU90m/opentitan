@@ -6,4 +6,4 @@ src = "."
 title = "Tools Documentation"
 
 [output.html]
-site-url = "/doc/tools/"
+site-url = "/tools/"

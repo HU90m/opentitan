@@ -6,4 +6,4 @@ src = "src"
 title = "Project Governance"
 
 [output.html]
-site-url = "/books/project-governance/"
+site-url = "/doc/project-governance/"

@@ -6,4 +6,4 @@ src = "src"
 title = "Rust for Embedded C Programmers"
 
 [output.html]
-site-url = "/guides/rust-for-c/"
+site-url = "/doc/guides/rust-for-c/"

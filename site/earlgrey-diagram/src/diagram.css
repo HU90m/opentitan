@@ -57,12 +57,33 @@
     stroke-width: 1px;
 }
 
+:where(.crossbar-background) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+:where(.crossbar-background > svg) {
+    width: 100%;
+    height: 100%;
+}
+
 :where(.lowrisc-arrow) {
     text-align: left;
     fill: white;
     stroke: black;
     stroke-width: 1px;
     border: none;
+}
+
+:where(.lowrisc-arrow > svg) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 :where(.lowrisc-arrow.thin) {

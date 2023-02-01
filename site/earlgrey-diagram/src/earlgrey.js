@@ -49,12 +49,8 @@ class LowriscCrossbar extends LowriscBlock {
   #container = null;
 
   connectedCallback() {
-    this.#container = document.createElement("div");
-    this.#container.style.position = "absolute";
-    this.#container.style.top = "0";
-    this.#container.style.left = "0";
-    this.#container.style.bottom = "0";
-    this.#container.style.right = "0";
+    this.#container = this.#container || document.createElement("div");
+    this.#container.classList.add("crossbar-background");
     this.appendChild(this.#container);
 
     super.connectedCallback();
@@ -76,24 +72,23 @@ class LowriscCrossbar extends LowriscBlock {
     this.#container.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg"
         overflow="visible"
-        vector-effect="non-scaling-stroke"
         shape-rendering="geometricPrecision"
-        style="width: 100%; height: 100%;"
+        preserveAspectRatio="none"
         viewBox="0 0 ${width} ${height}"
       >
-        <path d="
+        <path vector-effect="non-scaling-stroke" d="
           M${width * start} ${height * start}
           L${width * end} ${height * end}
         " />
-        <path d="
+        <path vector-effect="non-scaling-stroke" d="
           M${width * (1 - start)} ${height * start}
           L${width * (1 - end)} ${height * end}
         " />
-        <path d="
+        <path vector-effect="non-scaling-stroke" d="
           M${width * (1 - start)} ${height * (1 - start)}
           L${width * (1 - end)} ${height * (1 - end)}
         " />
-        <path d="
+        <path vector-effect="non-scaling-stroke" d="
           M${width * start} ${height * (1 - start)}
           L${width * end} ${height * (1 - end)}
         " />
@@ -118,33 +113,29 @@ class LowriscArrow extends LowriscBlock {
     const length = horizontal ? this.offsetWidth : this.offsetHeight;
     const overhang = width * overhang_ratio / 2;
     const height = width * height_ratio;
+
+    const L = horizontal ? (x, y) => `${y} ${x}` : (x, y) => `${x} ${y}`;
+
     this.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg"
         overflow="visible"
-        vector-effect="non-scaling-stroke"
         shape-rendering="geometricPrecision"
-        style="
-          width: ${width}px;
-          height: ${length}px;
-          transform: rotate(${horizontal ? "-90deg" : "0deg"});
-          transform-origin: ${width / 2}px ${width / 2}px;
-        "
-        viewBox="0 0 ${width} ${length}"
+        preserveAspectRatio="none"
+        viewBox="0 0 ${L(width, length)}"
       >
-        <path
-          d="
-            M0 ${height}
-            h-${overhang}
-            l${overhang + width / 2} -${height}
-            l${overhang + width / 2} ${height}
-            h-${overhang}
-            v${length - 2 * height}
-            h${overhang}
-            l-${overhang + width / 2} ${height}
-            l-${overhang + width / 2} -${height}
-            h${overhang}
-            Z
-          "
+        <path vector-effect="non-scaling-stroke" d="
+          M${L(0, height)}
+          l${L(-overhang, 0)}
+          l${L(overhang + width / 2, -height)}
+          l${L(overhang + width / 2, height)}
+          l${L(-overhang, 0)}
+          l${L(0, length - 2 * height)}
+          l${L(overhang, 0)}
+          l${L(-overhang - width / 2, height)}
+          l${L(-overhang - width / 2, -height)}
+          l${L(overhang, 0)}
+          Z
+        "
         />
       </svg>
     `;

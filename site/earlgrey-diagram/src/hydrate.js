@@ -1,39 +1,26 @@
 import metadata from "./metadata.js";
-import metrics from "./metrics.js";
 
 let tabIndex = 1;
 
-for (const [id, data] of Object.entries(metadata)) {
-    const element = document.getElementById(id);
+const hostname = "https://docs.opentitan.org";
 
-    if (data.id) {
-        // Avoid writing a double slash, as `hugo` will strip it out!
-        const slash = "/";
-        data.href = data.href || `https:${slash}${slash}docs.opentitan.org/hw/${data.scope}/${data.id}/doc/`;
-
-        if (metrics[data.id]) {
-            data.metrics = metrics[data.id];
-        } else {
-            console.warn(`Missing metrics for ${data.id}`);
-        }
-    }
+for (const [key, data] of Object.entries(metadata)) {
+    const element = document.getElementById(key);
 
     const focusable = document.createElement("div");
     element.appendChild(focusable);
     focusable.classList.add("block-focus");
-    focusable.id = `focusable-${id}`;
 
-    if (data.metrics) {
-        const revision = data.metrics.revisions.slice(-1)[0];
+    if (data.status) {
         const tooltip = document.createElement("div");
         tooltip.classList.add("diagram-tooltip");
         tooltip.innerHTML = `
             <div class="tooltip-box">
                 <span class="tooltip-title">
-                    ${data.metrics.name}
+                    ${data.id}
                 </span>
                 <span class="tooltip-status">
-                    ver ${revision.version} (${revision.design_stage} / ${revision.verification_stage})
+                    ${data.status}
                 </span>
             </div>
         `;
@@ -42,9 +29,10 @@ for (const [id, data] of Object.entries(metadata)) {
         focusable.tabIndex = tabIndex++;
     }
 
-    if (data.href) {
+    if (data.href || data.scope) {
+        const href = data.href || `/hw/${data.scope}/${data.id}/doc/`;
         const link = document.createElement("a");
-        link.href = data.href;
+        link.href = hostname + href;
 
         link.style.display = "contents";
         element.parentElement.appendChild(link);

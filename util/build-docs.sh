@@ -12,10 +12,10 @@ case "$1" in
 		echo "USAGE: $0 [command]"
 		echo ""
 		echo "commands:"
-		echo "	help: prints this message."
-		echo "	build: build the site and docs for prod"
-		echo "	build-local: build the site and docs for a localhost server"
-		echo "	serve: build and serve the site locally"
+		echo "	help         prints this message."
+		echo "	build        build the site and docs for prod"
+		echo "	build-local  build the site and docs for a localhost server"
+		echo "	serve        build and serve the site locally"
 		exit 0
 		;;
 esac
@@ -42,27 +42,19 @@ mkdir -p "$build_dir"
 
 # List of mdbook roots to build
 mdbooks="
-	hw
-	sw
-	util
-	doc/books/project-governance
-	doc/books/security
-	doc/books/use-cases
+	doc/hardware
+	doc/software
+	doc/tools
+	doc/project-governance
+	doc/security
+	doc/use-cases
 	doc/guides/contributing
 	doc/guides/getting-started
 	doc/guides/rust-for-c-devs
 "
-#mdbooks+="sw"
 
 for book_path in $mdbooks; do
-	# Pull the site-url from the `book.toml` config
-	site_url=$(sed -nr 's/site-url\s*=\s*"([^"]+)"/\1/p' "$book_path/book.toml")
-	if [ -z "$site_url" ]; then
-		echo "E: book '$book_path/book.toml' does not set a 'site-url'"
-		exit 1;
-	fi;
-
-	mdbook build -d "$build_dir/$site_url" "$book_path"
+	mdbook build -d "$build_dir/$book_path" "$book_path"
 done
 
 # Build up the args

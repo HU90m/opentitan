@@ -4,6 +4,7 @@
     left: 0 !important;
     font-size: 0.75em;
     font-family: sans-serif;
+    line-height: normal;
     --scale: 1.1;
 }
 

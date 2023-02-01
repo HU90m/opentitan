@@ -12,15 +12,6 @@
     color: inherit;
 }
 
-:where(.clickable) {
-    cursor: pointer;
-}
-
-:where(.clickable:hover),
-:where(.clickable:active) {
-    background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15));
-}
-
 :where(.lowrisc-block) {
     position: absolute;
     overflow: visible;
@@ -167,4 +158,13 @@
 
 :where(.title) {
     font-weight: bold;
+}
+
+:where(.clickable) {
+    cursor: pointer;
+}
+
+:where(.clickable:hover),
+:where(.clickable:active) {
+    background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15));
 }

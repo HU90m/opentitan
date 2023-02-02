@@ -20,6 +20,10 @@ case "$1" in
 		;;
 esac
 
+################
+# DEPENDENCIES #
+################
+
 # Check for mdbook dep
 if ! command -v mdbook >/dev/null; then
 	echo "E: mdbook not found, please install from your package manager or with:" >&2
@@ -32,6 +36,10 @@ if ! command -v hugo >/dev/null; then
 	echo "E: hugo not found, please install from your package manager" >&2
 	exit 1
 fi
+
+#################
+# CONFIGURATION #
+#################
 
 # Get the project directory from the location of this script
 proj_root="$PWD/$(dirname "$0")/.."
@@ -53,25 +61,35 @@ mdbooks="
 	doc/guides/rust-for-c-devs
 "
 
-for book_path in $mdbooks; do
-	env URL_ROOT="http://0.0.0.0:8000/doc" \
-    mdbook build -d "$build_dir/$book_path" "$book_path"
-done
-
-# Build up the args
+# Build up Hugo arguments
 hugo_args=""
 hugo_args+=" --source $proj_root/site/landing/"
 hugo_args+=" --destination $build_dir/"
 
-# If building or serving locally, set the baseURL to localhost
+# If building or serving locally, set base URLs to localhost
 if [ "$command" = "build-local" ] || [ "$command" = "serve" ]; then
 	hugo_args+=" --baseURL http://localhost:8000/"
 	export HUGOxPARAMSxDOCS_URL="http://localhost:8000/doc"
+	export URL_ROOT="http://localhost:8000/doc"
+else
+	export URL_ROOT="https://docs.opentitan.org"
 fi
+
+############
+# BUILDING #
+############
+
+for book_path in $mdbooks; do
+    mdbook build -d "$build_dir/$book_path" "$book_path"
+done
 
 # Build website
 # shellcheck disable=SC2086
 hugo $hugo_args
+
+###########
+# SERVING #
+###########
 
 # If serving, run the python HTTP server
 if [ "$command" = "serve" ]; then

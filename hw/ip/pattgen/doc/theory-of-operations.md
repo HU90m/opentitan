@@ -11,7 +11,7 @@ Changes to the configuration registers only take effect once the channel has bee
 
 ## Block Diagram
 
-![](doc/pattgen_block_diagram.svg)
+![](pattgen_block_diagram.svg)
 
 ## Hardware Interfaces
 

@@ -517,7 +517,7 @@ To use this reset, assert {{< regref "CONTROL.SW_RST" >}}, and then wait for the
 
 ## Block Diagram
 
-![](doc/spi_host_block_diagram.svg)
+![](spi_host_block_diagram.svg)
 
 ## Hardware Interfaces
 

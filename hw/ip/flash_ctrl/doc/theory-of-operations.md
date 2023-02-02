@@ -2,7 +2,7 @@
 
 ## Block Diagram
 
-![Flash Block Diagram](doc/flash_block_diagram.svg)
+![Flash Block Diagram](./flash_block_diagram.svg)
 
 ### Flash Protocol Controller
 
@@ -301,7 +301,7 @@ Both ICV and ECC are configurable based on the various page and memory property 
 ##### Overall ICV and ECC Application
 
 The following diagram shows how the various ICV / ECC tags are applied and used through the life of a transactions.
-![Flash ECC_LIFE](doc/flash_integrity.svg).
+![Flash ECC_LIFE](./flash_integrity.svg).
 
 Note that the ICV (integrity ECC) is calculated over the descrambled data and is only 4-bits, while the reliability ECC is calculated over both the scrambled data and the ICV.
 
@@ -354,7 +354,7 @@ When a read transaction is sent to flash, the following steps are taken:
 *  When the descrambling is complete, the descrambled text is pushed to the response queue.
 
 The following diagram shows how the flash read pipeline timing works.
-![Flash Read Pipeline](doc/flash_read_pipeline.svg)
+![Flash Read Pipeline](./flash_read_pipeline.svg)
 
 
 In this example, the first two host requests trigger a full sequence.
@@ -489,7 +489,7 @@ In the case of program, the controller will stop writing to flash once all exist
 See detailed steps in theory of operation.
 The following is a diagram of the controller construction as well as its over connectivity with the flash module.
 
-![Flash Protocol Controller](doc/flash_protocol_controller.svg)
+![Flash Protocol Controller](./flash_protocol_controller.svg)
 
 
 ### Host Read

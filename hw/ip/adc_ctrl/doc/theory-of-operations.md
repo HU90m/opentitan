@@ -4,7 +4,7 @@ The block diagram shows a conceptual view of the ADC controller state machine an
 
 ## Block Diagram
 
-![ADC_CTRL Block Diagram](doc/adc_overview.svg)
+![ADC_CTRL Block Diagram](./adc_overview.svg)
 
 
 ## Hardware Interface

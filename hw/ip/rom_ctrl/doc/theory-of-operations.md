@@ -11,7 +11,7 @@ The lower half of the diagram shows the ROM checker.
 This is triggered by the power manager early in the chip boot sequence to check validity of the ROM image.
 It runs exactly once, and releases the green multiplexer when it is done.
 
-![ROM Controller Block Diagram](doc/rom_ctrl_blockdiag.svg)
+![ROM Controller Block Diagram](./rom_ctrl_blockdiag.svg)
 
 ## ROM access when chip is in operation
 
@@ -78,7 +78,7 @@ The diagram below shows the operation of the simple FSM.
 
 <div align="center">
 
-![ROM checker FSM Diagram](doc/rom_check_fsm.svg)
+![ROM checker FSM Diagram](./rom_check_fsm.svg)
 
 </div>
 

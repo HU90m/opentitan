@@ -5,7 +5,7 @@ The "front-end" contains the logical partitions that feed the hardware and softw
 The "back-end" represents the programming interface used by hardware and software components to stage the upcoming values.
 The diagram below illustrates this behavioral model.
 
-![OTP Controller Block Diagram](doc/otp_ctrl_behavioral_model.svg)
+![OTP Controller Block Diagram](./otp_ctrl_behavioral_model.svg)
 
 Note that the front-end contains both buffered and unbuffered partitions.
 Buffered partitions are sensed once per power cycle and their contents are stored in registers, whereas unbuffered partitions are read on-demand.
@@ -378,7 +378,7 @@ If the key seeds have not yet been provisioned, the keys are derived from all-ze
 Note that the req/ack protocol runs on the OTP clock.
 It is the task of the scrambling device to synchronize the handshake protocol by instantiating the `prim_sync_reqack.sv` primitive as shown below.
 
-![OTP Key Req Ack](doc/otp_ctrl_key_req_ack.svg)
+![OTP Key Req Ack](./otp_ctrl_key_req_ack.svg)
 
 Note that the key and nonce output signals on the OTP controller side are guaranteed to remain stable for at least 62 OTP clock cycles after the `ack` signal is pulsed high, because the derivation of a 64bit half-key takes at least two passes through the 31-cycle PRESENT primitive.
 Hence, if the scrambling device clock is faster or in the same order of magnitude as the OTP clock, the data can be directly sampled upon assertion of `src_ack_o`.
@@ -429,7 +429,7 @@ Note however that partition size changes may affect V3 coverage metrics, hence i
 
 The following is a high-level block diagram that illustrates everything that has been discussed.
 
-![OTP Controller Block Diagram](doc/otp_ctrl_blockdiag.svg)
+![OTP Controller Block Diagram](./otp_ctrl_blockdiag.svg)
 
 Each of the partitions P0-P7 has its [own controller FSM]({{< relref "#partition-implementations" >}}) that interacts with the OTP wrapper and the [scrambling datapath]({{< relref "#scrambling-datapath" >}}) to fulfill its tasks.
 The partitions expose the address ranges and access control information to the Direct Access Interface (DAI) in order to block accesses that go to locked address ranges.
@@ -476,7 +476,7 @@ The corresponding controller FSMs are explained in more detail below.
 
 #### Unbuffered Partition
 
-![Unbuffered Partition FSM](doc/otp_ctrl_unbuf_part_fsm.svg)
+![Unbuffered Partition FSM](./otp_ctrl_unbuf_part_fsm.svg)
 
 As shown above, the unbuffered partition module has a relatively simple controller FSM that only reads out the digest value of the partition upon initialization, and then basically waits for TL-UL read transactions to its corresponding window in the CSR space.
 
@@ -488,7 +488,7 @@ Note that unrecoverable [OTP errors]({{< relref "#generalized-open-source-interf
 
 #### Buffered Partition
 
-![Buffered Partition FSM](doc/otp_ctrl_buf_part_fsm.svg)
+![Buffered Partition FSM](./otp_ctrl_buf_part_fsm.svg)
 
 The controller FSM of the buffered partition module is more complex than the unbuffered counterpart, since it has to account for scrambling and digest calculation.
 
@@ -514,7 +514,7 @@ See [life cycle controller documentation]({{< relref "hw/ip/lc_ctrl/doc" >}}) fo
 
 ### Direct Access Interface Control
 
-![Direct Access Interface FSM](doc/otp_ctrl_dai_fsm.svg)
+![Direct Access Interface FSM](./otp_ctrl_dai_fsm.svg)
 
 Upon reset release, the DAI controller first sends an initialization command to the OTP macro.
 Once the OTP macro becomes operational, an initialization request is sent to all partition controllers, which will read out and initialize the corresponding buffer registers.
@@ -529,7 +529,7 @@ Also, the DAI consumes the read and write access information provided by the par
 
 ### Life Cycle Interface Control
 
-![Life Cycle Interface FSM](doc/otp_ctrl_lci_fsm.svg)
+![Life Cycle Interface FSM](./otp_ctrl_lci_fsm.svg)
 
 Upon reset release the LCI FSM waits until the OTP controller has initialized and the LCI gets enabled.
 Once it is in the idle state, life cycle state updates can be initiated via the life cycle interface as [described here]({{< relref "#state-transitions" >}}).
@@ -538,7 +538,7 @@ In case of unrecoverable OTP errors, the FSM signals an error to the life cycle 
 
 ### Key Derivation Interface
 
-![Key Derivation Interface FSM](doc/otp_ctrl_kdi_fsm.svg)
+![Key Derivation Interface FSM](./otp_ctrl_kdi_fsm.svg)
 
 Upon reset release the KDI FSM waits until the OTP controller has initialized and the KDI gets enabled.
 Once it is in the idle state, key derivation can be requested via the [flash]({{< relref "#interface-to-flash-scrambler" >}}) and [sram]({{< relref "#interface-to-sram-and-otbn-scramblers" >}}) interfaces.
@@ -546,7 +546,7 @@ Based on which interface makes the request, the KDI controller will evaluate a v
 
 ### Scrambling Datapath
 
-![OTP Digest Mechanism](doc/otp_ctrl_digest_mechanism.svg)
+![OTP Digest Mechanism](./otp_ctrl_digest_mechanism.svg)
 
 The scrambling datapath is built around an iterative implementation of the [PRESENT lightweight cipher]({{< relref "hw/ip/prim/doc/prim_present" >}}) that performs one round per cycle.
 The datapath contains some additional multiplexing circuitry to enable the DAI, KDI and partition controllers to evaluate different functions with the same datapath.
@@ -604,7 +604,7 @@ This is behavior illustrated in the example below.
 
 ### Primitive Wrapper and FPGA Emulation
 
-![OTP Wrapper Block Diagram](doc/otp_ctrl_prim_otp.svg)
+![OTP Wrapper Block Diagram](./otp_ctrl_prim_otp.svg)
 
 The OTP IP is wrapped up in a primitive wrapper that exposes a TL-UL interface for testing purposes, and a generalized open-source interface for functional operation (described below).
 Any OTP redundancy mechanism like per-word ECC is assumed to be handled inside the wrapper, which means that the word width exposed as part of the generalized interface is the effective word width.

@@ -1,6 +1,6 @@
 # Theory of Operations
 
-![`sysrst_ctrl` Block Diagram](doc/sysrst_ctrl_blockdiagram.svg)
+![`sysrst_ctrl` Block Diagram](./sysrst_ctrl_blockdiagram.svg)
 
 The block diagram above shows a conceptual view of the `sysrst_ctrl` block, which consists of 3 main modules:
 The first is the configuration and status registers, the second is the keyboard combo debounce and detection logic, and the third is the pinout override logic.

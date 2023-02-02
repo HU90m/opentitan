@@ -2,7 +2,7 @@
 
 ## Block Diagram
 
-![](doc/pwm_block_diagram.svg)
+![](pwm_block_diagram.svg)
 
 ## Hardware Interfaces
 

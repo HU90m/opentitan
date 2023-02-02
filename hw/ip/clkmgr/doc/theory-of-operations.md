@@ -7,7 +7,7 @@ For low power states, please see [power manager]({{< relref "hw/ip/pwrmgr/doc" >
 The grouping is derived from the chip partition and related security properties.
 For illustrative purposes, this document uses the following assumed chip partition
 
-![Example chip partition](doc/example_chip_partition.svg)
+![Example chip partition](./example_chip_partition.svg)
 
 The actual partition may differ per design, however the general principles are assumed to be the same.
 Each group can be made up of more than 1 source clock.
@@ -137,7 +137,7 @@ There is thus a moderate design and high verification cost to supporting `wfi` g
 
 The following is a high level block diagram of the clock manager.
 
-![Clock Manager Block Diagram](doc/clkmgr_block_diagram.svg)
+![Clock Manager Block Diagram](./clkmgr_block_diagram.svg)
 
 ### Reset Domains
 
@@ -154,7 +154,7 @@ If there were not a mechanism that allows escalation to clear the original fault
 For a detailed breakdown between `por` and `life cycle` resets, please see the [reset manager]({{< relref "hw/ip/rstmgr/doc" >}}).
 
 The following diagram enhances the block diagram to illustrate the overall reset domains of the clock manager.
-![Clock Manager Block Diagram](doc/clkmgr_rst_domain.svg)
+![Clock Manager Block Diagram](./clkmgr_rst_domain.svg)
 
 ## Hardware Interfaces
 

@@ -18,7 +18,7 @@ Note this point is also when it is safe for DFT to commence operations, as DFT f
 The following diagram illustrates this power-up sequence.
 Note the sequence is not designed into one specific module, but rather a result of coordination between the OTP controller, life cycle controller and the reset / power controllers.
 
-![LC Power Up Sequence](doc/lc_ctrl_power_up.svg)
+![LC Power Up Sequence](./lc_ctrl_power_up.svg)
 
 ## Normal Operation
 
@@ -395,7 +395,7 @@ In case of ESCALATE_EN, all values different from OFF must be interpreted as ON 
 Since many signals cross clock boundaries, their synchronization needs to be taken into account.
 However, since the ON / OFF encoding above has been chosen such that **all bits toggle exactly once** for a transition from OFF to ON (and vice-versa), all that needs to be done is guard against metastability using a two-stage synchronizer, as illustrated below.
 
-![Multibit Sync](doc/lc_ctrl_multibit_sync.svg)
+![Multibit Sync](./lc_ctrl_multibit_sync.svg)
 
 In other words, since each bit in the encoding flips exactly once upon an OFF -> ON or ON -> OFF transition, we can guarantee that there are no transient patterns toggling back and forth between enabling and disabling a function.
 Note that even though synchronization can be achieved with a simple two-stage synchronizer, designs **must** use the `prim_lc_sync` primitive.
@@ -424,7 +424,7 @@ It is hence recommended to place a max-delay constraint on it and leverage the s
 
 Conceptually speaking, the life cycle controller consists of a large  FSM that is further subdivided into logical modules for maintainability, as illustrated below. All blue blocks in the block diagram are purely combinational and do not contain any registers.
 
-![LC Controller Block Diagram](doc/lc_ctrl_blockdiag.svg)
+![LC Controller Block Diagram](./lc_ctrl_blockdiag.svg)
 
 The main FSM implements a linear state sequence that always moves in one direction for increased glitch resistance.
 I.e., it never returns to the initialization and broadcast states as described in the [life cycle state controller section]({{< relref "#main-fsm" >}}).
@@ -447,7 +447,7 @@ The actions that are triggered by these escalation receivers are explained in th
 
 The figure below provides more context about how the life cycle controller is integrated into the system, and how its control signals interact with various components.
 
-![LC Controller Block Diagram](doc/lc_ctrl_system_view.svg)
+![LC Controller Block Diagram](./lc_ctrl_system_view.svg)
 
 Although technically a life cycle feature, the sampling of the strap pins and JTAG / TAP isolation is performed in the pinmux after the life cycle controller has initialized.
 See [pinmux documentation]({{< relref "hw/ip/pinmux/doc/#strap-sampling-and-tap-isolation" >}}) and the detailed selection listed in [Life Cycle Definition Table]({{< relref "doc/security/specs/device_life_cycle/_index.md#manufacturing-states" >}}).
@@ -502,7 +502,7 @@ A decoded version of this counter is exposed in the {{< regref "LC_TRANSITION_CN
 The life cycle state controller is the main entity that handles life cycle requests, escalation events and transactions with the OTP and flash controllers.
 The state diagram for the controller FSM is shown below.
 
-![LC Controller FSM](doc/lc_ctrl_fsm.svg)
+![LC Controller FSM](./lc_ctrl_fsm.svg)
 
 Once the FSM has initialized upon request from the power manager, it moves into `IdleSt`, which is the state where all life cycle control signals are broadcast.
 The life cycle controller stays in `IdleSt` unless a life cycle state request is initiated via the CSRs.
@@ -556,7 +556,7 @@ If the transition fails, the cause will be reported in this register as well.
 
 See diagram below.
 
-![LC Request Interface](doc/lc_ctrl_request_interface.svg)
+![LC Request Interface](./lc_ctrl_request_interface.svg)
 
 In order to claim the hardware mutex, the value kMuBi8True must be written to the claim register ({{< regref "CLAIM_TRANSITION_IF" >}}).
 If the register reads back as kMuBi8True, then the mutex is claimed, and the interface that won arbitration can continue operations.

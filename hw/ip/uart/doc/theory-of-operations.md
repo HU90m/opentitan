@@ -2,7 +2,7 @@
 
 ## Block Diagram
 
-![UART Block Diagram](doc/block_diagram.svg)
+![UART Block Diagram](./block_diagram.svg)
 
 ## Hardware Interfaces
 

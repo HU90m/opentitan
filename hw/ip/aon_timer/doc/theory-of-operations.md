@@ -2,7 +2,7 @@
 
 ## Block Diagram
 
-![AON Timer Block Diagram](doc/aon_timer_block_diagram.svg)
+![AON Timer Block Diagram](./aon_timer_block_diagram.svg)
 
 See the block diagram for high level function and connectivity.
 The timer interacts with the CPU core and the power manager and reset manager to drive wakeup / reset events and interrupts.

@@ -83,7 +83,7 @@ re-commence with the next byte in the next transaction.
 
 ### RXFIFO control
 
-![RXF CTRL State Machine](doc/rxf_ctrl_fsm.svg)
+![RXF CTRL State Machine](./rxf_ctrl_fsm.svg)
 
 The RXFIFO Control module controls data flow from RXFIFO to SRAM. It connects
 two FIFOs having different data widths. RXFIFO is byte width, SRAM storing
@@ -105,7 +105,7 @@ there is space in TXFIFO and when the TXF wptr and rptr indicate there is data
 to transmit. Data is written into the TXF SRAM by software which also controls
 the TXF write pointer.
 
-![TXF CTRL Data Path](doc/txf_ctrl_dp.svg)
+![TXF CTRL Data Path](./txf_ctrl_dp.svg)
 
 The TXFIFO control module latches the write pointer then uses it internally.
 This prevents HW from using incorrect data from SRAM if the write pointer

@@ -12,7 +12,7 @@ The AES unit employs 1st-order masking of the AES cipher core.
 More precisely, both the cipher and the key expand data path use two shares.
 As shown in the block diagram below, the width of all registers and data paths basically doubles.
 
-![Block diagram of the masked AES cipher core.](doc/aes_block_diagram_cipher_core_masked.svg)
+![Block diagram of the masked AES cipher core.](./aes_block_diagram_cipher_core_masked.svg)
 
 The initial key is provided in two shares via the register interface.
 The input data is provided in unmasked form and masked outside of the cipher core to obtain the two shares of the initial state.

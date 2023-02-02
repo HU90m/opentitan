@@ -115,7 +115,7 @@ The PMOD card includes two USB micro-B connectors and allows two USB interfaces 
 The D+ and D- signals have 22R series resistors (in line with the USB spec) and there is a 1.5k pullup on D+ to the pullup enable signal.
 There is a resistive divider to set the sense pin at half of the VBUS voltage which enables detection on the FPGA without overvoltage on the pin.
 
-![PMOD Schematic](doc/dualpmod-sch.svg)
+![PMOD Schematic](./dualpmod-sch.svg)
 
 The PMOD PCB is [available from OSH Park](https://oshpark.com/shared_projects/xMKhTIHn).
 

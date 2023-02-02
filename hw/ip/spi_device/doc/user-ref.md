@@ -35,7 +35,7 @@ The figure below shows the SRAM layout in the Flash and Passthrough modes.
 In generic mode, the whole DPSRAM is used as RX/TX buffers as described in the generic mode section.
 The SRAM begins at `0x1000`, which in the figure is `0x000`.
 
-![SPI Device Dual-port SRAM Layout](doc/spid_sram_layout.svg)
+![SPI Device Dual-port SRAM Layout](./spid_sram_layout.svg)
 
 The regions starting from `0xF00` to `0xFFF` are assigned to TPM Read/Write FIFOs.
 They are not used in this version of IP.

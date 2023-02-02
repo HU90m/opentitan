@@ -2,7 +2,7 @@
 
 ## Block Diagram
 
-![GPIO Block Diagram](doc/gpio_blockdiagram.svg)
+![GPIO Block Diagram](./gpio_blockdiagram.svg)
 
 The block diagram above shows the `DATA_OUT` and `DATA_OE` registers
 managed by hardware outside of the auto-generated register file.
@@ -17,7 +17,7 @@ the top level netlist.
 
 ### GPIO Output logic
 
-![GPIO Output Diagram](doc/gpio_output.svg)
+![GPIO Output Diagram](./gpio_output.svg)
 
 The GPIO module maintains one 32-bit output register `DATA_OUT` with two
 ways to write to it. Direct write access uses {{< regref "DIRECT_OUT" >}}, and

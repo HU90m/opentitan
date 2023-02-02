@@ -1238,7 +1238,7 @@ Thus the FSM may not progress while stalled.
 
 2. All handshaking or control signals to other blocks must be suppressed during a stall condition, placing backpressure on the rest the blocks within the IP to also stop operations until the stall is resolved.
 
-# Programmer's Guide
+# User Reference
 
 The operation of the SPI_HOST IP proceeds in seven general steps.
 

@@ -763,7 +763,7 @@ While this storage element is volatile, the primitive is constructed such that t
 I.e., only a power-cycle wipes the RAM primitive, thereby enabling limited emulation of the OTP function and life cycle transitions also on an FPGA device.
 
 
-# Programmer's Guide
+# User Reference
 
 During provisioning and manufacturing, SW interacts with the OTP controller mostly through the Direct Access Interface (DAI), which is described below.
 Afterwards during production, SW is expected to perform only read accesses via the exposed CSRs and CSR windows, since all write access to the partitions has been locked down.

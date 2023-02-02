@@ -259,7 +259,7 @@ Signal               | Direction  | Type        | Description
 
 Note that the corresponding pad attribute registers {{< regref "MIO_PAD_ATTR_0" >}} and {{< regref "DIO_PAD_ATTR_0" >}} have "writes-any-reads-legal" (WARL) behavior (see also [pad attributes]({{< relref "#pad-attributes" >}})).
 
-# Programmers Guide
+# User Reference
 
 ## Pad Attributes
 

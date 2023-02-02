@@ -217,7 +217,7 @@ The table below lists other ROM controller inter-module signals.
   </tr>
 </table>
 
-# Programmer's Guide
+# User Reference
 
 Software will mostly interact with the ROM controller by fetching code or loading data from ROM.
 For this, the block looks like a block of memory, accessible through a TL-UL window.

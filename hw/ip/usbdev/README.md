@@ -262,7 +262,7 @@ The interface will need extending for high rate isochronous use (a possible opti
 # Design Details
 
 
-# Programmers Guide
+# User Reference
 
 
 ## Initialization

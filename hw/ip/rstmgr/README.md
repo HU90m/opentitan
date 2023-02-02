@@ -338,7 +338,7 @@ For more details on the CPU dump details, please see [crash dump]({{< relref "hw
 The {{< regref "CPU_INFO_ATTR" >}} register indicates how many 32-bit data segments must be read.
 Software then simply needs to write in {{< regref "CPU_INFO_CTRL.INDEX" >}} which segment it wishes and then read out the {{< regref "CPU_INFO" >}} register.
 
-# Programmers Guide
+# User Reference
 
 ## Device Interface Functions (DIFs)
 

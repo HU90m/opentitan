@@ -319,7 +319,7 @@ The `rx_parity_err` interrupt is triggered if parity is enabled and
 the RX parity bit does not match the expected polarity as programmed
 in {{< regref "CTRL.PARITY_ODD" >}}.
 
-# Programmers Guide
+# User Reference
 
 ## Initialization
 

@@ -274,7 +274,7 @@ The duty cycle is never allowed to overflow or underflow, even if {{< regref "DU
 If needed, the most extreme value in the `duty_cycle` sequence is truncated to stay within the allowable 16-bit range.
 All other points in the heartbeat sequence are unaffected by this truncation.
 
-# Programmer's Guide
+# User Reference
 
 To set the PWM Frequency for the entire IP:
 1. Clear {{< regref "CFG.CNTR_EN" >}}

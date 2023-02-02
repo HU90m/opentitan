@@ -819,7 +819,7 @@ To increase SRAM size, the `SramAw` local parameter in `spi_device.sv`
 should be changed. It cannot exceed 13 (32kB) due to the read and write
 pointers' widths.
 
-# Programmers Guide
+# User Reference
 
 ## Initialization
 

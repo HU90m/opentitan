@@ -343,7 +343,7 @@ If the system enters low power during live debug, the debug session will be brok
 There is currently no standardized way to do this, so it is up to the debugging agent to perform the correct steps.
 
 
-# Programmers Guide
+# User Reference
 
 The process in which the power manager is used is highly dependent on the system's topology.
 The following proposes one method for how this can be done.

@@ -39,10 +39,12 @@
 
 .diagram.modern .tooltip-box .tooltip-label {
     text-align: left;
+    position: relative;
 }
 
 .diagram.modern .tooltip-box .tooltip-value {
     font-weight: bold;
+    position: relative;
 }
 
 .diagram.modern .tooltip-report-tests {
@@ -88,4 +90,31 @@
 ) {
     background-color: rgb(0, 132, 80);
     color: #eee;
+}
+
+.diagram.modern .tooltip-badge:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0.7em;
+    height: 0.7em;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 100%;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.diagram.modern .tooltip-badge-good:before {
+    background-color: rgb(0, 132, 80);
+}
+
+.diagram.modern .tooltip-badge-warn:before {
+    background-color: rgb(239, 183, 0);
+}
+
+.diagram.modern .tooltip-badge-alert:before {
+    background-color: rgb(184, 29, 19);
 }

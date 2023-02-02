@@ -3,6 +3,19 @@ import metrics from "./metrics.js";
 
 const hostname = "https://docs.opentitan.org";
 
+const BADGE_MAP = {
+    "D0": "alert",
+    "D1": "alert",
+    "D2": "warn",
+    "D2S": "warn",
+    "D3": "good",
+    "V0": "alert",
+    "V1": "alert",
+    "V2": "warn",
+    "V2S": "warn",
+    "V3": "good",
+}
+
 async function parseMetrics(id) {
     if (!metrics[id]) return null;
     return metrics[id].revisions.slice(-1)[0];
@@ -15,7 +28,6 @@ async function parseReport(path) {
         const response = await fetch(`https://reports.opentitan.org${path}/latest/report.json`, {
             mode: "no-cors"
         });
-        if (response.status === 0) return { tests: { passing: Math.floor( 43 * Math.random() ), total: 42 } };
         if (response.status < 200 || response.status >= 300) return null;
         const report = await response.json();
         
@@ -78,13 +90,13 @@ async function hydrate() {
 
         if (status) {
             tooltip_box.innerHTML += `
-                <span class="tooltip-value">
+                <span class="tooltip-value tooltip-badge tooltip-badge-${BADGE_MAP[status.design_stage] || "none"}">
                     ${status.design_stage}
                 </span>
                 <span class="tooltip-label">
                     design
                 </span>
-                <span class="tooltip-value">
+                <span class="tooltip-value tooltip-badge tooltip-badge-${BADGE_MAP[status.verification_stage] || "none"}">
                     ${status.verification_stage}
                 </span>
                 <span class="tooltip-label">

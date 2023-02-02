@@ -40,10 +40,12 @@
 
 .diagram.classic .tooltip-box .tooltip-label {
     text-align: left;
+    position: relative;
 }
 
 .diagram.classic .tooltip-box .tooltip-value {
     font-weight: bold;
+    position: relative;
 }
 
 .diagram.classic .tooltip-report-tests {
@@ -87,4 +89,32 @@
     .rate-100
 ) {
     background-color: #d9ead3;
+}
+
+.diagram.classic .tooltip-badge:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0.7em;
+    height: 0.7em;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 100%;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    pointer-events: none;
+    border: 1px solid black;
+}
+
+.diagram.classic .tooltip-badge-good:before {
+    background-color: hsl(104, 35%, 63%);
+}
+
+.diagram.classic .tooltip-badge-warn:before {
+    background-color: hsl(45, 100%, 70%);
+}
+
+.diagram.classic .tooltip-badge-alert:before {
+    background-color: hsl(0, 65%, 70%);
 }

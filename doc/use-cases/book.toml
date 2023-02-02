@@ -3,7 +3,7 @@ authors = ["lowRISC"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Use Cases"
+title = "Use-Cases Book"
 
 [preprocessor.variables]
 use_env = true

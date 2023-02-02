@@ -3,7 +3,7 @@ authors = ["lowRISC"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Project Governance"
+title = "Project Governance Book"
 
 [preprocessor.variables]
 use_env = true

@@ -3,7 +3,7 @@ authors = ["lowRISC"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Security"
+title = "Security Book"
 
 [preprocessor.variables]
 use_env = true

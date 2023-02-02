@@ -1,6 +1,6 @@
 # OpenTitan Big Number Accelerator (OTBN) Technical Specification
 
-## Overview
+
 
 This document specifies functionality of the OpenTitan Big Number Accelerator, or OTBN.
 OTBN is a coprocessor for asymmetric cryptographic operations like RSA or Elliptic Curve Cryptography (ECC).

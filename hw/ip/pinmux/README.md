@@ -1,8 +1,5 @@
 # Pinmux Technical Specification
 
-
-# Overview
-
 This document specifies the functionality of the pin multiplexer (`pinmux`) peripheral.
 This module conforms to the [OpenTitan guideline for peripheral device functionality]({{< relref "doc/rm/comportability_specification" >}}).
 See that document for integration overview within the broader OpenTitan top level system.

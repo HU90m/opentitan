@@ -1,7 +1,7 @@
 # OTP Controller Technical Specification
 
 
-## Overview
+
 
 This document specifies the functionality of the one time programmable (OTP) memory controller.
 The OTP controller is a module that is a peripheral on the chip interconnect bus, and thus follows the [Comportability Specification]({{< relref "doc/rm/comportability_specification" >}}).

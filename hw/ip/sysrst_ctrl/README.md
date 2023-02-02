@@ -1,6 +1,6 @@
 # System Reset Control Technical Specification
 
-## Overview
+
 
 This document specifies the functionality of the System Reset Controller (`sysrst_ctrl`) that provides programmable hardware-level responses to trusted IOs and basic board-level reset sequencing capabilities.
 These capabilities include keyboard and button combination-triggered actions, reset stretching for system-level reset signals, and internal reset / wakeup requests that go to the OpenTitan reset and power manager blocks.

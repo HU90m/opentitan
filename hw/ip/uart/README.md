@@ -1,6 +1,6 @@
 # UART HWIP Technical Specification
 
-## Overview
+
 
 This document specifies UART hardware IP functionality. This module
 conforms to the

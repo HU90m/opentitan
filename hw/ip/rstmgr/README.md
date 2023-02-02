@@ -1,6 +1,6 @@
 # Reset Manager HWIP Technical Specification
 
-## Overview
+
 
 This document describes the functionality of the reset controller and its interaction with the rest of the OpenTitan system.
 

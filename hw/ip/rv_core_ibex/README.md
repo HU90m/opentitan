@@ -1,6 +1,6 @@
 # Ibex RISC-V Core Wrapper Technical Specification
 
-## Overview
+
 
 This document specifies Ibex CPU core wrapper functionality.
 

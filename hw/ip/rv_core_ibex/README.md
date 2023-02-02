@@ -1,9 +1,6 @@
 # Ibex RISC-V Core Wrapper Technical Specification
 
-
-
 This document specifies Ibex CPU core wrapper functionality.
-
 
 ## Features
 
@@ -26,9 +23,9 @@ Ibex is a compliant RV32 RISC-V CPU core, as [documented in the Ibex documentati
 
 The TL-UL bus interfaces exposed by this wrapper block are compliant to the [TileLink Uncached Lite Specification version 1.7.1](https://sifive.cdn.prismic.io/sifive%2F57f93ecf-2c42-46f7-9818-bcdd7d39400a_tilelink-spec-1.7.1.pdf).
 
-# Theory of Operations
+## Theory of Operations
 
-## Simple Address Translation
+### Simple Address Translation
 
 The wrapper supports a simple address translation scheme.
 The goal of the scheme is to provide hardware support for A/B software copies.
@@ -51,7 +48,7 @@ If a transaction matches multiple regions, the lowest indexed region has priorit
 
 For details on how to program the related registers, please see {{< regref "IBUS_ADDR_MATCHING_0" >}} and {{< regref "IBUS_REMAP_ADDR_0" >}}.
 
-### Translation and Instruction Caching
+#### Translation and Instruction Caching
 
 The simple address translation scheme used in this design is not aware of the processor context, specifically, any instruction caching done in the core.
 This means if the address translation scheme were to change, instructions that are already cached may not reflect the updated address setting.
@@ -59,7 +56,7 @@ This means if the address translation scheme were to change, instructions that a
 In order to correctly utilize simple address translation along with instruction caching, it is recommended that after the address is updated a `FENCE.I` instruction is issued.
 The `FENCE.I` instruction forces the instruction cache to flush, and this aligns the core to the new address setting.
 
-## Random Number Generation
+### Random Number Generation
 
 The wrapper has a connection to the [Entropy Distribution Network (EDN)]({{< relref "hw/ip/edn/doc" >}}) with a register based interface.
 The {{< regref "RND_DATA" >}} register provides 32-bits directly from the EDN.
@@ -76,7 +73,7 @@ Software should take care not to enable the EDN until the entropy complex config
 When the entropy complex configuration is changed reading {{< regref "RND_DATA" >}} when it is valid will suffice to flush any old random data to trigger a new request under the new configuration.
 If a EDN request is pending when the entropy complex configuration is changed ({{< regref "RND_STATUS.RND_DATA_VALID" >}} is clear), it is advisable to wait until it is complete and then flush out the data to ensure the fresh value was produced under the new configuration.
 
-## Crash Dump Collection
+### Crash Dump Collection
 
 In general, when the CPU encounters an error, it is software's responsibility to collect error status and supply it for debug.
 
@@ -109,17 +106,17 @@ This allows the software to see both fault locations and debug accordingly.
 
 In terms of how the crash state information can be used, the following are a few examples.
 
-### Hung Transaction
+#### Hung Transaction
 
 Assuming the system has a watchdog counter setup, when a CPU transaction hangs the bus (accessing a device whose clock is not turned on or is under reset), the PC and bus access freeze in place until the watchdog resets the system.
 Upon reset release, software can check the last PC and data access address to get an idea of what transaction might have caused the bus to hang.
 
-### Double Exception
+#### Double Exception
 
 If the software has some kind of error and encounters two exceptions in a row, the previous exception PC and address show the location of the first exception, while the current exception address and PC show the location of the most recent exception.
 
 
-## Fetch Enable
+### Fetch Enable
 
 Ibex has a top-level fetch enable input (``fetch_enable_i``), which uses the same multi-bit encoding used by the lifecycle controller.
 When Ibex fetch is disabled it will cease to execute, but will complete instructions currently in the pipeline.
@@ -128,13 +125,13 @@ Ibex fetch is enabled when all of the following conditions are met:
   - The power manager has enabled it
   - A ``fatal_hw_err`` alert hasn't been raised
 
-### Local Escalation Path
+#### Local Escalation Path
 
 When the ``fatal_hw_err`` alert is raised Ibex fetch is disabled and will remain disabled until ``rv_core_ibex`` is reset.
 
-## Hardware Interfaces
+### Hardware Interfaces
 
-### Signals
+#### Signals
 
 {{< incGenFromIpDesc "../data/rv_core_ibex.hjson" "hwcfg" >}}
 
@@ -184,11 +181,11 @@ The `PipeLine` parameter can be used to configure the bus adapter pipelining.
 * Setting `PipeLine` to `1` introduces a pipelining FIFO between the core instruction/data interfaces and the bus.
   This setting increases the memory access latency, but improves timing.
 
-## Device Interface Functions (DIFs)
+### Device Interface Functions (DIFs)
 
 {{< dif_listing "sw/device/lib/dif/dif_rv_core_ibex.h" >}}
 
-## Register Table
+### Register Table
 
 A number of memory-mapped registers are available to control Ibex-related functionality that's specific to OpenTitan.
 

@@ -1,237 +1,239 @@
 export default {
     "opentitan-logo": {
         title: "opentitan",
-        href: "/"
+        href: "/",
     },
     "high-speed-crossbar": {
         title: "high-speed-crossbar",
-        scope: "ip",
-        id: "tlul",
-        status: "ver 1.0 (D2 / V2)"
+        metrics: "tlul",
+        href: "/hw/ip/tlul/doc/",
+        report: "/hw/top_earlgrey/ip/xbar_main/dv/autogen",
     },
     "ibex": {
         title: "ibex",
-        scope: "ip",
-        id: "rv_core_ibex",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "rv_core_ibex",
+        href: "/hw/ip/rv_core_ibex/doc/",
+        report: "TODO",
     },
     "interrupt-controller": {
         title: "interrupt-controller",
-        scope: "top_earlgrey/ip_autogen",
-        id: "rv_plic",
-        status: "ver 1.0 (D3 / V2)"
+        metrics: "rv_plic",
+        href: "/hw/top_earlgrey/ip_autogen/rv_plic/doc/",
+        report: "TODO",
     },
     "debug-module": {
         title: "debug-module",
-        scope: "ip",
-        id: "rv_dm",
-        status: "ver 1.0 (D2S / V1)"
+        metrics: "rv_dm",
+        href: "/hw/ip/rv_dm/doc/",
+        report: "/hw/ip/rv_dm/dv",
     },
     "rom": {
         title: "rom",
-        scope: "ip",
-        id: "rom_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "rom_ctrl",
+        href: "/hw/ip/rom_ctrl/doc/",
+        report: "/hw/ip/rom_ctrl/dv",
     },
     "main-sram": {
         title: "main-sram",
-        scope: "ip",
-        id: "sram_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "sram_ctrl",
+        href: "/hw/ip/sram_ctrl/doc/",
+        report: "/hw/ip/sram_ctrl_main/dv",
     },
     "key-manager": {
         title: "key-manager",
-        scope: "ip",
-        id: "keymgr",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "keymgr",
+        href: "/hw/ip/keymgr/doc/",
+        report: "/hw/ip/keymgr/dv",
     },
     "otbn": {
         title: "otbn",
-        scope: "ip",
-        id: "otbn",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "otbn",
+        href: "/hw/ip/otbn/doc/",
+        report: "/hw/ip/otbn/dv/uvm",
     },
     "aes": {
         title: "aes",
-        scope: "ip",
-        id: "aes",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "aes",
+        href: "/hw/ip/aes/doc/",
+        report: "/hw/ip/aes_unmasked/dv",
     },
     "kmac": {
         title: "kmac",
-        scope: "ip",
-        id: "kmac",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "kmac",
+        href: "/hw/ip/kmac/doc/",
+        report: "/hw/ip/kmac_unmasked/dv",
     },
     "hmac": {
         title: "hmac",
-        scope: "ip",
-        id: "hmac",
-        status: "ver 1.0 (D3 / V2)"
+        metrics: "hmac",
+        href: "/hw/ip/hmac/doc/",
+        report: "/hw/ip/hmac/dv",
     },
     "flash": {
         title: "flash",
-        scope: "ip",
-        id: "flash_ctrl",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "flash_ctrl",
+        href: "/hw/ip/flash_ctrl/doc/",
+        report: "/hw/ip/flash_ctrl/dv",
     },
     "edn": {
         title: "edn",
-        scope: "ip",
-        id: "edn",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "edn",
+        href: "/hw/ip/edn/doc/",
+        report: "/hw/ip/edn/dv",
     },
     "csrng": {
         title: "csrng",
-        scope: "ip",
-        id: "csrng",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "csrng",
+        href: "/hw/ip/csrng/doc/",
+        report: "/hw/ip/csrng/dv",
     },
     "entropy-source": {
         title: "entropy-source",
-        scope: "ip",
-        id: "entropy_src",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "entropy_src",
+        href: "/hw/ip/entropy_src/doc/",
+        report: "/hw/ip/entropy_src/dv",
     },
     "spi-host-0": {
         title: "spi-host",
-        scope: "ip",
-        id: "spi_host",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "spi_host",
+        href: "/hw/ip/spi_host/doc/",
+        report: "/hw/ip/spi_host/dv",
     },
     "spi-host-1": {
         title: "spi-host",
-        scope: "ip",
-        id: "spi_host",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "spi_host",
+        href: "/hw/ip/spi_host/doc/",
+        report: "/hw/ip/spi_host/dv",
     },
     "usb": {
         title: "usb",
-        scope: "ip",
-        id: "usbdev",
-        status: "ver 1.0 (D2S / V0)"
+        metrics: "usbdev",
+        href: "/hw/ip/usbdev/doc/",
+        report: "/hw/ip/usbdev/dv",
     },
     "peripheral-crossbar": {
         title: "peripheral-crossbar",
-        scope: "ip",
-        id: "tlul",
-        status: "ver 1.0 (D2 / V2)"
+        metrics: "tlul",
+        href: "/hw/ip/tlul/doc/",
+        report: "/hw/top_earlgrey/ip/xbar_peri/dv/autogen",
     },
     "otp-fuse-controller": {
         title: "otp-fuse-controller",
-        scope: "ip",
-        id: "otp_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "otp_ctrl",
+        href: "/hw/ip/otp_ctrl/doc/",
+        report: "/hw/ip/otp_ctrl/dv",
     },
     "life-cycle": {
         title: "life-cycle",
-        scope: "ip",
-        id: "lc_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "lc_ctrl",
+        href: "/hw/ip/lc_ctrl/doc/",
+        report: "/hw/ip/lc_ctrl/dv",
     },
     "alert-handler": {
         title: "alert-handler",
-        scope: "top_earlgrey/ip_autogen",
-        id: "alert_handler",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "alert_handler",
+        href: "/hw/top_earlgrey/ip_autogen/alert_handler/doc/",
+        report: "/hw/top_earlgrey/ip_autogen/alert_handler/dv",
     },
     "uart": {
         title: "uart",
-        scope: "ip",
-        id: "uart",
-        status: "ver 1.1 (D3 / V2)"
+        metrics: "uart",
+        href: "/hw/ip/uart/doc/",
+        report: "/hw/ip/uart/dv",
     },
     "timers": {
         title: "timers",
-        scope: "ip",
-        id: "rv_timer",
-        status: "ver 1.0 (D3 / V2)"
+        metrics: "rv_timer",
+        href: "/hw/ip/rv_timer/doc/",
+        report: "/hw/ip/rv_timer/dv",
     },
     "gpio": {
         title: "gpio",
-        scope: "ip",
-        id: "gpio",
-        status: "ver 1.1 (D3 / V2)"
+        metrics: "gpio",
+        href: "/hw/ip/gpio/doc/",
+        report: "/hw/ip/gpio/dv",
     },
     "i2c": {
         title: "i2c",
-        scope: "ip",
-        id: "i2c",
-        status: "ver 1.0 (D2S / V1)"
+        metrics: "i2c",
+        href: "/hw/ip/i2c/doc/",
+        report: "/hw/ip/i2c/dv",
     },
     "spi-device": {
         title: "spi-device",
-        scope: "ip",
-        id: "spi_device",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "spi_device",
+        href: "/hw/ip/spi_device/doc/",
+        report: "/hw/ip/spi_device/dv",
     },
     "pattern-generators": {
         title: "pattern-generators",
-        scope: "ip",
-        id: "pattgen",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "pattgen",
+        href: "/hw/ip/pattgen/doc/",
+        report: "/hw/ip/pattgen/dv",
     },
     "pwm": {
         title: "pwm",
-        scope: "ip",
-        id: "pwm",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "pwm",
+        href: "/hw/ip/pwm/doc/",
+        report: "/hw/ip/pwm/dv",
     },
     "retention-sram": {
         title: "retention-sram",
-        scope: "ip",
-        id: "sram_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "sram_ctrl",
+        href: "/hw/ip/sram_ctrl/doc/",
+        report: "/hw/ip/sram_ctrl_ret/dv",
     },
     "power-manager": {
         title: "power-manager",
-        scope: "ip",
-        id: "pwrmgr",
-        status: "ver 1.0 (D2S / V2S)"
+        metrics: "pwrmgr",
+        href: "/hw/ip/pwrmgr/doc/",
+        report: "/hw/ip/pwrmgr/dv",
     },
     "sysrst-controller": {
         title: "sysrst-controller",
-        scope: "ip",
-        id: "sysrst_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "sysrst_ctrl",
+        href: "/hw/ip/sysrst_ctrl/doc/",
+        report: "/hw/ip/sysrst_ctrl/dv",
     },
     "aon-timers": {
         title: "aon-timers",
-        scope: "ip",
-        id: "aon_timer",
-        status: "ver 1.0 (D3 / V2)"
+        metrics: "aon_timer",
+        href: "/hw/ip/aon_timer/doc/",
+        report: "/hw/ip/aon_timer/dv",
     },
     "clkrst-managers": {
         title: "clkrst-managers",
-        scope: "ip",
-        id: "clkmgr",
-        status: "ver 1.0 (D1 / V1)"
+        metrics: "clkmgr",
+        href: "/hw/ip/clkmgr/doc/",
+        report: "/hw/ip/clkmgr/dv",
     },
     "pinmux-padctrl": {
         title: "pinmux-padctrl",
-        scope: "ip",
-        id: "pinmux",
-        status: "ver 1.0 (D1 / V1)"
+        metrics: "pinmux",
+        href: "/hw/ip/pinmux/doc/",
+        report: "TODO",
     },
     "adc-controller": {
         title: "adc-controller",
-        scope: "ip",
-        id: "adc_ctrl",
-        status: "ver 1.0 (D3 / V2S)"
+        metrics: "adc_ctrl",
+        href: "/hw/ip/adc_ctrl/doc/",
+        report: "/hw/ip/adc_ctrl/dv",
     },
     "sensor-control": {
         title: "sensor-control",
-        scope: "top_earlgrey/ip",
-        id: "sensor_ctrl",
-        status: "ver 1.0 (D3 / N/A)"
+        metrics: "sensor_ctrl",
+        href: "/hw/top_earlgrey/ip/sensor_ctrl/doc/",
+        report: "TODO",
     },
     "analog-sensor-top": {
         title: "analog-sensor-top",
-        scope: "top_earlgrey/ip",
-        id: "ast",
-        status: "ver 1.0 (D2 / V2S)"
+        metrics: "ast",
+        href: "/hw/top_earlgrey/ip/ast/doc/",
+        report: "TODO",
     },
     "padding": {
-        href: "/hw/top_earlgrey/ip/pinmux/doc/autogen/pinout_asic/"
+        title: "padding",
+        href: "/hw/top_earlgrey/ip/pinmux/doc/autogen/pinout_asic/",
+        report: "TODO",
     }
 };

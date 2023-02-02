@@ -54,7 +54,8 @@ mdbooks="
 "
 
 for book_path in $mdbooks; do
-	mdbook build -d "$build_dir/$book_path" "$book_path"
+	env URL_ROOT="http://0.0.0.0:8000/doc" \
+    mdbook build -d "$build_dir/$book_path" "$book_path"
 done
 
 # Build up the args

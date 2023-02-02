@@ -5,5 +5,11 @@ multilingual = false
 src = "."
 title = "Tools Documentation"
 
+[preprocessor.variables]
+use_env = true
+
+[preprocessor.variables.variables]
+before = [ "links" ]
+
 [output.html]
 site-url = "/tools/"

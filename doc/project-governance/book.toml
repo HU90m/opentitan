@@ -5,5 +5,11 @@ multilingual = false
 src = "src"
 title = "Project Governance"
 
+[preprocessor.variables]
+use_env = true
+
+[preprocessor.variables.variables]
+before = [ "links" ]
+
 [output.html]
 site-url = "/project-governance/"

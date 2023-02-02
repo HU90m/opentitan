@@ -5,9 +5,11 @@ multilingual = false
 src = "."
 title = "Software Documentation"
 
-# cargo install mdbook-variables
+[preprocessor.variables]
+use_env = true
+
 [preprocessor.variables.variables]
-url_root = "0.0.0.0:8000/doc"
+before = [ "links" ]
 
 [output.html]
 fold = { enable = true, level = 1 }

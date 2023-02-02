@@ -2,12 +2,14 @@
 
 OpenTitan is the first of its kind in making a production-ready secure open-source root-of-trust SoC (System on Chip).
 This book is a reference for hardware engineers working on the OpenTitan project.
-The book has three main chapters:
+The book has four main chapters:
 * [Top Earlgrey](./top_earlgrey/index.html)
+* [Cores](./doc/cores.md)
 * [Hardware IP Blocks](./ip/index.html)
 * [Common SystemVerilog and UVM Components](./dv/sv/index.html)
 
 The Earlgrey top embodies an instantiation of OpenTitan in a discrete chip.
+The cores are hardware IP blocks that can run programs and are therefore different from the other hardware IP blocks in OpenTitan.
 
 Each hardware IP block has its own overview, theory of operations and user reference.
 The overview gives you a quick summary of what the block does, while the theory of operations goes into more details of how the internal hardware works.

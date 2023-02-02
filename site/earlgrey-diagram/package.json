@@ -1,10 +1,14 @@
 {
+	"type": "module",
 	"scripts": {
-		"start": "parcel src/earlgrey.html --host 0.0.0.0",
-		"build": "parcel build src/earlgrey.html",
+		"start": "parcel ./src/earlgrey.html --host 0.0.0.0",
+		"build": "mkdir -p ./build && node ssr.js > ./build/earlgrey.html && parcel build ./build/earlgrey.html",
 		"deploy": "cp dist/earlgrey.html ../landing/layouts/shortcodes/earlgrey-diagram.html"
 	},
 	"devDependencies": {
 		"parcel": "^2.8.3"
+	},
+	"dependencies": {
+		"puppeteer": "^19.6.2"
 	}
 }

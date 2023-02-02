@@ -51,7 +51,7 @@ Becuase we use a number of seperately-generated mdbook "Books", there are three 
 1) Links to external sites
 Just use standard URLs
 ```markdown
-[google.com](https://google.com)
+[lowRISC.org](https://lowrisc.org)
 ```
 
 2) Linking to pages within the same book

@@ -48,6 +48,14 @@ proj_root="$PWD/$(dirname "$0")/.."
 build_dir="$proj_root/build-docs"
 mkdir -p "$build_dir"
 
+base_url="https://opentitan.org"
+docs_url="https://docs.opentitan.org"
+
+if [ "$command" = "build-local" ] || [ "$command" = "serve" ]; then
+	base_url="http://localhost:8000"
+	docs_url="http://localhost:8000/doc"
+fi
+
 # List of mdbook roots to build
 mdbooks="
 	doc/hardware
@@ -68,15 +76,11 @@ export MDBOOK_OUTPUT__HTML__THEME="$proj_root/site/docs/theme/"
 hugo_args=""
 hugo_args+=" --source $proj_root/site/landing/"
 hugo_args+=" --destination $build_dir/"
+hugo_args+=" --baseURL $base_url"
 
 # If building or serving locally, set base URLs to localhost
-if [ "$command" = "build-local" ] || [ "$command" = "serve" ]; then
-	hugo_args+=" --baseURL http://localhost:8000/"
-	export HUGOxPARAMSxDOCS_URL="http://localhost:8000/doc"
-	export URL_ROOT="http://localhost:8000/doc"
-else
-	export URL_ROOT="https://docs.opentitan.org"
-fi
+export HUGOxPARAMSxDOCS_URL="$docs_url"
+export URL_ROOT="$docs_url"
 
 ############
 # BUILDING #

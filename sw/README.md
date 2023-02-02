@@ -2,6 +2,8 @@
 title: "Software"
 ---
 
+[Secure boot](http://{{url_root}}/security/)
+
 This is the landing spot for software documentation within the OpenTitan project.
 More description and information can be found within the [Reference Manual]({{< relref "doc/rm" >}}) and [User Guide]({{< relref "doc/ug" >}}) areas.
 

@@ -18,6 +18,9 @@ sudo apt install hugo
 cargo install mdbook
 ```
 
+## To build pages individually
+This may be easier for rapid development as using `hugo/mdbook serve` gives you a live site that will update itself automatically with your latest changes.
+
 ### Top-Level Pages
 ```sh
 cd site/landing
@@ -35,7 +38,14 @@ cd doc/books/use-cases # Use-Cases
 mdbook serve  # Start an local webserver hosting the build site
 ```
 
-## About the project
+## To build all pages together
+Building this way will give you a live local site which you can click between the different books and also the top-level static site pages. This is useful to test out links between books. However, in this mode the pages do not update themselves automatically, you will need to Ctrl-C to kill the command and restart it.
+
+```sh
+./util/build-docs.sh serve
+```
+
+# About the project
 
 [OpenTitan](https://opentitan.org) is an open source silicon Root of Trust
 (RoT) project.  OpenTitan will make the silicon RoT design and implementation

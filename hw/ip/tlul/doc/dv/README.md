@@ -35,13 +35,13 @@ XBAR testbench has been constructed based on the `hw/dv/sv/dv_lib`
 ### Top level testbench
 Top level testbench is located at `hw/ip/tlul/dv/tb/tb.sv`. It instantiates the XBAR DUT module `hw/top_earlgrey/ip/xbar/rtl/autogen/xbar_main.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [common_ifs]({{< relref "hw/dv/sv/common_ifs" >}})
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
+* [common_ifs](../../../../dv/sv/common_ifs/index.html)
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
 
 ### Global types & methods
 All common types and methods defined at the package level can be found in
@@ -54,7 +54,7 @@ parameter int VALID_HOST_ID_WIDTH = 6
 ```
 
 ### TL agent
-XBAR env instantiates [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}) for each xbar host and device,
+XBAR env instantiates [tl_agent](../../../../dv/sv/tl_agent/index.html) for each xbar host and device,
 which provides the ability to drive and independently monitor random traffic via
 TL host/device interface.
 * For host, source ID MSB 2 bits are tied to 0 and maximum number of outstanding request is 64

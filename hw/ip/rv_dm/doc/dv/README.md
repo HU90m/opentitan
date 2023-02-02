@@ -19,7 +19,7 @@ The internal debug logic is vendored-in from the external [PULP RISC-V debug rep
 
 ## Testbench architecture
 
-RV_DM has a standard UVM testbench, which is based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+RV_DM has a standard UVM testbench, which is based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 
@@ -32,10 +32,10 @@ The flow of data into the scoreboard is described [below](#scoreboard).
 The top level testbench is located at `hw/ip/rv_dm/dv/tb.sv`.
 It instantiates the RV_DM DUT module `hw/ip/rv_dm/rtl/rv_dm.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}}) for the config space (which only contains the alert register).
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}}) for the debug memory space (which only contains the alert register).
-* [TileLink device interface]({{< relref "hw/dv/sv/tl_agent/doc" >}}) for the SBA interface that is used by the JTAG debugger to access the whole chip.
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html) for the config space (which only contains the alert register).
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html) for the debug memory space (which only contains the alert register).
+* [TileLink device interface](../../../../dv/sv/tl_agent/index.html) for the SBA interface that is used by the JTAG debugger to access the whole chip.
 * [JTAG interface]({{< relref "hw/dv/sv/jtag_agent/doc" >}}) to act as an external JTAG host.
 * [Alert and escalation interface]({{<relref "hw/dv/sv/alert_esc_agent/doc" >}}) for the alert interface.
   * The instantiation and hookup of this interface is done using the standardized common macro `` `DV_ALERT_IF_CONNECT`` defined in `hw/dv/sv/dv_utils/dv_macros.svh`.
@@ -46,15 +46,15 @@ In addition, it instantiates the following interfaces, connects them to the DUT 
 ### Common DV utility components
 
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [dv_lib_pkg]({{< relref "hw/dv/sv/dv_lib/doc" >}})
-* [cip_lib_pkg]({{< relref "hw/dv/sv/cip_lib/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [dv_lib_pkg](../../../../dv/sv/dv_lib/index.html)
+* [cip_lib_pkg](../../../../dv/sv/cip_lib/index.html)
 * dv_base_reg_pkg
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### TL_agent
 
-The RV_DM testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}).
+The RV_DM testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html).
 This provides the ability to drive and independently monitor random traffic via the TL host interface into the RV_DM device.
 
 ### Alert_agent

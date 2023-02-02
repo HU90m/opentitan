@@ -18,7 +18,7 @@ For detailed information on SPI_HOST design features, please see the
 
 ## Testbench architecture
 SPI_HOST testbench has been constructed based on the
-[CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+[CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -26,18 +26,18 @@ SPI_HOST testbench has been constructed based on the
 ### Top level testbench
 Top level testbench is located at `hw/ip/spi_host/dv/tb/tb.sv`. It instantiates the SPI_HOST DUT module `hw/ip/spi_host/rtl/spi_host.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * SPI_HOST IOs
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
-* Alerts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
+* Alerts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [common_ifs]({{< relref "hw/dv/sv/common_ifs" >}})
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [common_ifs](../../../../dv/sv/common_ifs/index.html)
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Compile-time configurations
 [list compile time configurations, if any and what are they used for]
@@ -170,7 +170,7 @@ All common types and methods defined at the package level can be found in
 
 ### TL_agent
 SPI_HOST testbench instantiates (already handled in CIP base env)
-[tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+[tl_agent](../../../../dv/sv/tl_agent/index.html)
 which provides the ability to drive and independently monitor random traffic via TL host interface into SPI_HOST device.
 Transactions will be sampled by the monitor and passed on to the predictor in the scoreboard.
 

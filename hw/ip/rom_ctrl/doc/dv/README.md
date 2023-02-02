@@ -16,7 +16,7 @@
 For detailed information on `rom_ctrl` design features, please see the [ROM Controller HWIP technical specification]({{< relref "hw/ip/rom_ctrl/doc" >}}).
 
 ## Testbench architecture
-The `rom_ctrl` testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+The `rom_ctrl` testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -25,22 +25,22 @@ The `rom_ctrl` testbench has been constructed based on the [CIP testbench archit
 The top level testbench is located at `hw/ip/rom_ctrl/dv/tb/tb.sv`.
 It instantiates the `rom_ctrl` DUT module `hw/ip/rom_ctrl/rtl/rom_ctrl.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * [Memory backdoor utility]({{< relref "hw/dv/sv/mem_bkdr_util/doc" >}})
 * `rom_ctrl` IOs
-* Alerts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}})
+* Alerts ([`pins_if`](../../../../dv/sv/common_ifs/index.html)
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Compile-time configurations
 There is only one compile-time configuration, where arbitrary values are chosen for compile-time constants.
 
 ### TL_agent
-The `rom_ctrl` testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}).
+The `rom_ctrl` testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html).
 This provides the ability to drive and independently monitor random traffic via both TL host interfaces into the DUT.
 
 ### UVM RAL Model

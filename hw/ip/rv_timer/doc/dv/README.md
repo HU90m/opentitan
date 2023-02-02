@@ -16,7 +16,7 @@
 For detailed information on RV_TIMER design features, please see the [RV_TIMER design specification]({{< relref ".." >}}).
 
 ## Testbench architecture
-RV_TIMER testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+RV_TIMER testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -24,14 +24,14 @@ RV_TIMER testbench has been constructed based on the [CIP testbench architecture
 ### Top level testbench
 Top level testbench is located at `hw/ip/rv_timer/dv/tb/tb.sv`. It instantiates the RV_TIMER DUT module `hw/ip/rv_timer/rtl/rv_timer.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Global types & methods
 All common types and methods defined at the package level can be found in `env/rv_timer_env_pkg`.
@@ -42,7 +42,7 @@ parameter uint NUM_TIMERS = 1;
 ```
 
 ### TL_agent
-RV_TIMER testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+RV_TIMER testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html)
 which provides the ability to drive and independently monitor random traffic via
 TL host interface into RV_TIMER device.
 

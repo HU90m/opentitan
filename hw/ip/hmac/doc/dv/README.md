@@ -18,7 +18,7 @@ For detailed information on HMAC design features, please see the
 
 ## Testbench architecture
 HMAC testbench has been constructed based on the
-[CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+[CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -27,15 +27,15 @@ HMAC testbench has been constructed based on the
 Top level testbench is located at `hw/ip/hmac/dv/tb/tb.sv`. It instantiates the
 HMAC DUT module `hw/ip/hmac/rtl/hmac.sv`. In addition, it instantiates the following
 interfaces and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Global types & methods
 All common types and methods defined at the package level can be found in `env/hmac_env_pkg`.
@@ -47,7 +47,7 @@ parameter uint32 HMAC_MSG_FIFO_SIZE        = 2048;
 ```
 
 ### TL_agent
-HMAC instantiates (handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+HMAC instantiates (handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html)
 which provides the ability to drive and independently monitor random traffic via
 TL host interface into HMAC device.
 

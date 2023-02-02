@@ -20,7 +20,7 @@ For the IP level DV, we replicate the instantiations and connections in `flash_c
 In future, we will consider having the wrapper maintained in the RTL area instead.
 
 ## Testbench architecture
-The `flash_ctrl` UVM DV testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+The `flash_ctrl` UVM DV testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -29,11 +29,11 @@ The `flash_ctrl` UVM DV testbench has been constructed based on the [CIP testben
 Top level testbench is located at `hw/ip/flash_ctrl/dv/tb/tb.sv`.
 It instantiates the `flash_ctrl_wrapper`.
 In addition, the testbench instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface for the flash controller]({{< relref "hw/dv/sv/tl_agent/doc" >}})
-* [TileLink host interface for the eflash]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface for the flash controller](../../../../dv/sv/tl_agent/index.html)
+* [TileLink host interface for the eflash](../../../../dv/sv/tl_agent/index.html)
 * TileLink host interface for the prim registers
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}})
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html)
 * [Memory backdoor utility]({{< relref "hw/dv/sv/mem_bkdr_util/doc" >}})
 * Secret key interface from the OTP
 * Interface from the life cycle manager
@@ -41,11 +41,11 @@ In addition, the testbench instantiates the following interfaces, connects them 
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### TL_agent
-`flash_ctrl` UVM environment instantiates a (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}) which provides the ability to drive and independently monitor random traffic via TL host interface into `flash_ctrl` device.
+`flash_ctrl` UVM environment instantiates a (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html) which provides the ability to drive and independently monitor random traffic via TL host interface into `flash_ctrl` device.
 There are two additional instances of the `tl_agent`.
 * Host interface to the `flash_phy`, to directly fetch the contents of the flash memory, bypassing the `flash_ctrl`.
 * Host interface to the `prim registers`.

@@ -16,7 +16,7 @@
 For detailed information on KMAC design features, please see the [KMAC HWIP technical specification]({{< relref ".." >}}).
 
 ## Testbench architecture
-KMAC testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+KMAC testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -24,16 +24,16 @@ KMAC testbench has been constructed based on the [CIP testbench architecture]({{
 ### Top level testbench
 Top level testbench is located at `hw/ip/kmac/dv/tb/tb.sv`. It instantiates the KMAC DUT module `hw/ip/kmac/rtl/kmac.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * KMAC IOs
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Compile-time configurations
 Two compile-time configurations are tested:
@@ -84,7 +84,7 @@ function automatic int get_key_size_bytes(kmac_pkg::key_len_e len);
 endfunction
 ```
 ### TL_agent
-KMAC testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}) which provides the ability to drive and independently monitor random traffic via TL host interface into KMAC device.
+KMAC testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html) which provides the ability to drive and independently monitor random traffic via TL host interface into KMAC device.
 
 ### EDN Agent
 The KMAC testbench instantiates a `push_pull_agent` in `Pull` mode as the agent modelling the [EDN interface]({{< relref "hw/dv/sv/push_pull_agent/doc" >}}) (this is already handled in the CIP base classes).

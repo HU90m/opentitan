@@ -84,7 +84,7 @@ name for the generated core file.
 The generated core file adds **`lowrisc:dv:dv_base_reg`** as a dependency for
 the generated RAL package. This is required because our DV register block,
 register and field models are derived from the
-[DV library]({{< relref "hw/dv/sv/dv_lib/doc" >}}) of classes. This
+[DV library](../../../../dv/sv/dv_lib/index.html) of classes. This
 ensures the right compilation order is maintained. If the `dv_base_names`
 argument is set, then it adds **`lowrisc:dv:my_base_reg`** as an extra
 dependency, where `my_base` is the value of the argument as shown in the

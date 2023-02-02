@@ -20,8 +20,8 @@ For detailed information on OTBN design features, see the [OTBN HWIP technical s
 
 ## Testbench architecture
 
-The OTBN testbench is based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
-It builds on the [dv_utils]({{< relref "hw/dv/sv/dv_utils/doc" >}}) and [csr_utils]({{< relref "hw/dv/sv/csr_utils/doc" >}}) packages.
+The OTBN testbench is based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
+It builds on the [dv_utils](../../../../dv/sv/dv_utils/index.html) and [csr_utils](../../../../dv/sv/csr_utils/index.html) packages.
 
 ### Block diagram
 

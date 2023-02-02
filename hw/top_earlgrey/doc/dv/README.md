@@ -22,7 +22,7 @@
 For detailed information on `top_earlgrey` design features, please see the [Earl Grey Top Level Specification]({{< relref "hw/top_earlgrey/doc" >}}).
 
 ## Testbench architecture
-The `top_earlgrey` chip level testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+The `top_earlgrey` chip level testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 TBD
@@ -31,9 +31,9 @@ TBD
 Top level testbench is located at `hw/ip/top_earlgrey/dv/tb/tb.sv`.
 It instantiates the `top_earlgrey` DUT module `hw/top_earlgrey/rtl/autogen/chip_earlgrey_asic.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
   * Main clock as well as USB clock
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
   * This is connected to the CPU's data port.
 * [JTAG interface]()
 * SPI interface
@@ -48,8 +48,8 @@ In addition, it instantiates the following interfaces, connects them to the DUT 
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Global types & methods
 All common types and methods defined at the package level can be found in the `chip_env_pkg`.
@@ -59,7 +59,7 @@ Some of them in use are:
 ```
 
 ### TL_agent
-The full chip testbench instantiates (already handled in CIP base env) the [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}) which provides the ability to drive and independently monitor random traffic via TL host interface into CHIP device.
+The full chip testbench instantiates (already handled in CIP base env) the [tl_agent](../../../../dv/sv/tl_agent/index.html) which provides the ability to drive and independently monitor random traffic via TL host interface into CHIP device.
 
 ### UART Agent
 [Describe here or add link to its README]

@@ -16,7 +16,7 @@
 For detailed information on KEYMGR design features, please see the [KEYMGR HWIP technical specification]({{< relref ".." >}}).
 
 ## Testbench architecture
-KEYMGR testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+KEYMGR testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -24,17 +24,17 @@ KEYMGR testbench has been constructed based on the [CIP testbench architecture](
 ### Top level testbench
 Top level testbench is located at `hw/ip/keymgr/dv/tb/tb.sv`. It instantiates the KEYMGR DUT module `hw/ip/keymgr/rtl/keymgr.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * KEYMGR IOs (`keymgr_if`)
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 * Alerts ([`alert_esc_if`]({{< relref "hw/dv/sv/alert_esc_agent/doc" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Compile-time configurations
 [list compile time configurations, if any and what are they used for]
@@ -46,7 +46,7 @@ All common types and methods defined at the package level can be found in
 [list a few parameters, types & methods; no need to mention all]
 ```
 ### TL_agent
-KEYMGR testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+KEYMGR testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html)
 which provides the ability to drive and independently monitor random traffic via
 TL host interface into KEYMGR device.
 

@@ -16,7 +16,7 @@
 For detailed information on RSTMGR design features, please see the [RSTMGR HWIP technical specification]({{< relref "hw/ip/rstmgr/doc" >}}).
 
 ## Testbench architecture
-RSTMGR testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+RSTMGR testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -25,16 +25,16 @@ RSTMGR testbench has been constructed based on the [CIP testbench architecture](
 The top level testbench is located at [`hw/ip/rstmgr/dv/tb.sv`](https://github.com/lowRISC/opentitan/blob/master/hw/ip/rstmgr/dv/tb.sv).
 It instantiates the RSTMGR DUT module [`hw/top_earlgrey/ip/rstmgr/rtl/autogen/rstmgr.sv`](https://github.com/lowRISC/opentitan/blob/master/hw/top_earlgrey/ip/rstmgr/rtl/autogen/rstmgr.sv).
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * RSTMGR interface [`hw/ip/rstmgr/dv/env/rstmgr_if.sv`](https://github.com/lowRISC/opentitan/blob/master/hw/ip/rstmgr/dv/env/rstmgr_if.sv)
 * Alerts ([`alert_esc_if`]({{< relref "hw/dv/sv/alert_esc_agent/doc" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Global types & methods
 All common types and methods defined at the package level can be found in
@@ -45,7 +45,7 @@ All common types and methods defined at the package level can be found in
   typedef virtual pwrmgr_rstmgr_sva_if #(.CHECK_RSTREQS(0)) parameterized_pwrmgr_rstmgr_sva_vif;
 ```
 ### TL_agent
-The RSTMGR testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}).
+The RSTMGR testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html).
 This provides the ability to drive and independently monitor random traffic via the TL host interface into the RSTMGR device.
 
 ### Alert_agents

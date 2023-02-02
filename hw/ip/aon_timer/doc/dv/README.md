@@ -18,7 +18,7 @@ The AON timer is documented in the [AON Timer HWIP technical specification]({{< 
 
 ## Testbench architecture
 
-The testbench is based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+The testbench is based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -29,9 +29,9 @@ The block's testbench is located at `hw/ip/aon_timer/dv/tb/tb.sv`.
 It instantiates the `aon_timer` DUT module, defined at `hw/ip/aon_timer/rtl/aon_timer.sv`.
 
 In addition, it instantiates the following interfaces, connects them to the DUT and registers their handles in `uvm_config_db`:
-* A [clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}}) for the fast clock
-* A [clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}}) for the AON clock
-* A [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* A [clock and reset interface](../../../../dv/sv/common_ifs/index.html) for the fast clock
+* A [clock and reset interface](../../../../dv/sv/common_ifs/index.html) for the AON clock
+* A [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
   The AON timer exposes a TL device.
   Here, the testbench is acting as the host CPU; in the OpenTitan SoC, this will be the Ibex core.
 * Two interrupts (wakeup timer; watchdog bark) in the fast clock domain
@@ -54,7 +54,7 @@ This *core interface* is bound into the design as `u_core_if` and is used to pas
 
 ### TileLink agent
 
-In order to communicate through the register interface, the testbench uses the [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}) that is instantiated in the CIP base environment.
+In order to communicate through the register interface, the testbench uses the [tl_agent](../../../../dv/sv/tl_agent/index.html) that is instantiated in the CIP base environment.
 This is also used by generic test sequences to exercise the register interface.
 
 ### UVM RAL Model

@@ -16,7 +16,7 @@
 For detailed information on PWRMGR design features, please see the [PWRMGR HWIP technical specification]({{< relref "hw/ip/pwrmgr/doc" >}}).
 
 ## Testbench architecture
-PWRMGR testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+PWRMGR testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](tb.svg)
@@ -25,17 +25,17 @@ PWRMGR testbench has been constructed based on the [CIP testbench architecture](
 Top level testbench is located at [`hw/ip/pwrmgr/dv/tb.sv`](https://github.com/lowRISC/opentitan/blob/master/hw/ip/pwrmgr/dv/tb.sv).
 It instantiates the PWRMGR DUT module [`hw/ip/pwrmgr/rtl/pwrmgr.sv`](https://github.com/lowRISC/opentitan/blob/master/hw/ip/pwrmgr/rtl/pwrmgr.sv).
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * PWRMGR interface [`hw/ip/pwrmgr/dv/env/pwrmgr_if.sv`](https://github.com/lowRISC/opentitan/blob/master/hw/ip/pwrmgr/dv/env/pwrmgr_if.sv).
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 * Alerts ([`alert_esc_if`]({{< relref "hw/dv/sv/alert_esc_agent/doc" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Global types & methods
 All common types and methods defined at the package level can be found in
@@ -66,7 +66,7 @@ Some of them in use are:
   typedef bit [pwrmgr_pkg::HwResetWidth-1:0] resets_out_t;
 ```
 ### TL_agent
-PWRMGR testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}) which provides the ability to drive and independently monitor random traffic via TL host interface into PWRMGR device.
+PWRMGR testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html) which provides the ability to drive and independently monitor random traffic via TL host interface into PWRMGR device.
 
 ### UVM RAL Model
 The PWRMGR RAL model is created with the [`ralgen`]({{< relref "hw/dv/tools/ralgen/doc" >}}) FuseSoC generator script automatically when the simulation is at the build stage.

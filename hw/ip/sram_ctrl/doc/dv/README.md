@@ -23,7 +23,7 @@ Only toggle coverage on the IOs of these sub-modules is enabled for coverage col
 For detailed information on SRAM_CTRL design features, please see the [SRAM_CTRL HWIP technical specification]({{< relref ".." >}}).
 
 ## Testbench architecture
-SRAM_CTRL testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+SRAM_CTRL testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 Note that there are 2 separate TLUL interfaces exposed to the rest of the OpenTitan system - one for CSR accesses, and one for accessing memory directly.
 This is because the "full" DUT consists of the actual SRAM memory controller (which contains the CSR file) connected to a scrambling RAM primitive, with a TLUL adapter module to convert TL requests on the memory TL interface into SRAM format for the RAM primitive.
 
@@ -33,17 +33,17 @@ This is because the "full" DUT consists of the actual SRAM memory controller (wh
 ### Top level testbench
 Top level testbench is located at `hw/ip/sram_ctrl/dv/tb/tb.sv`. It instantiates the SRAM_CTRL DUT module `hw/ip/sram_ctrl/rtl/sram_ctrl.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * SRAM_CTRL IOs
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 * Alerts ([`alert_esc_if`]({{< relref "hw/dv/sv/alert_esc_agent/doc" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Compile-time configurations
 Two compile-time configurations are tested:
@@ -81,7 +81,7 @@ typedef enum bit [2:0] {
 } sram_ctrl_status_e;
 ```
 ### TL_agent
-SRAM_CTRL testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+SRAM_CTRL testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html)
 which provides the ability to drive and independently monitor random traffic via TL host interface into SRAM_CTRL device.
 
 ### Alert agents

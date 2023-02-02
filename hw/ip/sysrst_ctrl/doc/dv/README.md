@@ -25,7 +25,7 @@ applicable. Once done, remove this comment before making a PR. -->
 For detailed information on SYSRST_CTRL design features, please see the [SYSRST_CTRL HWIP technical specification]({{< relref "hw/ip/sysrst_ctrl/doc" >}}).
 
 ## Testbench architecture
-SYSRST_CTRL testbench has been constructed based on the [CIP testbench architecture]({{< relref "hw/dv/sv/cip_lib/doc" >}}).
+SYSRST_CTRL testbench has been constructed based on the [CIP testbench architecture](../../../../dv/sv/cip_lib/index.html).
 
 ### Block diagram
 ![Block diagram](sysrst_ctrl_tb_block_diagram.svg)
@@ -34,17 +34,17 @@ SYSRST_CTRL testbench has been constructed based on the [CIP testbench architect
 The top level testbench is located at `hw/ip/sysrst_ctrl/dv/tb.sv`.
 It instantiates the SYSRST_CTRL DUT module `hw/ip/sysrst_ctrl/rtl/sysrst_ctrl.sv`.
 In addition, it instantiates the following interfaces, connects them to the DUT and sets their handle into `uvm_config_db`:
-* [Clock and reset interface]({{< relref "hw/dv/sv/common_ifs" >}})
-* [TileLink host interface]({{< relref "hw/dv/sv/tl_agent/doc" >}})
+* [Clock and reset interface](../../../../dv/sv/common_ifs/index.html)
+* [TileLink host interface](../../../../dv/sv/tl_agent/index.html)
 * SYSRST_CTRL IOs
-* Interrupts ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Interrupts ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 * Alerts ([`alert_esc_if`]({{< relref "hw/dv/sv/alert_esc_agent/doc" >}}))
-* Devmode ([`pins_if`]({{< relref "hw/dv/sv/common_ifs" >}}))
+* Devmode ([`pins_if`](../../../../dv/sv/common_ifs/index.html))
 
 ### Common DV utility components
 The following utilities provide generic helper tasks and functions to perform activities that are common across the project:
-* [dv_utils_pkg]({{< relref "hw/dv/sv/dv_utils/doc" >}})
-* [csr_utils_pkg]({{< relref "hw/dv/sv/csr_utils/doc" >}})
+* [dv_utils_pkg](../../../../dv/sv/dv_utils/index.html)
+* [csr_utils_pkg](../../../../dv/sv/csr_utils/index.html)
 
 ### Compile-time configurations
 [list compile time configurations, if any and what are they used for]
@@ -54,7 +54,7 @@ All common types and methods defined at the package level can be found in
 `sysrst_ctrl_env_pkg`.
 
 ### TL_agent
-The SYSRST_CTRL testbench instantiates (already handled in CIP base env) [tl_agent]({{< relref "hw/dv/sv/tl_agent/doc" >}}).
+The SYSRST_CTRL testbench instantiates (already handled in CIP base env) [tl_agent](../../../../dv/sv/tl_agent/index.html).
 This provides the ability to drive and independently monitor random traffic via the TL host interface into the SYSRST_CTRL device.
 
 ### Alert_agents

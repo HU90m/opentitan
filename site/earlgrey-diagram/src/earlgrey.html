@@ -1,21 +1,21 @@
 <style>
-  @import "./diagram.css";
-  /* @import "./diagram-classic.css"; */
-  @import "./diagram-modern.css";
-  /* @import "./diagram-tiny.css"; */
-  @import "./tooltips.css";
-  /* @import "./tooltips-classic.css"; */
-  @import "./tooltips-modern.css";
+  @import "../src/diagram.css";
+  /* @import "../src/diagram-classic.css"; */
+  @import "../src/diagram-modern.css";
+  /* @import "../src/diagram-tiny.css"; */
+  @import "../src/tooltips.css";
+  /* @import "../src/tooltips-classic.css"; */
+  @import "../src/tooltips-modern.css";
 </style>
-<script type="module">
-  import "./earlgrey.js";
+<script type="module" id="custom-elements">
+  import "../src/earlgrey.js";
 </script>
 
 <lowrisc-block id="opentitan-block-diagram" class="diagram modern" pos="0 0 63 43">
   <lowrisc-block id="chip" class="domain" pos="0 0 63 43">
     <lowrisc-block class="title" pos="1 1">chip_earlgrey_asic</lowrisc-block>
 
-    <lowrisc-block id="opentitan-logo" pos="60 0.5 2 2" title="opentitan">
+    <lowrisc-block id="opentitan-logo" pos="60 0.5 2 2">
       <svg width="100%" height="100%" viewBox="-61.201072 21.594324 52.519791 52.519791" xmlns="http://www.w3.org/2000/svg">
         <path stoke="none" d="m -9.6337811,51.624532 h -6.5616669 v -1.852083 h -6.561666 c -0.529167,0 -0.926042,0.396875 -0.926042,0.926041 v 8.41375 h -8.466666 c -0.502709,0 -0.926042,0.423334 -0.926042,0.9525 v 6.561667 h 1.878542 v 6.561667 c 0,0.529166 0.423333,0.926041 0.952499,0.926041 h 5.609167 c 0.529167,0 0.9525,-0.396875 0.9525,-0.926041 v -6.561667 h 7.487708 V 59.11224 h 6.5616669 c 0.5291667,0 0.9525,-0.396875 0.9525,-0.926041 v -5.635625 c 0,-0.529167 -0.4233333,-0.926042 -0.9525,-0.926042 z M -37.758989,59.11224 h -8.440208 v -8.41375 c 0,-0.529166 -0.423334,-0.952499 -0.926042,-0.952499 h -6.561667 v 1.878541 h -6.561666 c -0.529167,0 -0.9525,0.423333 -0.9525,0.926042 v 5.635625 c 0,0.529166 0.423333,0.926041 0.9525,0.926041 h 6.561666 v 7.514167 h 7.46125 v 6.561667 c 0,0.529166 0.423334,0.926041 0.9525,0.926041 h 5.609167 c 0.529167,0 0.9525,-0.396875 0.9525,-0.926041 v -6.561667 h 1.852083 V 60.06474 c 0,-0.529166 -0.396875,-0.9525 -0.926041,-0.9525 z M -60.248572,44.136824 h 6.561666 v 1.852083 h 6.561667 c 0.529167,0 0.926042,-0.396875 0.926042,-0.926041 v -8.440209 h 8.466666 c 0.502709,0 0.926042,-0.423333 0.926042,-0.926041 v -6.561667 h -1.878542 v -6.588125 c 0,-0.529166 -0.423333,-0.9525 -0.9525,-0.9525 h -5.609166 c -0.529167,0 -0.9525,0.423334 -0.9525,0.9525 v 6.561667 h -7.487709 v 7.487708 h -6.561666 c -0.529167,0 -0.9525,0.423333 -0.9525,0.926042 v 5.662083 c 0,0.529167 0.423333,0.9525 0.9525,0.9525 z m 28.125208,-7.514167 h 8.440208 v 8.440209 c 0,0.529166 0.423333,0.926041 0.926042,0.926041 h 6.561666 v -1.852083 h 6.5616669 c 0.5291667,0 0.9525,-0.423333 0.9525,-0.9525 v -5.635625 c 0,-0.529167 -0.4233333,-0.926042 -0.9525,-0.926042 h -6.5616669 v -7.487708 h -7.487708 v -6.588125 c 0,-0.529166 -0.423333,-0.9525 -0.9525,-0.9525 h -5.609167 c -0.529166,0 -0.952499,0.423334 -0.952499,0.9525 v 6.561667 h -1.852084 v 6.561666 c 0,0.529167 0.396875,0.926042 0.926042,0.926042 z m -10.31875,18.758958 h 15.001875 V 40.379741 h -15.001875 v 14.975416 z" />
       </svg>
@@ -265,7 +265,7 @@
       </lowrisc-block>
   
       <lowrisc-block class="subdomain-badge b200khz" pos="28 0 6 2">
-        200 kHZ
+        200 kHz
       </lowrisc-block>
   
       <lowrisc-block class="subdomain-badge blogic" pos="35 0 6 2">
@@ -275,8 +275,8 @@
   </lowrisc-block>
 </lowrisc-block>
 
-<script type="module">
-  import "./hydrate.js";
+<script type="module" id="hydrate">
+  import "../src/hydrate.js";
 </script>
 
 <!--

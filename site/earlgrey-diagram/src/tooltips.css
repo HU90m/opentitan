@@ -38,20 +38,20 @@
     padding: 0.5em 1em;
 }
 
-:where(.block > .diagram-tooltip) {
+:where(.diagram-tooltip) {
     display: none;
 }
 
-:where(.block:hover),
-:where(.block:active),
-:where(.block:focus-visible),
-:where(.block:focus-within) {
+:where(.has-tooltip:hover),
+:where(.has-tooltip:active),
+:where(.has-tooltip:focus-visible),
+:where(.has-tooltip:focus-within) {
     z-index: 999;
 }
 
-:where(.block:hover .diagram-tooltip),
-:where(.block:active .diagram-tooltip),
-:where(.block:focus-visible .diagram-tooltip),
+:where(.has-tooltip:hover > .diagram-tooltip),
+:where(.has-tooltip:active > .diagram-tooltip),
+:where(.has-tooltip:focus-visible > .diagram-tooltip),
 :where(.block-focus:focus-visible + .diagram-tooltip) {
     display: grid;
     height: calc(1px + var(--tooltip-arrow-size));

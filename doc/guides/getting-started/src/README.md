@@ -23,9 +23,9 @@ git clone https://github.com/lowRISC/opentitan.git
 ```
 
 If you wish to *contribute* to OpenTitan you will need to make a fork on GitHub and may wish to clone the fork instead.
-We have some [notes for using GitHub](FIXME/github_notes.md) which explain how to work with your own fork (and perform many other GitHub tasks) in the OpenTitan context.
+We have some [notes for using GitHub]({{URL_ROOT}}/guides/contributing/github_notes.md) which explain how to work with your own fork (and perform many other GitHub tasks) in the OpenTitan context.
 
-***Note: throughout the documentation `$REPO_TOP` refers to the path where the OpenTitan repository is checked out.***
+***Note: throughout the documentation `$REPO_TOP` refers to the path where the OpenTitan repository is checked out.***  
 Unless you've specified some other name in the clone, `$REPO_TOP` will be a directory called `opentitan`.
 You can create the environment variable by calling the following command from the same directory where you ran `git clone`:
 ```console
@@ -184,7 +184,7 @@ It also may make sense to stick with the basic setup and come back to these step
 ### Step 6a: Install Verible (optional)
 
 Verible is an open source SystemVerilog style linter and formatting tool.
-The style linter is relatively mature and we use it as part of our [RTL design flow](FIXME/doc/ug/design).
+The style linter is relatively mature and we use it as part of our [RTL design flow]({{URL_ROOT}}/guides/contributing/design_methodology.html).
 The formatter is still under active development, and hence its usage is more experimental in OpenTitan.
 
 You can download and build Verible from scratch as explained on the [Verible GitHub page](https://github.com/google/verible/).
@@ -240,17 +240,16 @@ As you may have guessed, there are several other pieces of hardware and software
 If you are interested in these, check out the additional resources below.
 
 ### General
-* [Documentation Index](FIXME/doc/_index.md)
-* [Directory Structure](FIXME/doc/ug/directory_structure.md)
-* [GitHub Notes](FIXME/doc/ug/github_notes.md)
-* [Building Documentation](FIXME/doc/ug/documentation.md)
-* [Design Methodology within OpenTitan](FIXME/doc/ug/design.md)
+* [Directory Structure]({{URL_ROOT}}/guides/contributing/directory_structure.md)
+* [GitHub Notes]({{URL_ROOT}}/guides/contributing/github_notes.md)
+* [Building Documentation]({{URL_ROOT}}/guides/getting-started/build_docs.md)
+* [Design Methodology within OpenTitan]({{URL_ROOT}}/guides/contributing/design_methodology.md)
 
 ### Hardware
-* [Designing Hardware](FIXME/doc/ug/hw_design.md)
-* [OpenTitan Hardware](FIXME/hw)
+* [Designing Hardware]({{URL_ROOT}}/guides/contributing/hw_design.md)
+* [OpenTitan Hardware]({{URL_ROOT}}/hardware)
 
 ### Software
-* [OpenTitan Software](FIXME/sw)
-* [Writing and Building Software for OTBN](FIXME/otbn_sw.md)
-* [Rust for Embedded C Programmers](FIXME/rust_for_c.md)
+* [OpenTitan Software]({{URL_ROOT}}/software)
+* [Writing and Building Software for OTBN]({{URL_ROOT}}/guides/contributing/otbn_sw.md)
+* [Rust for Embedded C Programmers]({{URL_ROOT}}/guides/rust-for-c-devs/rust_for_c.md)

@@ -1,6 +1,4 @@
-# "Primitive Component: Packer FIFO"
-
-# Overview
+# Packer FIFO
 
 `prim_packer_fifo` is a module that supports three modes of operation: packing,
 unpacking, and single depth FIFO modes. Packing mode is where the input
@@ -36,7 +34,7 @@ rdata_o[OutW]| output | Output data.
 rready_i     | input  | Output data is popped from the FIFO.
 depth_o      | output | Indicates the fullness of the FIFO.
 
-# Theory of Operations
+## Theory of Operations
 
 ```code
            /----------\

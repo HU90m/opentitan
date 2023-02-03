@@ -1,6 +1,4 @@
-# "Primitive Component: SRAM Scrambler"
-
-# Overview
+# SRAM Scrambler
 
 The scrambling primitive `prim_ram_1p_scr` employs a reduced-round (5 instead of 11) PRINCE block cipher in CTR mode to scramble the data.
 The PRINCE lightweight block cipher has been selected due to its low latency and low area characteristics, see also [prim_prince]({{< relref "hw/ip/prim/doc/prim_prince" >}}) for more information on PRINCE.

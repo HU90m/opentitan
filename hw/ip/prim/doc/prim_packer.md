@@ -1,6 +1,4 @@
-# "Primitive Component: Packer"
-
-# Overview
+# Packer
 
 `prim_packer` is a module that receives partial writes then packs and creates
 full configurable width writes. It is one of a set of shared primitive modules
@@ -31,7 +29,7 @@ flush_i      | input  | Send out stored data and clear state.
 flush_done_o | output | Indicates flush operation is completed.
 err_o        | output | When EnProtection is set, the error is reported through this port. This signal is asynchronous to the datapath.
 
-# Theory of Operations
+## Theory of Operations
 
 ```code
            /----------\

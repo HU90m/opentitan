@@ -1,6 +1,5 @@
-# "Primitive Component: Flash Wrapper"
+# Flash Wrapper
 
-# Overview
 `prim_flash` is a wrapper interface for technology specific flash modules.
 
 As the exact details of each technology can be different, this document mainly describes the interface requirements and their functions.
@@ -73,9 +72,9 @@ done               | output | transaction done
 
 
 
-# Theory of Operations
+## Theory of Operations
 
-## Transactions
+### Transactions
 
 Transactions into the flash wrapper follow a req / ack / done format.
 A request is issued by raising one of `rd`, `prog`, `pg_erase` or `bk_erase` to 1.
@@ -89,7 +88,7 @@ Whereas a program or erase may have a gap extending up to uS or even mS.
 It is the flash wrapper decision on how many outstanding transaction to accept.
 The following are examples for read, program and erase transactions.
 
-### Read
+#### Read
 {{< wavejson >}}
 {signal: [
   {name: 'clk_i',     wave: 'p.................'},
@@ -101,7 +100,7 @@ The following are examples for read, program and erase transactions.
 ]}
 {{< /wavejson >}}
 
-### Program
+#### Program
 {{< wavejson >}}
 {signal: [
   {name: 'clk_i',       wave: 'p................'},
@@ -114,7 +113,7 @@ The following are examples for read, program and erase transactions.
 ]}
 {{< /wavejson >}}
 
-### Erase
+#### Erase
 {{< wavejson >}}
 {signal: [
   {name: 'clk_i',     wave: 'p................'},
@@ -124,13 +123,13 @@ The following are examples for read, program and erase transactions.
 ]}
 {{< /wavejson >}}
 
-## Initialization
+### Initialization
 
 The flash wrapper may undergo technology specific initializations when it is first powered up.
 During this state, it asserts the `init_busy` to inform the outside world that it is not ready for transactions.
 During this time, if a transaction is issued towards the flash wrapper, the transaction is not acknowledged until the initialization is complete.
 
-## Program Beats
+### Program Beats
 
 Since flash programs can take a significant amount of time, certain flash wrappers employ methods to optimize the program operation.
 This optimization may place an upper limit on how many flash words can be handled at a time.
@@ -140,11 +139,11 @@ Assume the flash wrapper can handle 16 words per program operation.
 Assume a program burst has only 15 words to program and thus will not fill up the full program resolution.
 On the 15th word, the `prog_last` signal asserts and informs the flash wrapper that it should not expect a 16th word and should proceed to complete the program operation.
 
-## Program Type
+### Program Type
 The `prog_type` input informs the flash wrapper what type of program operation it should perform.
 A program type not supported by the wrapper, indicated through `prog_type_avail` shall never be issued to the flash wrapper.
 
-## Erase Suspend
+### Erase Suspend
 Since erase operations can take a significant amount of time, sometimes it is necessary for software or other components to suspend the operation.
 The suspend operation input request starts with `erase_suspend_req` assertion. Flash wrapper circuit acks when wrapper starts suspend.
 When the erase suspend completes, the flash wrapper circuitry also asserts `done` for the ongoing erase transaction to ensure all hardware gracefully completes.
@@ -161,7 +160,7 @@ The following is an example diagram
   }
 {{< /wavejson >}}
 
-## Error Interrupt
+### Error Interrupt
 The `flash_err_o` is a level interrupt indication, that is asserted whenever an error event occurs in one of the Flash banks.
 An Error status register is used to hold the error source of both banks, and it is cleared on writing 1 to the relevant bit.
 Clearing the status register trigs deassertion of the interrupt.

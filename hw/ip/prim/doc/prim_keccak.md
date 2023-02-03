@@ -1,6 +1,4 @@
-# "Primitive Component: Keccak permutation"
-
-# Overview
+# Keccak Permutation
 
 `prim_keccak` is a single round implementation of the permutation stage in [SHA3 algorithm][fibs-pub-202].
 Keccak primitive module assumes the number of rounds is less than or equal to 12 + 2L.
@@ -41,7 +39,7 @@ For instance, bit 0 of the stream maps to `A[0,0,0]`.
 The bit 0 in the spec is the first bit of the bitstream.
 In `prim_keccak`, `s_i[0]` is the first bit and `s_i[Width-1]` is the last bit.
 
-# Theory of Operations
+## Theory of Operations
 
 ```
          |                                                          |

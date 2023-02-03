@@ -1,7 +1,5 @@
 # "Primitive Component: PRINCE Scrambler"
 
-# Overview
-
 `prim_prince` is an (unhardened) implementation of the [64bit PRINCE block cipher](https://en.wikipedia.org/wiki/Prince_(cipher)).
 It is a fully unrolled combinational implementation with a configurable number of rounds (data and key state registers placed half-way in the design can optionally be enabled).
 Due to the mirrored construction of this cipher, the same circuit can be used for encryption and decryption, as described below.
@@ -37,7 +35,7 @@ dec_i        | input  | Assert for decryption
 valid_o      | output | Data valid output
 data_o       | output | Output of the ciphertext
 
-# Theory of Operations
+## Theory of Operations
 
 ```
                /-----------------\

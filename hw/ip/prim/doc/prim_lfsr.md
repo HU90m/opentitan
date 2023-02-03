@@ -1,6 +1,4 @@
-# "Primitive Component: LFSR"
-
-# Overview
+# Linear Feedback Shift Register
 
 `prim_lfsr` is a parameterized linear feedback shift register (LFSR)
 implementation that supports Galois (XOR form) and Fibonacci (XNOR form)
@@ -36,7 +34,7 @@ lfsr_en_i            | input  | Lfsr enable
 entropy_i[EntropyDw] | input  | Entropy input
 state_o[StateOutDw]  | output | LFSR state output.
 
-# Theory of Operations
+## Theory of Operations
 
 ```
              /----------------\

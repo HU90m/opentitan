@@ -1,6 +1,4 @@
-# "Primitive Component: PRESENT Scrambler"
-
-# Overview
+# PRESENT Block Cipher
 
 `prim_present` is an (unhardened) implementation of the encryption pass of the [64bit PRESENT block cipher](https://en.wikipedia.org/wiki/PRESENT).
 It is a fully unrolled combinational implementation that supports both key lengths specified in the paper (80bit and 128bit).

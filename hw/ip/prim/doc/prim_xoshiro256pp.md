@@ -1,6 +1,4 @@
-# "Primitive Component: XoShiRo256++"
-
-# Overviewtitle
+# 256-bit Pseudo Random Number Generator: XoShiRo256++
 
 `prim_xoshiro256pp` is a PRNG with 256 bit state.
 For more information refer to [this page](https://arxiv.org/pdf/1805.01407.pdf).
@@ -23,7 +21,7 @@ entropy_i[256]       | input  | Entropy input
 data_o[OutputDw]     | output | PRNG output
 all_zero_o           | output | Impossible all-zero state
 
-# Theory of Operations
+## Theory of Operations
 
 ```
              /----------------\

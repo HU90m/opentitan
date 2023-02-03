@@ -5,5 +5,11 @@ multilingual = false
 src = "src"
 title = "Rust for Embedded C Programmers"
 
+[preprocessor.variables]
+use_env = true
+
+[preprocessor.variables.variables]
+before = [ "links" ]
+
 [output.html]
 site-url = "/guides/rust-for-c-devs/"

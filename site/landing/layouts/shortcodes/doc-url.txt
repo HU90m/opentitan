@@ -1,1 +1,1 @@
-{{ .Site.Params.docs_url }}/{{ .Inner }}
+{{ .Site.Params.docsUrl }}/{{ .Inner }}

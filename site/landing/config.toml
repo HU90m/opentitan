@@ -10,12 +10,15 @@ disableKinds = ["taxonomy", "taxonomyTerm", "RSS", "sitemap", "categories"]
 
 [params]
 description = "The first open source project building a transparent, high-quality reference design and integration guidelines for silicon root of trust (RoT) chips"
+
 github_repo = "https://github.com/lowRISC/opentitan"
-docs_url = "https://docs.opentitan.org"
-one_year_url = "https://security.googleblog.com/2020/12/opentitan-at-one-year-open-source.html"
-announce_url = "https://security.googleblog.com/2019/11/opentitan-open-sourcing-transparent.html"
+docsUrl = "https://docs.opentitan.org"
+
 contact_email = "pilots@opentitan.org"
 get_involved_email = "get-involved@opentitan.org"
+
+one_year_url = "https://security.googleblog.com/2020/12/opentitan-at-one-year-open-source.html"
+announce_url = "https://security.googleblog.com/2019/11/opentitan-open-sourcing-transparent.html"
 
 partner_lowrisc = "https://www.lowrisc.org/"
 partner_ethzurich = "https://ethz.ch"

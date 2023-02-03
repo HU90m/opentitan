@@ -79,7 +79,7 @@ hugo_args+=" --destination $build_dir/"
 hugo_args+=" --baseURL $base_url"
 
 # If building or serving locally, set base URLs to localhost
-export HUGOxPARAMSxDOCS_URL="$docs_url"
+export HUGO_PARAMS_DOCSURL="$docs_url"
 export URL_ROOT="$docs_url"
 
 ############

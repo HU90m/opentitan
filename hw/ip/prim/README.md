@@ -83,8 +83,7 @@ library is commonly used for simulations and as functional reference. The
 
 In addition to the implementation in the `generic` library, primitives may be
 implemented by as many other libraries as needed.
-
-Technology libraries are referenced by their name.
+Technology libraries are referenced by their name (for example `xilinx`).
 
 ### Technology library discovery
 

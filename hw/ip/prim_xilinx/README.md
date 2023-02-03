@@ -1,3 +1,0 @@
-# Xilinx Hardware Primitives
-
-** TODO **

@@ -25,7 +25,7 @@ git clone https://github.com/lowRISC/opentitan.git
 If you wish to *contribute* to OpenTitan you will need to make a fork on GitHub and may wish to clone the fork instead.
 We have some [notes for using GitHub]({{URL_ROOT}}/guides/contributing/github_notes.md) which explain how to work with your own fork (and perform many other GitHub tasks) in the OpenTitan context.
 
-***Note: throughout the documentation `$REPO_TOP` refers to the path where the OpenTitan repository is checked out.***  
+***Note: throughout the documentation `$REPO_TOP` refers to the path where the OpenTitan repository is checked out.***
 Unless you've specified some other name in the clone, `$REPO_TOP` will be a directory called `opentitan`.
 You can create the environment variable by calling the following command from the same directory where you ran `git clone`:
 ```console

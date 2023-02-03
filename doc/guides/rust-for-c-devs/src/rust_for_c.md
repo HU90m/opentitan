@@ -1,6 +1,6 @@
----
-title: "Rust for Embedded C Programmers"
----
+
+# Rust for Embedded C Programmers
+
 
 ## Foreword
 

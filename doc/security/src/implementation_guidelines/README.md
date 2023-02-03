@@ -1,5 +1,5 @@
----
-title: Implementation Guidelines
----
+
+# Implementation Guidelines
+
 
 {{% sectionContent %}}

@@ -1,6 +1,6 @@
----
-title: "Pattern Generator DIF Checklist"
----
+
+# Pattern Generator DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Pattern Generator DIF]({{< relref "hw/ip/pattgen/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

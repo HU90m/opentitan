@@ -1,6 +1,6 @@
----
-title: "Designing Hardware"
----
+
+# Designing Hardware
+
 
 This document aims to clarify how to get started with a hardware design within the OpenTitan project.
 Design in this context nominally refers to a new [Comportable Peripheral]({{< relref "../rm/comportability_specification" >}}) but can include high level constructs like device reset strategy, etc.

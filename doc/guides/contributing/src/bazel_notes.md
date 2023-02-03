@@ -1,6 +1,6 @@
----
-title: Bazel Notes
----
+
+# Bazel Notes
+
 
 Both OpenTitan hardware and software is built with Bazel.
 While our [Getting Started]({{< relref "getting_started" >}}) guides detail some of the Bazel commands that can be used to build both types of artifacts, below are detailed notes on:

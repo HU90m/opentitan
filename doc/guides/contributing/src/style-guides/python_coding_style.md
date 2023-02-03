@@ -1,6 +1,6 @@
----
-title: "Python Coding Style Guide"
----
+
+# Python Coding Style Guide
+
 
 ## Basics
 

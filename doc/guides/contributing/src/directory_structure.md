@@ -1,6 +1,6 @@
----
-title: "Directory Structure"
----
+
+# Directory Structure
+
 
 This document provides an overview of the opentitan repository directory structure.
 The hierarchy underneath the root is fairly self explanatory, containing the following:

@@ -1,6 +1,6 @@
----
-title: "Alert Handler DIF Checklist"
----
+
+# Alert Handler DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Alert Handler DIF]({{< relref "hw/top_earlgrey/ip_autogen/alert_handler/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

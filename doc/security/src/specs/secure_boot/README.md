@@ -1,6 +1,6 @@
----
-title: "Secure Boot"
----
+
+# Secure Boot
+
 
 <p style="color: red; text-align: right;">
   Status: Pre-RFC

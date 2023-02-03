@@ -1,6 +1,6 @@
----
-title: "Reset Manager DIF Checklist"
----
+
+# Reset Manager DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Reset Manager DIF]({{< relref "hw/ip/rstmgr/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

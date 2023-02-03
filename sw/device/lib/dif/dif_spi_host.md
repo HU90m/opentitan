@@ -1,6 +1,6 @@
----
-title: "SPI Host DIF Checklist"
----
+
+# SPI Host DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [SPI Host DIF]({{< relref "hw/ip/spi_host/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

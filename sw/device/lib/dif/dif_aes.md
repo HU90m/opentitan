@@ -1,6 +1,6 @@
----
-title: "AES DIF Checklist"
----
+
+# AES DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [AES DIF]({{< relref "hw/ip/aes/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

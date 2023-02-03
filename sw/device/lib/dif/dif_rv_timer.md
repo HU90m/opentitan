@@ -1,6 +1,6 @@
----
-title: "RV Timer DIF Checklist"
----
+
+# RV Timer DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [RV Timer DIF]({{< relref "hw/ip/rv_timer/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

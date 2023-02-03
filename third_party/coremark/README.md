@@ -1,6 +1,6 @@
----
-title: "CoreMark Benchmark"
----
+
+# CoreMark Benchmark
+
 
 ## Running CoreMark
 

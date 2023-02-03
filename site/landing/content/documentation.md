@@ -1,6 +1,6 @@
----
-title: "Documentation"
----
+
+# Documentation
+
 
 {{< earlgrey-diagram >}}
 

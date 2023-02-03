@@ -1,6 +1,6 @@
----
-title: "Sensor Controller DIF Checklist"
----
+
+# Sensor Controller DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Sensor Controller DIF]({{< relref "hw/top_earlgrey/ip/sensor_ctrl/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

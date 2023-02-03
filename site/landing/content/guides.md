@@ -1,6 +1,6 @@
----
-title: "Guides"
----
+
+# Guides
+
 
 * [Getting started]({{< doc-url >}}guides/getting-started{{< /doc-url >}})
 * [Contributing]({{< doc-url >}}guides/contributing{{< /doc-url >}})

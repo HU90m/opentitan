@@ -1,6 +1,6 @@
----
-title: "PWM DIF Checklist"
----
+
+# PWM DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [PWM DIF]({{< relref "hw/ip/pwm/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

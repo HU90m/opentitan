@@ -1,6 +1,6 @@
----
-title: "KMAC DIF Checklist"
----
+
+# KMAC DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [KMAC DIF]({{< relref "hw/ip/kmac/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

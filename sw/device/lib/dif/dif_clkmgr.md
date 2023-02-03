@@ -1,6 +1,6 @@
----
-title: "Clock Manager DIF Checklist"
----
+
+# Clock Manager DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Clock Manager DIF]({{< relref "hw/ip/clkmgr/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

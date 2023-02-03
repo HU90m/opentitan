@@ -1,6 +1,6 @@
----
-title: "Always-On Timer DIF Checklist"
----
+
+# Always-On Timer DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Always-On Timer DIF]({{< relref "hw/ip/aon_timer/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

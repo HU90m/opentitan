@@ -1,6 +1,6 @@
----
-title: "I2C DIF Checklist"
----
+
+# I2C DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [I2C DIF]({{< relref "hw/ip/i2c/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

@@ -1,6 +1,6 @@
----
-title: "Markdown Usage and Style Guide"
----
+
+# Markdown Usage and Style Guide
+
 
 ## Basics
 
@@ -100,7 +100,7 @@ The header instantiates the standard document header and reads the Hjson descrip
 
 ```
 ---
-title: "Example IP Block"
+# Example IP Block
 ---
 ```
 

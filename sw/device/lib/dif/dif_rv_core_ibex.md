@@ -1,6 +1,6 @@
----
-title: "Rv core ibex DIF Checklist"
----
+
+# Rv core ibex DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Rv core ibex DIF]({{< relref "hw/ip/rv_core_ibex/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

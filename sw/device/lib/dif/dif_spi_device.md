@@ -1,6 +1,6 @@
----
-title: "SPI Device DIF Checklist"
----
+
+# SPI Device DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [SPI Device DIF]({{< relref "hw/ip/spi_device/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

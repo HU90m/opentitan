@@ -1,6 +1,6 @@
----
-title: "System Reset Controller DIF Checklist"
----
+
+# System Reset Controller DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [System Reset Controller DIF]({{< relref "hw/ip/sysrst_ctrl/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

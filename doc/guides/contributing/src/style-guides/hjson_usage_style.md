@@ -1,6 +1,6 @@
----
-title: "Hjson Usage and Style Guide"
----
+
+# Hjson Usage and Style Guide
+
 
 ## Basics
 

@@ -1,6 +1,6 @@
----
-title: "UART DIF Checklist"
----
+
+# UART DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [UART DIF]({{< relref "hw/ip/uart/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

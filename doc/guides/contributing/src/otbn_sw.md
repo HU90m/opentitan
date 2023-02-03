@@ -1,6 +1,6 @@
----
-title: "Writing and building software for OTBN"
----
+
+# Writing and building software for OTBN
+
 
 OTBN is the OpenTitan Big Number accelerator and this document describes how to write and build software for it.
 The [OTBN reference manual]({{< relref "hw/ip/otbn/doc" >}}) describes the hardware and associated ISA.

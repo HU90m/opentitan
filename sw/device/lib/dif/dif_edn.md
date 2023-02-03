@@ -1,6 +1,6 @@
----
-title: "Entropy Distribution Network DIF Checklist"
----
+
+# Entropy Distribution Network DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Entropy Distribution Network DIF]({{< relref "hw/ip/edn/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

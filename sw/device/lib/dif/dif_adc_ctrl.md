@@ -1,6 +1,6 @@
----
-title: "ADC Controller DIF Checklist"
----
+
+# ADC Controller DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [ADC Controller DIF]({{< relref "hw/ip/adc_ctrl/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

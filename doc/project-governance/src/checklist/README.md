@@ -1,6 +1,6 @@
----
-title: "Signoff Checklist"
----
+
+# Signoff Checklist
+
 
 This document explains the recommended checklist items to review when transitioning from one [Development Stage]({{<relref "/doc/project/development_stages.md" >}}) to another, for design, verification, and [software device interface function (DIF)]({{< relref "doc/rm/device_interface_functions.md" >}}) stages.
 It is expected that the items in each stage (D1, V1, S1, etc) are completed.

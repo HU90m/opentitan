@@ -1,6 +1,6 @@
----
-title: "Entropy Source DIF Checklist"
----
+
+# Entropy Source DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Entropy Source DIF]({{< relref "hw/ip/entropy_src/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

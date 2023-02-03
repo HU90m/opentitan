@@ -1,6 +1,6 @@
----
-title: "USB Device DIF Checklist"
----
+
+# USB Device DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [USB Device DIF]({{< relref "hw/ip/usbdev/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

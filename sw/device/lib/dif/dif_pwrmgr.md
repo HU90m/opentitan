@@ -1,6 +1,6 @@
----
-title: "Power Manager DIF Checklist"
----
+
+# Power Manager DIF Checklist
+
 
 This checklist is for [Development Stage]({{< relref "/doc/project/development_stages.md" >}}) transitions for the [Power Manager DIF]({{< relref "hw/ip/pwrmgr/doc" >}}).
 All checklist items refer to the content in the [Checklist]({{< relref "/doc/project/checklist.md" >}}).

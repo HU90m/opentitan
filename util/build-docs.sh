@@ -72,6 +72,9 @@ mdbooks="
 # Apply custom config to insert the website theme
 export MDBOOK_OUTPUT__HTML__THEME="$proj_root/site/docs/theme/"
 
+# Apply custom pre-processors
+export MDBOOK_PREPROCESSOR__REGGEN__COMMAND="./util/mdbook-reggen.py"
+
 # Build up Hugo arguments
 hugo_args=""
 hugo_args+=" --source $proj_root/site/landing/"

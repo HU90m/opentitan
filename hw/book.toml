@@ -14,3 +14,6 @@ before = [ "links" ]
 [output.html]
 fold = { enable = true, level = 1 }
 site-url = "/hardware/"
+
+[preprocessor.reggen]
+command = "../util/mdbook-reggen.py"

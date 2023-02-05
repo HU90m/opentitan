@@ -15,5 +15,18 @@ before = [ "links" ]
 fold = { enable = true, level = 1 }
 site-url = "/hardware/"
 
+additional-js = [
+    "../util/mdbook-wavejson/default.js",
+    "../util/mdbook-wavejson/wavedrom.min.js",
+    "../util/mdbook-wavejson/wavejson.js",
+]
+
+additional-css = [
+    "../util/mdbook-wavejson/wavejson.css",
+]
+
 [preprocessor.reggen]
 command = "../util/mdbook-reggen.py"
+
+[preprocessor.wavejson]
+command = "../util/mdbook-wavejson.py"

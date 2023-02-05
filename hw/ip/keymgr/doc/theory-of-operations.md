@@ -384,7 +384,7 @@ Note, the acceptance of `done` has no back-pressure and `keymgr` must accept it 
 
 See diagram below for an example transfer:
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'kmac_data_o.valid',     wave: '01...........|....0..'},
   {name: 'kmac_data_i.ready',     wave: '1...0..101...|.......'},
@@ -395,7 +395,7 @@ See diagram below for an example transfer:
   {name: 'kmac_data_i.digest*',   wave: 'x..................3x'},
   ],
 }
-{{< /wavejson >}}
+```
 
 ### Sideload Keys
 
@@ -421,7 +421,7 @@ The following diagram illustrates an example when there is no valid key in the K
 During the duration of the operation, the key is valid and shows the internal key state.
 Once the operation is complete, it falls back to the sideload key state, which is invalid in this case.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'u_sideload_ctrl.u_kmac_key.key_o.valid',     wave: '0................'},
   {name: 'u_sideload_ctrl.u_kmac_key.key_o.key_share', wave: 'x................'},
@@ -432,13 +432,13 @@ Once the operation is complete, it falls back to the sideload key state, which i
   {name: 'kmac_key_o.key_share*',                      wave: 'x....3.....x.....'},
   ],
 }
-{{< /wavejson >}}
+```
 
 The following diagram illustrates an example when there is a valid key in the KMAC sideload registers and an operation is called.
 During the duration of the operation, the key is valid and shows the internal key state.
 Once the operation is complete, it falls back to the sideload key state, which is valid and contains a different value.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'u_sideload_ctrl.u_kmac_key.key_o.valid',     wave: '01...............'},
   {name: 'u_sideload_ctrl.u_kmac_key.key_o.key_share', wave: 'x4...............'},
@@ -449,7 +449,7 @@ Once the operation is complete, it falls back to the sideload key state, which i
   {name: 'kmac_key_o.key_share*',                      wave: 'x4...3.....4.....'},
   ],
 }
-{{< /wavejson >}}
+```
 
 
 ### Software Binding

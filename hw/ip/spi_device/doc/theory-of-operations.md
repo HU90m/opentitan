@@ -89,7 +89,7 @@ follow. The diagram below shows a typical transfer, here for 8 bytes (64 cycles,
 showing the beginning and end of the transfer). Configurability for active
 edges, polarities, and bit orders are described later.
 
-{{< wavejson >}}
+```wavejson
 { signal: [
   { name: 'CSB',  wave: '10.........|....1.'},
   { name: 'SCK',  wave: '0.p........|....l.'},
@@ -104,7 +104,7 @@ edges, polarities, and bit orders are described later.
     tick: ['-2 -1 0 1 2 3 4 5 6 7 8 9 60 61 62 63     ']
   }
 }
-{{< /wavejson >}}
+```
 
 
 ### Defining "Firmware Operation Mode"
@@ -452,7 +452,7 @@ Filtering the incoming command is the key role of the Passthrough module.
 
 ![Command Filtering logic in Passthrough mode](./passthrough-filter.svg)
 
-{{<wavejson>}}
+```wavejson
 { signal: [
   { name: 'CSb_in',  wave: '10.........|....1.'},
   { name: 'SCK_in',  wave: '0.p........|....l.'},
@@ -471,7 +471,7 @@ Filtering the incoming command is the key role of the Passthrough module.
     tick: ['-2 -1 0 n-1 n+' ]
   }
 }
-{{</wavejson>}}
+```
 
 The passthrough logic filters the command based on the 256 bit of {{<regref "CMD_FILTER_0">}} CSR.
 Each bit corresponds to each opcode.

@@ -45,7 +45,7 @@ For example if `word_be_i[3:0]` equals `4'b0011`, then the first two input bytes
 
 The following waveform illustrates the operation of the Byte Select module, highlighting the effect of the `flush_i` signal (in the first input word), as well as the effect of the byte enable signal (shown in the second word).
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i", wave:           "p............."},
   {name: "word_i[31:0]", wave:    "x2..x2...x....", data: ["32'hBEADCAFE", "32'hDAD5F00D"]},
@@ -61,7 +61,7 @@ The following waveform illustrates the operation of the Byte Select module, high
   text: "Byte Select Operation"
   }
 }
-{{< /wavejson >}}
+```
 
 ## Byte Merge
 
@@ -81,7 +81,7 @@ For partially filled words, the zero padding goes into the least significant byt
 
 Any ByteOrder swapping is performed at the other end of the RX FIFO.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i",        wave: "p.............."},
   {name: "byte_i[7:0]",  wave: "x22222.2....22x", data: ["01", "02", "03", "04", "05", "06", "07", "08"]},
@@ -97,7 +97,7 @@ Any ByteOrder swapping is performed at the other end of the RX FIFO.
   text: "Byte Merge Operation"
   }
 }
-{{< /wavejson >}}
+```
 
 ## Shift Register
 
@@ -118,7 +118,7 @@ The `sample_en_i` signal is ignored during full-cycle operation, in which case d
    - The `rd_ready_o` output informs the FSM whenever all data storage (the RX FIFO plus any intervening buffers) is full and no further data can be acquired.
 - `last_read_i`: When asserted at the same time as `rd_en_i`, this indicates that the current byte is the last of its command segment, and thus the `rx_last_o` signal should be asserted when passing this byte to the Byte Merge block.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i",                   wave: "p.........................."},
  [ "External signals",
@@ -153,7 +153,7 @@ head: {
   text: "Shift Register During Standard SPI Transaction: Simultaneous Receipt and Transmission of Data."
 },
 }
-{{< /wavejson >}}
+```
 
 The connection from the shift register to the `sd` bus depends on the speed of the current segment.
 - In Standard-mode, only the most significant shift register bit, `sr_q[7]` is connected to the outputs using `sd_o[0]`.
@@ -208,7 +208,7 @@ As shown in the waveform below, this has the effect of limiting the FSM transiti
 
 $$T_\textrm{timeslice} = \frac{T_{\textrm{clk},\textrm{clk}}}{\texttt{clkdiv}+1}.$$
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk',        wave: 'p......................'},
   {name: 'clkdiv',     wave: '2......................', data: "3"},
@@ -221,7 +221,7 @@ $$T_\textrm{timeslice} = \frac{T_{\textrm{clk},\textrm{clk}}}{\texttt{clkdiv}+1}
  head: {text: "Use of FSM Enable Pulses to Realize Multi-Clock Timeslices", tock: 1},
  foot: { text: "The fsm_en signal is always high in idle states, to allow exit transitions at any time"}
 }
-{{< /wavejson >}}
+```
 
 #### Other Internal Counters
 
@@ -276,7 +276,7 @@ This state transitions to `WaitIdle` when `wait_cntr` is zero.
 The `wait_cntr` register resets to {{< regref "CONFIGOPTS.CSNIDLE" >}} upon entering this state, and is decremented once per timeslice.
 This state transitions to `Idle` when `wait_cntr` reaches zero.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk', wave: 'p...............'},
   {name: 'rst_n', wave: '01..............'},
@@ -287,7 +287,7 @@ This state transitions to `Idle` when `wait_cntr` reaches zero.
 ],
  config: {hscale: 2}
 }
-{{< /wavejson >}}
+```
 
 ### Milestone Signals, Serial Data Lines & Shift Register Control
 
@@ -307,7 +307,7 @@ These *milestone signals* mark the progress of each command segment.
 The coordination of the milestone signals and the shift register controls are shown in the following waveform.
 Since the milestone signal pulses coincide with *entering* particular FSM states, they are derived from the state register *inputs* (i.e., `state_d`), as opposed to the state register outputs (`state_q`).
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk', wave: 'p........................'},
   {name: 'rst_n', wave: '01.......................'},
@@ -346,7 +346,7 @@ config: {hscale: 1},
 head: {text: "Timing Relationship between FSM states, Milestone Signals, and Shift Register controls (with CPHA=0)"},
 foot: {text: "Key: WL=\"WaitLead\", Hi=\"InternalClkHigh\", Lo=\"InternalClkLow\" "}
 }
-{{< /wavejson >}}
+```
 
 When working from a CPHA=0 configuration, the milestone signals are directly controlled by transitions in the FSM state register, as described in the following table.
 
@@ -374,7 +374,7 @@ That said, there are two copies of each milestone signal:
 - the original FSM-driven copy, for use when operating with CPHA=0, and
 - a delayed copy, for use in CPHA=1 operation.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk', wave: 'p......................'},
   {name: 'rst_n', wave: '01.....................'},
@@ -441,7 +441,7 @@ config: {hscale: 1},
 head: {text: "Comparison of Milestone Signals in CPHA=0 vs. CPHA=1 configuration (for a dual speed segment)"},
 foot: {text: "Key: WL=\"WaitLead\", Hi=\"InternalClkHigh\", Lo=\"InternalClkLow\", WT=\"WaitTrail\""}
 }
-{{< /wavejson >}}
+```
 
 ### Milestone Signals and Control of the the Bit and Byte Counters
 
@@ -477,7 +477,7 @@ A complete state diagram, including the `ConfigSwitch` state, is shown in the fo
 
 The following waveform illustrates how a change in a single {{< regref "CONFIGOPTS" >}}, here {{< regref "CONFIGOPTS.CPOL" >}}, triggers an entry into the `ConfigSwitch` Idle state, and how the new configuration is applied at the transition from `WaitIdle` to `ConfigSwitch` thereby ensuring ample idle time both before and after the configuration update.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk',                       wave: 'p.................'},
   {name: 'command_i.csid',            wave: '2.................', data: ["0"]},
@@ -495,7 +495,7 @@ The following waveform illustrates how a change in a single {{< regref "CONFIGOP
   head: {text: "Extension of CSB Idle Pulse Due to CPOL Configuration Switch", tock: 1},
   foot: { text: "(Note: Due to the presence of a valid command, the FSM transitions directly from WaitIdle to ConfigSwitch)"}
 }
-{{< /wavejson >}}
+```
 
 ### CSAAT Support
 
@@ -512,7 +512,7 @@ This state serves a similar purpose to the `Idle` state since in this state the 
 It is different from the `Idle` state though in that during this state the active `csb` is held low.
 When a command segment is received in the `IdleCSBActive` state, it transitions immediately to the `InternalClkLow` state to generate the next `sck` pulse and process the next segment.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk', wave: 'p...........'},
   {name: 'command_ready_o', wave: '0.1....0....'},
@@ -525,7 +525,7 @@ When a command segment is received in the `IdleCSBActive` state, it transitions 
   edge: ["A<->B min. 9 cycles", "C<->D min. 4 cycles"],
   head: {text: "Idling While CS Active", tock: 1}
 }
-{{< /wavejson >}}
+```
 
 The following figure shows the complete state transition diagram of for the SPI_HOST FSM.
 

@@ -498,7 +498,7 @@ Unlike controller initiated reads, host reads have separate rdy / done signals t
 As host reads are usually tied to host execution upstream, additional latency can severely harm performance and is not desired.
 The expected waveform from the perspective of the physical controller is shown below.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk_i',           wave: 'p..............'},
   {name: 'rst_ni',          wave: '0.1............'},
@@ -508,7 +508,7 @@ The expected waveform from the perspective of the physical controller is shown b
   {name: 'host_req_done_o', wave: '0...10..1110...'},
   {name: 'host_rdata_o',    wave: 'x...4x..444x...',data: ['Dat0', 'Dat1', 'Dat2', 'Dat3']},
 ]}
-{{< /wavejson >}}
+```
 
 The `host_req_done_o` is always single cycle pulsed and upstream logic is expected to always accept and correctly handle the return.
 The same cycle the return data is posted a new command / address can be accepted.
@@ -521,7 +521,7 @@ Instead, the protocol controller will hold the read request and address lines un
 Once the done is seen, the controller then transitions to the next read operation.
 The expected waveform from the perspective of the physical controller is shown below.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk_i',                 wave: 'p..............'},
   {name: 'rst_ni',                wave: '0.1............'},
@@ -531,7 +531,7 @@ The expected waveform from the perspective of the physical controller is shown b
   {name: 'flash_ctrl_o.rd_done',  wave: '0....10.10...10'},
   {name: 'flash_ctrl_o.rdata',    wave: 'x....4x.4x...4x', data: ['Dat0', 'Dat1', 'Dat2']},
 ]}
-{{< /wavejson >}}
+```
 
 ### Controller Program
 
@@ -539,7 +539,7 @@ Program behavior is similar to reads.
 The protocol controller will hold the request, address and data lines until the programming is complete.
 The expected waveform from the perspective of the physical controller is shown below.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk_i',                  wave: 'p..............'},
   {name: 'rst_ni',                 wave: '0.1............'},
@@ -549,4 +549,4 @@ The expected waveform from the perspective of the physical controller is shown b
   {name: 'flash_ctrl_o.prog_data', wave: 'x..4..4..x.4..x', data: ['Dat0', 'Dat1', 'Dat2']},
   {name: 'flash_ctrl_o.prog_done', wave: '0....10.10...10'},
 ]}
-{{< /wavejson >}}
+```

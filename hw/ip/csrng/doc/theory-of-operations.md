@@ -336,7 +336,7 @@ A requester must always be ready to receive `csrng_req_sts` signals.
 
 ##### Application Interface: Instantiate Request
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'             , wave: 'p...............|.....'},
    {name: 'csrng_req_valid' , wave: '01............0.|.....'},
@@ -345,11 +345,12 @@ A requester must always be ready to receive `csrng_req_sts` signals.
    {name: 'csrng_rsp_ack'   , wave: '0...............|.10..'},
    {name: 'csrng_rsp_sts'   , wave: 'x...............|.5x..', data: ['ok']},
  {},
-]}{{< /wavejson >}}
+]}
+```
 
 ##### Application Interface:  Reseed Request
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'             , wave: 'p...............|.....'},
    {name: 'csrng_req_valid' , wave: '01............0.|.....'},
@@ -358,11 +359,12 @@ A requester must always be ready to receive `csrng_req_sts` signals.
    {name: 'csrng_rsp_ack'   , wave: '0...............|.10..'},
    {name: 'csrng_rsp_sts'   , wave: 'x...............|.5x..', data: ['ok']},
  {},
-]}{{< /wavejson >}}
+]}
+```
 
 ##### Application Interface:  Generate Request
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'              , wave: 'p...|...|....|....|...'},
    {name: 'csrng_req_valid'  , wave: '010.|...|....|....|...'},
@@ -375,11 +377,11 @@ A requester must always be ready to receive `csrng_req_sts` signals.
    {name: 'genbits_bus'      , wave: '0...|.40|.4.0|.40.|...', data: ['bits0','bits1','bits2']},
    {name: 'genbits_ready'    , wave: '1...|...|0.1.|........'},
 ]}
-{{< /wavejson >}}
+```
 
 ##### Application Interface:  Update Request
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'             , wave: 'p...............|.....'},
    {name: 'csrng_req_valid' , wave: '01............0.|.....'},
@@ -388,11 +390,12 @@ A requester must always be ready to receive `csrng_req_sts` signals.
    {name: 'csrng_rsp_ack'   , wave: '0...............|.10..'},
    {name: 'csrng_rsp_sts'   , wave: 'x...............|.5x..', data: ['ok']},
  {},
-]}{{< /wavejson >}}
+]}
+```
 
 ##### Application Interface:  Uninstantiate Request
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'             , wave: 'p...............|.....'},
    {name: 'csrng_req_valid' , wave: '010.............|.....'},
@@ -401,14 +404,14 @@ A requester must always be ready to receive `csrng_req_sts` signals.
    {name: 'csrng_rsp_ack'   , wave: '0...............|.10..'},
    {name: 'csrng_rsp_sts'   , wave: 'x...............|.5x..', data: ['ok']},
  {},
-]}{{< /wavejson >}}
-
+]}
+```
 
 ##### Entropy Source Hardware Interface
 The following waveform shows an example of how the entropy source hardware interface works.
 
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'           , wave: 'p...|.........|.......'},
    {name: 'es_req'        , wave: '0..1|..01.0..1|.....0.'},
@@ -416,8 +419,7 @@ The following waveform shows an example of how the entropy source hardware inter
    {name: 'es_bus[383:0]' , wave: '0...|.30.30...|....30.', data: ['es0','es1','es2']},
    {name: 'es_fips'       , wave: '0...|....10...|....10.'},
 ]}
-]}
-{{< /wavejson >}}
+```
 
 ### Interrupts
 

@@ -164,7 +164,7 @@ The sub-state machines with smaller circles show more detail about how the large
 The following waveform shows an example of how the entropy source hardware interface works, which is much like a FIFO.
 
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'           , wave: 'p...|.........|.......'},
    {name: 'es_req'        , wave: '0..1|..01.0..1|.....0.'},
@@ -172,21 +172,21 @@ The following waveform shows an example of how the entropy source hardware inter
    {name: 'es_bus[383:0]' , wave: '0...|.30.30...|....30.', data: ['es0','es1','es2']},
    {name: 'es_fips'       , wave: '0...|....10...|....10.'},
 ]}
-{{< /wavejson >}}
+```
 
 
 ### PTRNG Hardware Interface
 The following waveform shows an example of what the PTRNG timing looks like.
 
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'clk'             , wave: 'p.|......|......|......'},
    {name: 'rng_enable'      , wave: '01|......|......|......'},
    {name: 'rng_valid'       , wave: '0.|..10..|..10..|..10..'},
    {name: 'rng_b'           , wave: 'x.|..3...|..4...|..5.....', data: ['es0','es1','es2']},
 ]}
-{{< /wavejson >}}
+```
 
 ### Repetition Count Test
 The following waveform shows how a sampling of a data pattern will be tested by the Repetition Count test.
@@ -194,7 +194,7 @@ Operating on each bit stream, this test will count when a signal is at a stuck l
 This NIST test is intended to signal a catastrophic failure with the PTRNG noise source.
 
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'rng_valid'      , wave: 'p...............'},
   ['rng bits',
@@ -214,7 +214,7 @@ This NIST test is intended to signal a catastrophic failure with the PTRNG noise
    text:'Repetition Count Test',
    tick:0,
   },}
-{{< /wavejson >}}
+```
 
 ### Adaptive Proportion Test
 This NIST-defined test is intended to detect statistical bias in the raw entropy data.
@@ -228,7 +228,7 @@ Meanwhile, setting {{< regref "CONF.THRESHOLD_SCOPE" >}} to `kMuBi4False` will a
 The following waveform shows how a sampling of a data pattern will be tested by the Adaptive Proportion test.
 In this example, the sum is taken over all RNG lines (i.e., {{< regref "CONF.THRESHOLD_SCOPE" >}} is True).
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'rng_valid'      , wave: 'p...............'},
   ['rng bits',
@@ -244,14 +244,14 @@ In this example, the sum is taken over all RNG lines (i.e., {{< regref "CONF.THR
    text:'Adaptive Proportion Test',
    tick:0,
   },}
-{{< /wavejson >}}
+```
 
 ### Bucket Test
 The following waveform shows how a sampling of a data pattern will be tested by the Bucket test.
 Operating on all four bit streams, this test will identify the symbol and sort it into bin counters, or "buckets".
 This test is intended to find bias with a symbol or symbols.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'rng_valid'      , wave: 'p...............'},
   ['rng bits',
@@ -273,7 +273,7 @@ This test is intended to find bias with a symbol or symbols.
    text:'Bucket Test',
    tick:0,
   },}
-{{< /wavejson >}}
+```
 
 ### Markov Test
 The following waveform shows how a sampling of a data pattern will be tested by the Markov test.
@@ -292,7 +292,7 @@ On average, the number of switching (e.g., "01") vs. non-switching (e.g., "00") 
 Like the Adaptive Proportion test, the Markov Test can be computed either cumulatively (summing the results over all RNG lines) or on a per-line basis.
 In this example, the RNG lines are scored individually (i.e., {{< regref "CONF.THRESHOLD_SCOPE" >}} is False).
 
-{{< wavejson >}}
+```wavejson
 {signal: [
    {name: 'rng_valid'      , wave: 'p...............'},
   ['rng bits',
@@ -310,5 +310,5 @@ In this example, the RNG lines are scored individually (i.e., {{< regref "CONF.T
    text:'Markov Test',
    tick:0,
   },}
-{{< /wavejson >}}
+```
 

@@ -80,7 +80,7 @@ When operating at the fastest-rated clock speeds, some flash devices (i.e. both 
 In order to support these fastest data rates, the SPI_HOST IP offers a modified "Full-cycle" (FULLCYC = 1) timing mode where data can be sampled a *full* cycle after the target device asserts data on the SD bus.
 This full cycle mode has no effect on any of the signals transmitted, only on the timing of the sampling of the incoming signals.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i", wave: "p.................."},
   {name: "SCK (CPOL=0)", wave: "0.1010101010101010."},
@@ -105,7 +105,7 @@ This full cycle mode has no effect on any of the signals transmitted, only on th
   foot: {
   }
 }
-{{< /wavejson >}}
+```
 
 As mentioned earlier, the SD[0] and SD[1] lines are unidirectional in Standard SPI mode.
 On the other hand in the faster Dual- or Quad-modes, all data lines are bidirectional, and in Quad mode the number of data lines increases to four.
@@ -120,7 +120,7 @@ As indicated in the example figure below, input data need only be sampled during
 Likewise, software-provided data is only transmitted in the first two segments.
 The SPI_HOST command interface allows the user to specify any number of command segments to build larger, more complex transactions.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i",        wave: "p................................"},
   {name: "SCK (CPOL=0)", wave: "0.101010101010101010101010101010."},
@@ -140,7 +140,7 @@ The SPI_HOST command interface allows the user to specify any number of command 
   text: "Example Quad SPI transaction: 1 byte TX (Single), 1 byte (Quad), 3 dummy cycles and 1 RX byte with CPHA=0"
   },
 }
-{{< /wavejson >}}
+```
 
 For even faster transfer rates, some flash chips support double transfer rate (DTR) variations to the SPI protocol wherein the device receives and transmits fresh data on *both* the leading and trailing edge.
 This IP only supports single transfer rate (STR), *not* DTR.
@@ -176,7 +176,7 @@ Thus if the last word in a given segment has only one valid byte, the total dela
 Such stalls however are a much smaller concern in the RX direction due to the buffering of the Shift Register outputs.
 As shown in the following waveform, even in Quad-mode, this buffer means the shift register can tolerate as many as six clock cycles of temporary back-pressure before creating a stall.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   [ "Shift Register Ports",
   {name: "clk_core_i",                  wave: "p..........................."},
@@ -193,12 +193,12 @@ As shown in the following waveform, even in Quad-mode, this buffer means the shi
   edge: ["A<->B 6 clocks: No Stall", "C<->D 7 clocks will stall FSM"],
   head: {text: "SPI_HOST Shift Register: Tolerance to Gaps in rx_ready_i", tick:1}
 }
-{{< /wavejson >}}
+```
 
 Even though such long delays are tolerable, it takes some time for shift register to catch up completely and clear the backlog.
 For example, if after a 6-clock delay the shift-register encounters another 4-clock backlog this can also introduce a stall condition, as shown in the waveform below.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   ["Shift Register Ports",
   {name: "clk_core_i", wave: "p........................"},
@@ -215,14 +215,14 @@ For example, if after a 6-clock delay the shift-register encounters another 4-cl
   edge: ["A<->B 1st Gap: 6 clocks", "C<->D 2nd Gap: 4 clocks"],
   head: {text: "SPI_HOST Shift Register: Back-to-back gaps in rx_ready_i", tick:1}
 }
-{{< /wavejson >}}
+```
 
 Delays of 3-clocks or less do not create any internal backlog in the system.
 However, the Byte Merge block can create a 4-clock delay each time it processes a single-byte segment.
 In practice, this is unlikely to cause a problem, as no Quad-SPI Flash transactions require even two back-to-back RX segments.
 However with enough (at least six) consecutive one-byte segments, the accumulated delay can eventually create a stall event on the RX path as well, as seen below.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
  [ "Shift Register Ports",
   {name: "clk_core_i", wave: "p..........................."},
@@ -241,4 +241,4 @@ However with enough (at least six) consecutive one-byte segments, the accumulate
   head: {text: "SPI_HOST Shift Register: Hypothetical RX Congestion Scenario", tick:1},
  foot: {text: "Six back-to-back quad reads 1-byte each, same CSID, CSAAT enabled"}
 }
-{{< /wavejson >}}
+```

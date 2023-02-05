@@ -88,7 +88,7 @@ For example, SPI flash devices generally expect flash addresses (or any other mu
 This is illustrated in the following figure, which depicts a Fast Quad Read I/O command.
 Assuming that `ByteOrder` is set to `1` for Little-Endian devices such as Ibex, byte-swapping will be required for these addresses, otherwise the device will receive the addresses LSB first.
 
-{{< wavejson >}}
+```wavejson
 { signal: [
   {name:"csb", wave:"10........................."},
   {name:"sck", wave:"lnn........................"},
@@ -108,7 +108,7 @@ Assuming that `ByteOrder` is set to `1` for Little-Endian devices such as Ibex, 
          'L<->M Address', 'N<->O Data'],
 
  foot: {text: "Addresses are transmitted MSB first, and data is returned in order of increasing peripheral byte address."}}
-{{< /wavejson >}}
+```
 
 Byte ordering on the bus can also be managed by writing {{< regref "TXDATA" >}} as a sequence of discrete bytes using 8-bit transactions, since partially-filled data-words are always sent in the order they are received.
 

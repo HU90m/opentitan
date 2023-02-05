@@ -48,7 +48,7 @@ Likewise it is not necessary for software to specify any data to transmit while 
 Therefore such a command can be thought of as consisting of two separate segments, the first segment being TX Only and the second segment being RX only, as shown in the following figure.
 Breaking the command up this way potentially simplifies the job of writing software for this type of command.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i",          wave: "p....................|.............."},
   {name: "SCK (CPOL=0)",   wave: "0.1010101010101010101|01010101010101"},
@@ -61,7 +61,7 @@ Breaking the command up this way potentially simplifies the job of writing softw
   ],
  foot: {text: "Standard SPI example: Flash Read command with 24-bit address, consisting of one TX and one RX segment"}
 }
-{{< /wavejson >}}
+```
 
 In addition to the TX, RX or Bidirectional modes, many SPI commands require periods where neither the host or device are transmitting data.
 For instance, many flash devices define a Fast Read command in which the host must insert a number of "dummy clocks" between the last address byte and the first data byte from the device.
@@ -71,7 +71,7 @@ A standard-mode Fast Read (with 3 byte addressing) command then requires *three*
 - 8 dummy clocks
 - N bytes RX Only for read data response
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "clk_i",          wave: "p....................|.............................."},
   {name: "SCK (CPOL=0)",   wave: "0.1010101010101010101|010101010101010101010101010101"},
@@ -84,7 +84,7 @@ A standard-mode Fast Read (with 3 byte addressing) command then requires *three*
   ],
  foot: {text: "Standard SPI example: Fast read command (instruction code 0xb) with 24-bit address, consisting of three segments, one TX, 8 dummy clocks and one RX segment"}
 }
-{{< /wavejson >}}
+```
 
 For standard mode-commands, segments simplify the IO process by identifying which bus cycles have useful RX or TX data.
 In such cases it is not strictly necessary to the manage the impedance of the SD[0] and SD[1] lines.
@@ -171,7 +171,7 @@ This time delay is a half SCK cycle by default but can be extended to as long as
 - T<sub>TRAIL</sub>: The minimum time between the last trailing edge of SCK and the following rising edge of CSB.
 This time delay is a half SCK cycle by default but can be extended to as long as eight SCK cycles by setting the {{< regref "CONFIGOPTS.CSNTRAIL">}} register.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "SCK",  wave: "l....1010|10........"},
   {name: "CSB", wave: "10.......|.....1...0", node: ".A...B.....C...D...E"}
@@ -189,7 +189,7 @@ This time delay is a half SCK cycle by default but can be extended to as long as
           "&#xd7;(CLKDIV+1)"]
   }
 }
-{{< /wavejson >}}
+```
 
 These settings are all minimum bounds, and delays in the FSM implementation may create more margin in each of these timing constraints.
 
@@ -203,7 +203,7 @@ For example, consider a SPI_HOST attached to two devices each with different req
 Consider a configuration where total idle time (as determined by the {{< regref "CONFIGOPTS.CLKDIV" >}} and {{< regref "CONFIGOPTS.CSNIDLE" >}} multi-registers) works out to 9 idle clocks for the first device, and 4 clocks for the second device.
 In this scenario then, when swapping from the first device to the second, the SPI_HOST IP will only swap the clock polarity once the first `csb` line, `csb[0]`, has been high for at least 9 clocks, and will continue to hold the second `csb` line, `csb[1]`, high for 4 additional clocks before starting the next transaction.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: 'clk', wave: 'p..............'},
   ["Requested Config",
@@ -229,7 +229,7 @@ In this scenario then, when swapping from the first device to the second, the SP
   edge: ["A<->B min. 9 cycles", "C<->D min. 4 cycles"],
   head: {text: "Extended Idle Time During Configuration Changes", tock: 1}
 }
-{{< /wavejson >}}
+```
 
 This additional idle time applies not only when switching between devices but when making any changes to the configuration for most recently used device.
 For instance, even in a SPI_HOST configured for one device, changes to {{< regref "CONFIGOPTS" >}}, will trigger this extended idle time behavior to ensure that the change in configuration only occurs in the middle of a long idle period.
@@ -292,7 +292,7 @@ For Dual and Quad transactions the least significant bit in any instantaneous pa
 
 The following figure shows how data appears on the serial data bus when the hardware reads it from {{< regref "TXDATA" >}} or writes it to {{< regref "RXDATA" >}}.
 
-{{< wavejson >}}
+```wavejson
  {signal: [
   ["ByteOrder=0",
   {name: "SD[0] (host output)", wave: "x22222222222|2222|222|22x", data: ["t[31]", "t[30]", "t[29]", "t[28]", "t[27]", "t[26]", "t[25]", "t[24]", "t[23]","t[22]",
@@ -316,13 +316,13 @@ The following figure shows how data appears on the serial data bus when the hard
   text: "Standard SPI, bidirectional segment.  Bits are numbered as they appear in the DATA memory window"
   }
 }
-{{< /wavejson >}}
+```
 
 
 As shown in the following figure, a similar time-ordering scheme applies for Dual- and Quad-mode transfers.
 However many bits of similar significance are packed into multiple parallel SD data lines, with the least significant going to SD[0].
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   ["ByteOrder=0",
   {name: "SD[0]", wave: "x...22334455x...", data: ["d[28]", "d[24]", "d[20]", "d[16]", "d[12]", "d[8]", "d[4]", "d[0]"]},
@@ -344,7 +344,7 @@ However many bits of similar significance are packed into multiple parallel SD d
   text: "(Bits are numbered as they appear when loaded into DATA memory window)"
   }
 }
-{{< /wavejson >}}
+```
 
 ### Command Length and Alignment in DATA
 
@@ -358,7 +358,7 @@ The following waveform illustrates an example SPI transaction, where neither the
 In this example, the values `I[31:0]`, `A[31:0]` and `B[31:0]`, have been previously written into {{< regref "TXDATA" >}} via firmware, and afterwards one word, `X[31:0]`, is available for reading from {{< regref "RXDATA" >}}.
 All data in the waveform is transferred using 32-bit instructions.
 
-{{< wavejson >}}
+```wavejson
 {signal: [
   {name: "Segment number", wave: "x2.......2.........2.2.x", data: "1 2 3 4"},
   {name: "Speed", wave: "x2.......2.........2.2.x", data: "Standard Quad X Quad"},
@@ -387,7 +387,7 @@ All data in the waveform is transferred using 32-bit instructions.
     text: "Command consists of 4 segments, all TX data is written to DATA using 32-bit memory instructions (all bytes enabled)"
   }
 }
-{{< /wavejson >}}
+```
 
 When packing data into the TX FIFO, there are also no restrictions on the alignment of the data written to the {{< regref "TXDATA" >}} memory window, as it supports byte-enable signals.
 This means that when copying bytes into {{< regref "TXDATA" >}} from unaligned firmware memory addresses, it is possible to use byte or half-word instructions.

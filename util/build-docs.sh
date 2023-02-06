@@ -73,8 +73,8 @@ mdbooks="
 export MDBOOK_OUTPUT__HTML__THEME="$proj_root/site/docs/theme/"
 
 # Apply fix relative links to pre-processors
-export MDBOOK_PREPROCESSOR__REGGEN__COMMAND="./util/mdbook-reggen.py"
-export MDBOOK_PREPROCESSOR__WAVEJSON__COMMAND="./util/mdbook-wavejson.py"
+export MDBOOK_PREPROCESSOR__REGGEN__COMMAND="$proj_root/util/mdbook-reggen.py"
+export MDBOOK_PREPROCESSOR__WAVEJSON__COMMAND="$proj_root/util/mdbook-wavejson.py"
 
 # Build up Hugo arguments
 hugo_args=""

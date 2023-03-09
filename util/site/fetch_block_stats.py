@@ -14,7 +14,7 @@ from pathlib import Path
 import sys
 from typing import Tuple
 
-import hjson # type: ignore
+import hjson  # type: ignore
 
 REPO_TOP = Path(__file__).parents[2].resolve()
 
@@ -38,6 +38,26 @@ def parse_report(path: str) -> Tuple[int, int]:
     return (total_runs, total_passing)
 
 
+def parse_data_file(rel_path: str) -> Tuple[str, str, str]:
+    with (REPO_TOP / rel_path).open() as f:
+        block_data = hjson.load(f)
+
+    try:
+        return (
+            block_data['version'],
+            block_data['design_stage'],
+            block_data['verification_stage'],
+        )
+    except KeyError:
+        # Assumes the last value is the most recent
+        revision = block_data['revisions'][-1]
+        return (
+            revision['version'],
+            revision['design_stage'],
+            revision['verification_stage'],
+        )
+
+
 def main() -> None:
     if len(sys.argv) < 2:
         prog = sys.argv[0]
@@ -55,24 +75,13 @@ def main() -> None:
         print(f"fetching data for {name}")
 
         block_output = {}
-
+        block_output['name'] = block['name']
         block_output['href'] = block['href']
-
-        if block['data_file']:
-            with (REPO_TOP / block["data_file"]).open() as f:
-                block_data = hjson.load(f)
-
-            try:
-                block_output['design_stage'] = block_data['design_stage']
-                block_output['verification_stage'] = block_data['verification_stage']
-            except KeyError:
-                # Assumes the last value is the most recent
-                revision = block_data['revisions'][-1]
-                block_output['design_stage'] = revision['design_stage']
-                block_output['verification_stage'] = revision['verification_stage']
-        else:
-            (block_output['design_stage'], block_output['verification_stage']) = (None, None)
-
+        (
+            block_output['version'],
+            block_output['design_stage'],
+            block_output['verification_stage'],
+        ) = parse_data_file(block['data_file']) if block['data_file'] else (None, None, None)
         (
             block_output['total_runs'],
             block_output['total_passing'],

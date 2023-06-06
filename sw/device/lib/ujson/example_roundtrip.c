@@ -19,34 +19,52 @@ status_t stdio_putbuf(void *context, const char *buf, size_t len) {
   return OK_STATUS();
 }
 
+status_t check_crc32(ujson_t* uj) {
+  uint32_t expected = ujson_crc32_finish(uj);
+  uint32_t actual;
+  fscanf(stdin, "%x", &actual);
+
+  if (expected != actual) {
+    fprintf(stderr, "CRC32 Error: expected = %x, actual = %x\n", expected, actual);
+    return DATA_LOSS();
+  };
+  return OK_STATUS();
+}
+
 status_t roundtrip(const char *name) {
   ujson_t uj = ujson_init(NULL, stdio_getc, stdio_putbuf);
   if (!strcmp(name, "foo")) {
     foo x = {0};
     TRY(ujson_deserialize_foo(&uj, &x));
+    TRY(check_crc32(&uj));
     TRY(ujson_serialize_foo(&uj, &x));
   } else if (!strcmp(name, "rect")) {
     rect x = {0};
     TRY(ujson_deserialize_rect(&uj, &x));
+    TRY(check_crc32(&uj));
     TRY(ujson_serialize_rect(&uj, &x));
   } else if (!strcmp(name, "matrix")) {
     matrix x = {0};
     TRY(ujson_deserialize_matrix(&uj, &x));
+    TRY(check_crc32(&uj));
     TRY(ujson_serialize_matrix(&uj, &x));
   } else if (!strcmp(name, "direction")) {
     direction x = {0};
     TRY(ujson_deserialize_direction(&uj, &x));
+    TRY(check_crc32(&uj));
     TRY(ujson_serialize_direction(&uj, &x));
   } else if (!strcmp(name, "fuzzy_bool")) {
     fuzzy_bool x = {0};
     fprintf(stderr, "-- fuzzy_bool\n");
     TRY(ujson_deserialize_fuzzy_bool(&uj, &x));
     fprintf(stderr, "-- %d\n", (int)x);
+    TRY(check_crc32(&uj));
     TRY(ujson_serialize_fuzzy_bool(&uj, &x));
     fprintf(stderr, "-- done\n");
   } else if (!strcmp(name, "misc")) {
     misc_t x = {0};
     TRY(ujson_deserialize_misc_t(&uj, &x));
+    TRY(check_crc32(&uj));
     TRY(ujson_serialize_misc_t(&uj, &x));
   } else {
     return INVALID_ARGUMENT();

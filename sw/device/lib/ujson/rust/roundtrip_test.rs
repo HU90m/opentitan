@@ -7,6 +7,7 @@ use opentitanlib::test_utils::status::Status;
 use opentitanlib::with_unknown;
 use std::io::{Read, Write};
 use std::process::{Command, Stdio};
+use crc::{Crc, CRC_32_ISO_HDLC};
 
 mod example {
     // Bring in the auto-generated sources.
@@ -29,10 +30,14 @@ fn roundtrip(name: &str, data: &str) -> Result<String> {
         .stderr(Stdio::inherit())
         .spawn()?;
 
+    let crc32 = Crc::<u32>::new(&CRC_32_ISO_HDLC).checksum(data.as_bytes());
     let mut stdin = child.stdin.take().unwrap();
-    let msg = format!("{}\n", data);
+    let msg = format!("{}\n{:x}\n", data, crc32);
     eprintln!("sending: {}", msg);
     stdin.write_all(msg.as_bytes())?;
+
+    let exit_code = child.wait()?;
+    assert!(exit_code.success());
 
     let mut s = String::new();
     let mut stdout = child.stdout.take().unwrap();

@@ -69,6 +69,10 @@ status_t roundtrip(const char *name) {
     ujson_crc32_reset(&uj);
     TRY(ujson_serialize_fuzzy_bool(&uj, &x));
     printf("\n%x", ujson_crc32_finish(&uj));
+  } else if (!strcmp(name, "fuzzy_bool_no_crc")) {
+    fuzzy_bool x = {0};
+    TRY(ujson_deserialize_fuzzy_bool(&uj, &x));
+    TRY(ujson_serialize_fuzzy_bool(&uj, &x));
   } else if (!strcmp(name, "misc")) {
     misc_t x = {0};
     TRY(ujson_deserialize_misc_t(&uj, &x));

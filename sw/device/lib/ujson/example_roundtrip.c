@@ -64,14 +64,11 @@ status_t roundtrip(const char *name) {
     printf("\n%x", ujson_crc32_finish(&uj));
   } else if (!strcmp(name, "fuzzy_bool")) {
     fuzzy_bool x = {0};
-    fprintf(stderr, "-- fuzzy_bool\n");
     TRY(ujson_deserialize_fuzzy_bool(&uj, &x));
-    fprintf(stderr, "-- %d\n", (int)x);
     TRY(check_crc32(&uj));
     ujson_crc32_reset(&uj);
     TRY(ujson_serialize_fuzzy_bool(&uj, &x));
     printf("\n%x", ujson_crc32_finish(&uj));
-    fprintf(stderr, "-- done\n");
   } else if (!strcmp(name, "misc")) {
     misc_t x = {0};
     TRY(ujson_deserialize_misc_t(&uj, &x));

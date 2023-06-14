@@ -45,13 +45,10 @@ fn roundtrip(name: &str, data: &str) -> Result<String> {
     let mut stdout = child.stdout.take().unwrap();
     stdout.read_to_string(&mut msg)?;
     eprintln!("recv: '{msg}'");
-    let (data2, crc32_str) = msg.split_once('\n').expect("Expected two lines.");
+    let (data, crc32_str) = msg.split_once('\n').expect("Expected two lines.");
 
     let crc32 = u32::from_str_radix(crc32_str, 16)?;
-    let actual_crc32 = Crc::<u32>::new(&CRC_32_ISO_HDLC).checksum(data2.as_bytes());
-
-    eprintln!("{data} -- {data2}");
-    //assert!(data2 == data);
+    let actual_crc32 = Crc::<u32>::new(&CRC_32_ISO_HDLC).checksum(data.as_bytes());
 
     eprintln!("actual crc32 == {actual_crc32:x}");
     assert!(crc32 == actual_crc32);
@@ -64,7 +61,6 @@ fn roundtrip(name: &str, data: &str) -> Result<String> {
 mod test {
     use super::*;
 
-    /*
     #[test]
     fn test_foo() -> Result<()> {
         let before = example::Foo {
@@ -141,7 +137,6 @@ mod test {
         assert_eq!(before, after);
         Ok(())
     }
-    */
 
     /*
     #[test]

@@ -4,7 +4,6 @@
 
 #include "sw/device/lib/runtime/print.h"
 
-#include <stdio.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -363,18 +362,13 @@ static size_t write_status(buffer_sink_t out, status_t value, bool as_json) {
   const char *start;
   bool err = status_extract(value, &start, &arg, &mod[1]);
 
-  fprintf(stderr, "1");
-
   // strlen of the status code.
   const char *end = start;
   while (*end)
     end++;
   size_t len = 0;
 
-  fprintf(stderr, "2");
-
   len += out.sink(out.data, "{\"", as_json ? 2 : 0);
-  fprintf(stderr, "3");
   len += out.sink(out.data, start, (size_t)(end - start));
   len += out.sink(out.data, "\"", as_json ? 1 : 0);
 

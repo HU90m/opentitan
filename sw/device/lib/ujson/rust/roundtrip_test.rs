@@ -37,7 +37,9 @@ fn roundtrip(name: &str, data: &str) -> Result<String> {
     stdin.write_all(msg.as_bytes())?;
 
     let exit_code = child.wait()?;
-    assert!(exit_code.success());
+    if !exit_code.success() {
+        panic!("{exit_code}");
+    }
 
     msg.clear();
     let mut stdout = child.stdout.take().unwrap();

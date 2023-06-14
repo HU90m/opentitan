@@ -107,7 +107,5 @@ int main(int argc, char *argv[]) {
   }
   status_t s = roundtrip(argv[1]);
 
-  base_fprintf(stdout, "%!r", s);
-
   return status_ok(s) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -402,7 +402,7 @@ status_t ujson_deserialize_status_t(ujson_t *uj, status_t *value) {
 
 status_t ujson_serialize_status_t(ujson_t *uj, const status_t *value) {
   buffer_sink_t out = {
-      .data = &uj,
+      .data = uj,
       //.sink = NULL,
       .sink = (size_t(*)(void *, const char *, size_t)) ujson_putbuf,//(size_t(*)(void *, const char *, size_t))uj->putbuf,
   };

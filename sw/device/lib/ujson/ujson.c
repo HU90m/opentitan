@@ -4,6 +4,7 @@
 
 #include "sw/device/lib/ujson/ujson.h"
 
+#include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -27,7 +28,11 @@ void ujson_crc32_reset(ujson_t *uj) { crc32_init(&uj->crc32); }
 uint32_t ujson_crc32_finish(ujson_t *uj) { return crc32_finish(&uj->crc32); }
 
 status_t ujson_putbuf(ujson_t *uj, const char *buf, size_t len) {
+  //fprintf(stderr, "<'");
+  //fwrite(buf, 1, len, stderr);
+  //fprintf(stderr, "'>\n");
   crc32_add(&uj->crc32, buf, len);
+  fprintf(stderr, "int: %x, ", uj->crc32);
   return uj->putbuf(uj->io_context, buf, len);
 }
 
@@ -397,8 +402,9 @@ status_t ujson_deserialize_status_t(ujson_t *uj, status_t *value) {
 
 status_t ujson_serialize_status_t(ujson_t *uj, const status_t *value) {
   buffer_sink_t out = {
-      .data = uj->io_context,
-      .sink = (size_t(*)(void *, const char *, size_t))uj->putbuf,
+      .data = &uj,
+      //.sink = NULL,
+      .sink = (size_t(*)(void *, const char *, size_t)) ujson_putbuf,//(size_t(*)(void *, const char *, size_t))uj->putbuf,
   };
   base_fprintf(out, "%!r", *value);
   return OK_STATUS();

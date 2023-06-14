@@ -18,8 +18,11 @@ status_t stdio_getc(void *context) {
 uint32_t crc_g;
 
 status_t stdio_putbuf(void *context, const char *buf, size_t len) {
+  fprintf(stderr, "ext: %x\n", crc_g);
   fwrite(buf, 1, len, stdout);
+  fprintf(stderr, "<'");
   fwrite(buf, 1, len, stderr);
+  fprintf(stderr, "'>\n");
   crc32_add(&crc_g, buf, len);
   return OK_STATUS();
 }
@@ -79,17 +82,17 @@ status_t roundtrip(const char *name) {
   } else if (!strcmp(name, "misc")) {
     misc_t x = {0};
     TRY(ujson_deserialize_misc_t(&uj, &x));
-    fprintf(stderr, "%x\n", uj.crc32);
-    fprintf(stderr, "%x\n", ujson_crc32_finish(&uj));
+    //fprintf(stderr, "%x\n", uj.crc32);
+    //fprintf(stderr, "%x\n", ujson_crc32_finish(&uj));
     TRY(check_crc32(&uj));
     ujson_crc32_reset(&uj);
-    fprintf(stderr, "%x\n", uj.crc32);
+    //fprintf(stderr, "%x\n", uj.crc32);
     crc32_init(&crc_g);
     TRY(ujson_serialize_misc_t(&uj, &x));
-    fprintf(stderr, "\n");
-    fprintf(stderr, "other: %x\n", crc32_finish(&crc_g));
-    fprintf(stderr, "%x\n", uj.crc32);
-    fprintf(stderr, "%x\n", ujson_crc32_finish(&uj));
+    //fprintf(stderr, "\n");
+    //fprintf(stderr, "other: %x\n", crc32_finish(&crc_g));
+    //fprintf(stderr, "%x\n", uj.crc32);
+    //fprintf(stderr, "%x\n", ujson_crc32_finish(&uj));
     printf("\n%x", ujson_crc32_finish(&uj));
   } else {
     return INVALID_ARGUMENT();
@@ -103,6 +106,8 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
   status_t s = roundtrip(argv[1]);
+
+  base_fprintf(stdout, "%!r", s);
 
   return status_ok(s) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

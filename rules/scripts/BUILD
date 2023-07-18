@@ -9,6 +9,23 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files(glob(["**"]))
 
+py_binary(
+    name = "tar",
+    srcs = ["tar.py"],
+    deps = [],
+)
+
+py_binary(
+    name = "gdb_test_coordinator",
+    srcs = [
+        "gdb_test_coordinator.py",
+    ],
+    deps = [
+        requirement("typer"),
+        requirement("rich"),
+    ],
+)
+
 py_library(
     name = "bitstreams_workspace",
     srcs = [

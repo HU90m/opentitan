@@ -10,6 +10,14 @@ package(default_visibility = ["//visibility:public"])
 exports_files(glob(["**"]))
 
 py_binary(
+    name = "run_and_collect",
+    srcs = [
+        "run_and_collect.py",
+    ],
+    deps = [],
+)
+
+py_binary(
     name = "gdb_test_coordinator",
     srcs = [
         "gdb_test_coordinator.py",

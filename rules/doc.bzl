@@ -27,27 +27,33 @@ ls = rule(
 
 
 def _mdbook_build_impl(ctx):
-    #out_dir_str = "{}.book".format(ctx.label.name)
-    #output_dir = ctx.actions.declare_directory("book")
+    #out_dir_str = "{}".format(ctx.label.name)
+    output_dir = ctx.actions.declare_directory(ctx.files.dir[0].path + "/book")
     output = ctx.actions.declare_file("book.tar")
 
-    #process_wrapper_flags.add("--subst", "pwd=${pwd}")
-
-    out_dir = "lkhasdg"
     ctx.actions.run(
         mnemonic = "mdBook",
         progress_message = "Generating mdBook for {}".format(ctx.label),
-        outputs = [output],
-        executable = ctx.executable._run_and_collect,
-        inputs = ctx.files.srcs + ctx.files._mdbook,
+        outputs = [output_dir],
+        executable = ctx.executable._mdbook,
+        inputs = ctx.files.srcs,
         arguments = [
-            out_dir,
-            output.path,
-            ctx.executable._mdbook.path,
             "build",
             ctx.files.dir[0].path,
             "-d",
-            out_dir,
+            output_dir.path,
+        ],
+    )
+
+    ctx.actions.run(
+        mnemonic = "mdBookTar",
+        progress_message = "Collecting mdBook for {}".format(ctx.label),
+        outputs = [output],
+        executable = ctx.executable._run_and_collect,
+        inputs = [output_dir],
+        arguments = [
+            output_dir.path,
+            output.path,
         ],
     )
 

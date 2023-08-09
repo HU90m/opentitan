@@ -4,19 +4,19 @@ import argparse
 import tarfile
 import subprocess
 import sys
+import os
 
 def main():
-    #parser = argparse.ArgumentParser(prog="run_and_collect")
-    #parser.add_argument("directory", help="Directory to collect")
-    #parser.add_argument("output")
-    #parser.add_argument("cmd", help="Command to run")
-    #args = parser.parse_args()
+    parser = argparse.ArgumentParser(prog="run_and_collect")
+    parser.add_argument("directory", help="Directory to collect")
+    parser.add_argument("output")
+    parser.add_argument("cmd", help="Command to run")
+    args = parser.parse_args()
 
     dir = sys.argv[1]
     output = sys.argv[2]
     cmd = sys.argv[3:]
 
-    import os
     #print(os.getcwd())
     os.makedirs(dir)
     with open(dir + "/hello_there", "w") as f:
@@ -34,5 +34,17 @@ def main():
         tar.add(dir, recursive=True)
         print(tar)
 
+def main2():
+    parser = argparse.ArgumentParser(prog="run_and_collect")
+    parser.add_argument("directory", help="Directory to collect")
+    parser.add_argument("output", help="tar file")
+    args = parser.parse_args()
+
+
+    with tarfile.open(args.output, "w:gz", dereference=True) as tar:
+        for file in os.listdir(args.directory):
+            print(file)
+            tar.add(file, recursive=True)
+
 if __name__ == "__main__":
-    main()
+    main2()

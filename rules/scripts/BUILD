@@ -10,10 +10,8 @@ package(default_visibility = ["//visibility:public"])
 exports_files(glob(["**"]))
 
 py_binary(
-    name = "run_and_collect",
-    srcs = [
-        "run_and_collect.py",
-    ],
+    name = "tar",
+    srcs = ["tar.py"],
     deps = [],
 )
 

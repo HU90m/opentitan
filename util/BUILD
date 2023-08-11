@@ -96,8 +96,19 @@ py_binary(
     ],
 )
 
+py_library(
+    name = "mdbook",
+    srcs = ["//util/mdbook:all_files"],
+)
+
 py_binary(
-    name = "fusesoc_build",
-    srcs = ["fusesoc_build.py"],
-    deps = all_requirements,
+    name = "mdbook_readme2index",
+    srcs = ["mdbook_readme2index.py"],
+    deps = [":mdbook"],
+)
+
+py_binary(
+    name = "mdbook_toolversion",
+    srcs = ["mdbook_toolversion.py"],
+    deps = [":mdbook"],
 )

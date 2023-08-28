@@ -1,0 +1,70 @@
+site_name: "OpenTitan"
+docs_dir: "./opentitan"
+repo_url: "https://github.com/lowRISC/opentitan"
+theme:
+  name: "material"
+  logo: "logo.svg"
+  favicon: "logo.svg"
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      accent: purple
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      accent: purple
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+
+extra_javascript:
+  - docs.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0/skins/default.js
+  - https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0/wavedrom.min.js
+
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css
+  - docs.css
+
+plugins:
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/
+  - search
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: wavejson
+          class: wavejson
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+# Navigation with explicit ordering and nesting.
+# https://www.mkdocs.org/user-guide/configuration/#nav
+# Note: may include external links and titles are optional for internal links
+nav:
+  - Home: ./doc/introduction.md
+  - Getting Started:
+      - ./doc/getting_started/README.md
+      - Workflows:
+        - ./doc/getting_started/setup_dv.md
+        - ./doc/getting_started/setup_formal.md
+        - ./doc/getting_started/build_sw.md
+        - ./doc/getting_started/build_docs.md
+        - ./doc/getting_started/using_openocd.md
+      - Tools Setup:
+        - ./doc/getting_started/setup_fpga.md
+        - ./doc/getting_started/setup_verilator.md
+        - ./doc/getting_started/install_vivado/README.md
+  - Hardware:
+    - Hardware Introduction: ./hw/README.md
+    - Top Earlgrey:
+      - ./hw/top_earlgrey/README.md
+    - Hardware IP Blocks:
+      - AES:
+        - ./hw/ip/aes/data/aes_testplan.hjson

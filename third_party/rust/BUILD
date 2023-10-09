@@ -39,6 +39,11 @@ crates_vendor(
             patch_args = ["-p1"],
             patches = ["@//third_party/rust/patches:mdbook-landing-page-links.patch"],
         )],
+        "lychee": [crate.annotation(
+            gen_binaries = True,
+            patch_args = ["-p1"],
+            patches = ["@//third_party/rust/patches/lychee-fragments.patch"],
+        )],
         "cryptoki": [crate.annotation(
             patch_args = ["-p2"],
             patches = [

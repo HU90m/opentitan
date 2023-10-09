@@ -92,6 +92,7 @@ pest_derive = "2.2"
 
 # documentation generation tools
 mdbook = "0.4.31"
+lychee = "0.13.0"
 
 # elf2tab dependencies
 tar = "0.4.36"

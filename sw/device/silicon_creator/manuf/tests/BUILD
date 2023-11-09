@@ -21,6 +21,8 @@ load(
 
 package(default_visibility = ["//visibility:public"])
 
+package(default_visibility = ["//visibility:public"])
+
 _TEST_UNLOCKED_LC_ITEMS = get_lc_items(
     CONST.LCV.TEST_UNLOCKED0,
     CONST.LCV.TEST_UNLOCKED1,

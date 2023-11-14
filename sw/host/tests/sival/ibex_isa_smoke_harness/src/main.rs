@@ -59,11 +59,12 @@ fn ibex_isa_smoke_test(opts: &Opts, transport: &TransportWrapper) -> Result<()> 
         res => bail!("program execution failed: {:?}", res),
     }
     let a0 = jtag.read_riscv_reg(&RiscvReg::Gpr(RiscvGpr::A0))?;
-    log::info!("a0 = {a0}");
-
+    log::info!("Return Value (a0): {a0}");
     // Disconnect JTAG.
     jtag.halt()?;
     jtag.disconnect()?;
+
+    assert_eq!(a0, 0, "An instruction failed");
 
     Ok(())
 }

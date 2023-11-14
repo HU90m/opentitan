@@ -1,106 +1,102 @@
-
-.section .sram_start
-
-  .global sram_main
-sram_main:
-  #jal smoke_branch
-  #jal smoke_auipc
-  #jal smoke_load_store
-  #jal smoke_alu_i
-  #jal smoke_alu_i_imm
-  #jal smoke_alu_m
-  #jal smoke_alu_zba
-  #jal smoke_alu_zbb
-  #jal smoke_alu_zbc
-  #jal smoke_alu_zbf
-  #jal smoke_alu_zbp
-  #jal smoke_alu_zbr
-  #jal smoke_alu_zbs
-  #jal smoke_alu_b_misc
-  #jal smoke_alu_zbt
-  #jal smoke_alu_b_imm
-  #jal smoke_csr
-  #jal smoke_fence
-  j good_exit
-
+.macro check actual, expected=zero
+  beq \actual, \expected, 1f
+  li a0, \@+1
+  jr s1
+  1:
+.endm
 
 .section .text
 
-  .global kScratchStartAddress
-kScratchStartAddress:
-  .word 0x00A00000
+  .balign 4
+  .global sram_main
+  .type sram_main, @function
+sram_main:
+  mv s1, ra
+  li a0, -1
 
+  jal smoke_branch
+  jal smoke_auipc
+  jal smoke_load_store
+  jal smoke_alu_i
+  jal smoke_alu_i_imm
+  jal smoke_alu_m
+  jal smoke_alu_zba
+  jal smoke_alu_zbb
+  jal smoke_alu_zbc
+  jal smoke_alu_zbf
+  jal smoke_alu_zbp
+  jal smoke_alu_zbr
+  jal smoke_alu_zbs
+  jal smoke_alu_b_misc
+  jal smoke_alu_zbt
+  jal smoke_alu_b_imm
+  jal smoke_csr
+  jal smoke_fence
+  mv a0, zero
+  jr s1
 
-good_exit:
-  addi a0, zero, 42
-  wfi
-  j good_exit
-
-bad_exit:
-  j bad_exit
+smoke_branch:
+  li t0, 0x8e9c1d0d
+  li t1, 0x3610897a
+  mv t2, t1
+  bne t0, t1, smoke_beq
+  check t0
+  smoke_beq:
+  beq t1, t2, smoke_blt
+  check t0
+  smoke_blt:
+  blt t0, t1, smoke_bge
+  check t0
+  smoke_bge:
+  bge t2, t1, smoke_bltu
+  check t0
+  smoke_bltu:
+  bltu t1, t0, smoke_bgeu
+  check t0
+  smoke_bgeu:
+  bgeu t2, t1, smoke_branch_ret
+  check t0
+  smoke_branch_ret:
+  ret
 
 smoke_auipc:
   auipc t0, 0xA
   auipc t1, 0xA
   addi  t0, t0, 4
-  bne t0, t1, bad_exit
-  ret
-
-smoke_branch:
-  li t0, 0x8e9c1d0d
-  li t1, 0x3610897a
-  addi t2, t1, 0
-  bne t0, t1, smoke_beq
-  j bad_exit
-  smoke_beq:
-  beq t1, t2, smoke_blt
-  j bad_exit
-  smoke_blt:
-  blt t0, t1, smoke_bge
-  j bad_exit
-  smoke_bge:
-  bge t2, t1, smoke_bltu
-  j bad_exit
-  smoke_bltu:
-  bltu t1, t0, smoke_bgeu
-  j bad_exit
-  smoke_bgeu:
-  bgeu t2, t1, smoke_branch_ret
-  j bad_exit
-  smoke_branch_ret:
+  check t0, t1
   ret
 
 smoke_load_store:
-  la t0, kScratchStartAddress
   li t1, 0x2d3eae8c
 
-  sb t1, 0(t0)
-  lb t2, 0(t0)
+  sb t1, -4(sp)
+  lb t2, -4(sp)
   li t3, 0xffffff8c
-  bne t2, t3, bad_exit
+  check t2, t3
 
-  lbu t2, 0(t0)
+  lbu t2, -4(sp)
   li t3, 0x0000008c
-  bne t2, t3, bad_exit
+  check t2, t3
 
-  sh  t1, 4(t0)
-  lh  t2, 4(t0)
+  sh  t1, -8(sp)
+  lh  t2, -8(sp)
   li t3, 0xffffae8c
-  bne t2, t3, bad_exit
+  check t2, t3
 
-  lhu t2, 4(t0)
+  lhu t2, -8(sp)
   li t3, 0x0000ae8c
-  bne t2, t3, bad_exit
+  check t2, t3
 
-  sw t1, 8(t0)
-  lw t2, 8(t0)
-  bne t2, t1, bad_exit
+  sw t1, -12(sp)
+  lw t2, -12(sp)
+  check t2, t1
 
   ret
 
 smoke_alu_i:
   li   t0, 0x3217ab08
   li   t1, 0x24e6a04f
+
   add  t2, t1, t0
   slt  t1, t0, t2
   sll  t0, t2, t1
@@ -114,11 +110,14 @@ smoke_alu_i:
 
   # check result
   li t0, 0x7b03fdab
-  bne t1, t0, bad_exit
+  check t1, t0
   ret
 
 smoke_alu_i_imm:
   li    t0, 0xfcec24cf
+
+  .option push
+  .option norvc
   slti  t0, t0, 0x37e
   ori   t0, t0, 0x13b
   sltiu t0, t0, 0x23e
@@ -128,9 +127,10 @@ smoke_alu_i_imm:
   slli  t0, t0, 28
   srai  t0, t0, 30
   andi  t0, t0, 0x76b
+  .option pop
 
   li t1, 0x76a
-  bne t1, t0, bad_exit
+  check t1, t0
   ret
 
 smoke_alu_m:
@@ -147,7 +147,7 @@ smoke_alu_m:
 
   # check result
   li t0, 0x25f7c073
-  bne t2, t0, bad_exit
+  check t2, t0
   ret
 
 smoke_alu_zba:
@@ -158,7 +158,7 @@ smoke_alu_zba:
   sh3add t0, t0, t1
 
   li t2, 0x0001fdbe
-  bne t2, t0, bad_exit
+  check t2, t0
   ret
 
 smoke_alu_zbb:
@@ -167,7 +167,7 @@ smoke_alu_zbb:
   ctz  t2, t1
   clz  t2, t2
   cpop t2, t2
-  bne  t0, t2, bad_exit
+  check  t0, t2
 
   li t3, 0x151a2a2a
   andn   t0, t3, t1
@@ -177,19 +177,20 @@ smoke_alu_zbb:
   ror    t0, t0, t2
   xnor   t0, t1, t0
   li  t1, 0x2bb36a2a
-  bne t0, t1, bad_exit
+  check t0, t1
+
   sext.b t0, t0
   li  t1, 0x0000002a
-  bne t0, t1, bad_exit
+  check t0, t1
 
   max  t2, t1, t3
-  bne  t2, t3, bad_exit
+  check  t2, t3
   min  t2, t1, t3
-  bne  t2, t1, bad_exit
+  check  t2, t1
   maxu t2, t1, t3
-  bne  t2, t3, bad_exit
+  check  t2, t3
   minu t2, t1, t3
-  bne  t2, t1, bad_exit
+  check  t2, t1
 
   # rev8, orc.b, and zext.h pseudo instructions
   # for grevi, gorci, and pack respectively
@@ -203,18 +204,18 @@ smoke_alu_zbc:
   clmulh  t0, t0, t1
 
   li t1, 0x08810f55
-  bne t0, t1, bad_exit
+  check t0, t1
   ret
 
 smoke_alu_zbf:
-  .option push
-  .option arch, +zbf0p93
   li t0, 0x0e0a47f3
   li t1, 0x0e1fcff3
+  .option push
+  .option arch, +zbf0p93
   bfp t0, t0, t0
-  bne t0, t1, bad_exit
   # pack and packh covered in zbp
   .option pop
+  check t0, t1
   ret
 
 smoke_alu_zbp:
@@ -227,32 +228,33 @@ smoke_alu_zbp:
   packh   t2, t2, t3
 
   li t0, 0x00009fb6
-  bne t0, t2, bad_exit
+  check t0, t2
 
   li t2, 0x04030001
   xperm.n t3, t3, t2
   xperm.b t3, t3, t2
   xperm.h t3, t3, t2
   li t0, 0x000000f7
-  bne t3, t0, bad_exit
+  check t3, t0
 
   li t0, 4
   grev    t1, t1, t0
   shfl    t1, t1, t0
   gorc    t1, t1, t0
   unshfl  t1, t1, t0
-  li t0, 0xffff3131
-  bne t0, t3, bad_exit
   .option pop
+
+  li t0, 0xffff3131
+  check t0, t1
 
   # andn, orn, xnor, rol, ror covered in zbb
   ret
 
 smoke_alu_zbr:
-  .option push
-  .option arch, +zbr0p93
   li t0, 0xabdca651
   li t1, 0xac605e47
+  .option push
+  .option arch, +zbr0p93
   crc32.b  t0, t0
   crc32.h  t0, t0
   crc32.w  t0, t0
@@ -260,7 +262,7 @@ smoke_alu_zbr:
   crc32c.h t0, t0
   crc32c.w t0, t0
   .option pop
-  bne t1, t0, bad_exit
+  check t1, t0
   ret
 
 smoke_alu_zbs:
@@ -269,10 +271,10 @@ smoke_alu_zbs:
   bclr t0, t0, 0
   binv t0, t0, 1
   bset t0, t0, 2
-  bne  t0, t1, bad_exit
+  check t0, t1
 
   bext t1, t0, 1
-  bnez t1, bad_exit
+  check t1
 
   ret
 
@@ -288,10 +290,10 @@ smoke_alu_zbt:
   cmix t2, t0, t2, t3
 
   li   t1, 0xe5693907
-  bne  t1, t2, bad_exit
+  check  t1, t2
 
   cmov t2, t0, t3, t2
-  bne  t2, t3, bad_exit
+  check  t2, t3
   .option pop
 
   ret
@@ -306,7 +308,7 @@ smoke_alu_b_misc:
   .insn r OP, 0b101, 0b0010000, t0, t0, t2
 
   li t1, 0xffae1bbf
-  bne t0, t1, bad_exit
+  check t0, t1
   ret
 
 smoke_alu_b_imm:
@@ -339,7 +341,7 @@ smoke_alu_b_imm:
   .option pop
 
   li t1, 0xf0ffafff
-  bne t0, t1, bad_exit
+  check t0, t1
   ret
 
 smoke_csr:
@@ -347,17 +349,17 @@ smoke_csr:
   li t1, 0b00001
   li t2, 0b01000
   li t3, 0b10101
-  csrw mcountinhibit, t0 #Write CSR
-  csrs mcountinhibit, t1 #Set bits in CSR
-  csrc mcountinhibit, t2 #Clear bits in CSR
+  csrw mcountinhibit, t0
+  csrs mcountinhibit, t1
+  csrc mcountinhibit, t2
   csrr t0, mcountinhibit
-  bne t0, t3, bad_exit
+  check t0, t3
 
-  csrwi mcountinhibit, 0b11100 #Write CSR
-  csrsi mcountinhibit, 0b00001 #Set bits in CSR
-  csrci mcountinhibit, 0b01000 #Clear bits in CSR
+  csrwi mcountinhibit, 0b11100
+  csrsi mcountinhibit, 0b00001
+  csrci mcountinhibit, 0b01000
   csrr t0, mcountinhibit
-  bne t0, t3, bad_exit
+  check t0, t3
 
   # Clean up, inhibit all counters
   csrw mcountinhibit, x0

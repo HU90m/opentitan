@@ -1,3 +1,15 @@
+// Copyright lowRISC contributors.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+/**
+ * Checks the given value is equal to zero or a second given value.
+ * If they are not equal,
+ * a0 is set to a unique value and returns early from sram_main.
+ *
+ * @param actual The value to check.
+ * @param[opt] expected The value to check against. Defaults to zero.
+ */
 .macro check actual, expected=zero
   beq \actual, \expected, 1f
   li a0, \@+1
@@ -7,6 +19,11 @@
 
 .section .text
 
+/**
+ * Runs every instruction that is available to the ibex.
+ *
+ * @param[out] a0 error code, will be non-zero if a check fails.
+ */
   .balign 4
   .global sram_main
   .type sram_main, @function
@@ -32,9 +49,16 @@ sram_main:
   jal smoke_alu_b_imm
   jal smoke_csr
   jal smoke_fence
+  c.jal smoke_c_sp
+  la t0, smoke_c
+  c.jalr t0
+
   mv a0, zero
   jr s1
 
+/**
+ * Check the RV32I branch instructions
+ */
 smoke_branch:
   li t0, 0x8e9c1d0d
   li t1, 0x3610897a
@@ -59,6 +83,9 @@ smoke_branch:
   smoke_branch_ret:
   ret
 
+/**
+ * Check the `auipc` instruction.
+ */
 smoke_auipc:
   auipc t0, 0xA
   auipc t1, 0xA
@@ -66,6 +93,9 @@ smoke_auipc:
   check t0, t1
   ret
 
+/**
+ * Checks the RV32I load and store instructions
+ */
 smoke_load_store:
   li t1, 0x2d3eae8c
 
@@ -93,6 +123,9 @@ smoke_load_store:
 
   ret
 
+/**
+ * Checks the RV32I non-immediate ALU instructions
+ */
 smoke_alu_i:
   li   t0, 0x3217ab08
   li   t1, 0x24e6a04f
@@ -108,11 +141,13 @@ smoke_alu_i:
   sltu t0, t1, t2
   srl  t1, t2, t0
 
-  # check result
   li t0, 0x7b03fdab
   check t1, t0
   ret
 
+/**
+ * Checks the RV32I immediate ALU instructions
+ */
 smoke_alu_i_imm:
   li    t0, 0xfcec24cf
 
@@ -133,6 +168,9 @@ smoke_alu_i_imm:
   check t1, t0
   ret
 
+/**
+ * Checks the RV32M instructions
+ */
 smoke_alu_m:
   li      t0, 144
   li      t1, 0x61a061b6
@@ -150,6 +188,9 @@ smoke_alu_m:
   check t2, t0
   ret
 
+/**
+ * Checks the instructions from the zba extension
+ */
 smoke_alu_zba:
   addi t0, zero, 0x2f7
   addi t1, zero, 0x7ce
@@ -161,6 +202,13 @@ smoke_alu_zba:
   check t2, t0
   ret
 
+/**
+ * Checks the instructions from the zbb extension
+ *
+ * Note: rev8, orc.b, and zext.h are pseudo instructions
+ * for grevi, gorci, and pack respectively,
+ * which are tested in `smoke_alu_b_imm` and `smoke_alu_zbp`.
+ */
 smoke_alu_zbb:
   li   t0, 3
   li   t1, 0x2bb36000
@@ -192,10 +240,11 @@ smoke_alu_zbb:
   minu t2, t1, t3
   check  t2, t1
 
-  # rev8, orc.b, and zext.h pseudo instructions
-  # for grevi, gorci, and pack respectively
   ret
 
+/**
+ * Checks the instructions from the zbc extension
+ */
 smoke_alu_zbc:
   addi t0, zero, 0x395
   li t1, 0x6ac8234c
@@ -207,17 +256,28 @@ smoke_alu_zbc:
   check t0, t1
   ret
 
+/**
+ * Checks the instructions from the zbf extension
+ *
+ * Note: pack and packh are not checked here
+ * but in covered in `smoke_alu_zbp`.
+ */
 smoke_alu_zbf:
   li t0, 0x0e0a47f3
   li t1, 0x0e1fcff3
   .option push
   .option arch, +zbf0p93
   bfp t0, t0, t0
-  # pack and packh covered in zbp
   .option pop
   check t0, t1
   ret
 
+/**
+ * Checks the instructions from the zbp extension
+ *
+ * Note: andn, orn, xnor, rol, and ror are not checked here
+ * but in `smoke_alu_zbb`.
+ */
 smoke_alu_zbp:
   .option push
   .option arch, +zbp0p93
@@ -246,10 +306,11 @@ smoke_alu_zbp:
 
   li t0, 0xffff3131
   check t0, t1
-
-  # andn, orn, xnor, rol, ror covered in zbb
   ret
 
+/**
+ * Checks the instructions from the zbr extension
+ */
 smoke_alu_zbr:
   li t0, 0xabdca651
   li t1, 0xac605e47
@@ -265,6 +326,9 @@ smoke_alu_zbr:
   check t1, t0
   ret
 
+/**
+ * Checks the instructions from the zbs extension
+ */
 smoke_alu_zbs:
   addi t0, zero, 0x3
   addi t1, zero, 0x4
@@ -278,6 +342,9 @@ smoke_alu_zbs:
 
   ret
 
+/**
+ * Checks the instructions from the zbt extension
+ */
 smoke_alu_zbt:
   .option push
   .option arch, +zbt0p93
@@ -298,40 +365,46 @@ smoke_alu_zbt:
 
   ret
 
+/**
+ * Checks the `slo` and `sro` instructions
+ */
 smoke_alu_b_misc:
   li t0, 0x9bfae1bb
   li t1, 8
   li t2, 4
-  #slo t0, t0, t1
+  //slo t0, t0, t1
   .insn r OP, 0b001, 0b0010000, t0, t0, t1
-  #sro t0, t0, t2
+  //sro t0, t0, t2
   .insn r OP, 0b101, 0b0010000, t0, t0, t2
 
   li t1, 0xffae1bbf
   check t0, t1
   ret
 
+/**
+ * Checks the immediate bitmanip instructions.
+ *
+ * This is a superset of RV32B's immediate instructions.
+ */
 smoke_alu_b_imm:
   li    t0, 0xfcec24cf
-  # ?
-  #sloi  t0, t0, 7
+  //sloi  t0, t0, 7
   .insn i OP_IMM, 0b001, t0, t0, 0x207
-  # zbs
+  // zbs
   bclri t0, t0, 3
   bseti t0, t0, 31
   binvi t0, t0, 19
   bexti t1, t0, 8
-  # zbt
+  // zbt
   .option push
   .option arch, +zbt0p93
   fsri  t0, t0, t1, 4
   .option pop
-  # ?
-  #sroi  t0, t0, 5
+  //sroi  t0, t0, 5
   .insn i OP_IMM, 0b101, t0, t0, 0x205
-  # zbb
+  // zbb
   rori  t0, t0, 16
-  # zbp
+  // zbp
   .option push
   .option arch, +zbp0p93
   grevi   t0, t0, 4
@@ -344,6 +417,12 @@ smoke_alu_b_imm:
   check t0, t1
   ret
 
+/**
+ * Checks the RV32I CSR instructions.
+ *
+ * Note: This routine clobbers counters
+ * and so inhibits all counters before returning.
+ */
 smoke_csr:
   li t0, 0b11100
   li t1, 0b00001
@@ -361,11 +440,79 @@ smoke_csr:
   csrr t0, mcountinhibit
   check t0, t3
 
-  # Clean up, inhibit all counters
-  csrw mcountinhibit, x0
+  // Inhibit all counters
+  csrw mcountinhibit, zero
   ret
 
+/**
+ * Runs the fence instructions.
+ *
+ * No checks are performed.
+ */
 smoke_fence:
   fence
   fence.i
   ret
+
+/**
+ * Checks the compressed 'add immediate to sp' instructions.
+ */
+smoke_c_sp:
+  c.addi16sp sp, -64
+  c.addi4spn a5, sp, 64
+  c.addi16sp sp, 64
+  check a5, sp
+
+
+/**
+ * Checks the RV32C instructions.
+ *
+ * Notes: `c.ebreak` and those within `smoke_c_sp` are not checked.
+ */
+smoke_c:
+  c.lui  a5, 0x1b
+  c.bnez a5, 2f
+  check  ra
+  2:
+  c.sub  a5, a5
+  c.beqz a5, 2f
+  check  ra
+  2:
+  c.j 2f
+  check  ra
+  2:
+
+  c.li   a5, 0x1b
+  c.andi a5, 0x1e
+  c.addi a5, 0x1a
+  c.slli a5, 26
+  c.srai a5, 4
+  c.srli a5, 2
+
+  li a3, 0x3f400000
+  check a5, a3
+
+  li a4, 0x37a
+  c.xor a5, a4
+  c.add a5, a4
+  c.and a5, a4
+  c.or  a5, a3
+
+  addi a3, a3, 0x270
+  check a5, a3
+
+  c.mv a5, a4
+  check a5, a4
+
+  addi a5, sp, -8
+  c.sw a4, 4(a5)
+  c.lw a5, 4(a5)
+  check a4, a5
+
+  addi sp, sp, -12
+  c.swsp a3, 8(sp)
+  c.lwsp a4, 8(sp)
+  addi sp, sp, 12
+  check a4, a3
+
+  c.jr ra

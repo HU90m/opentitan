@@ -11,7 +11,6 @@ rust_binary(
     srcs = [
         "src/main.rs",
     ],
-    tags = ["noclippy"],
     deps = [
         "//sw/host/opentitanlib",
         "@crate_index//:anyhow",

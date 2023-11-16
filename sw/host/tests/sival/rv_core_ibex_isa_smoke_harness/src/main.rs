@@ -2,23 +2,18 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-use regex::Regex;
-use std::rc::Rc;
 use std::time::Duration;
 
-use anyhow::{anyhow, bail, Context, Result};
+use anyhow::{bail, Result};
 use clap::Parser;
 
 use opentitanlib::app::TransportWrapper;
-use opentitanlib::dif::otp_ctrl::DaiParam;
 use opentitanlib::execute_test;
-use opentitanlib::io::jtag::{Jtag, JtagTap, RiscvReg, RiscvGpr};
+use opentitanlib::io::jtag::{JtagTap, RiscvReg, RiscvGpr};
 use opentitanlib::test_utils::init::InitializeTest;
 use opentitanlib::test_utils::load_sram_program::{
     ExecutionMode, ExecutionResult, SramProgramParams,
 };
-use opentitanlib::test_utils::otp_ctrl::OtpParam;
-use opentitanlib::uart::console::{ExitStatus, UartConsole};
 
 #[derive(Debug, Parser)]
 struct Opts {

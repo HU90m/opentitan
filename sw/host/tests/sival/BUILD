@@ -12,6 +12,7 @@ load(
     "opentitan_binary",
     "opentitan_test",
     "rsa_key_for_lc_state",
+    "silicon_jtag_params",
 )
 load("//rules:const.bzl", "CONST", "get_lc_items")
 load("//rules:lc.bzl", "lc_raw_unlock_token")
@@ -27,15 +28,18 @@ opentitan_test(
         },
         bitstream = \
             "//sw/device/silicon_creator/manuf/tests:bitstream_rom_exec_disabled_test_unlocked0",
-        tags = ["manuf"],
-        test_cmd = """
-            --elf={sram_program}
-        """,
+        tags = ["manual"],
+        test_cmd = "--elf={sram_program}",
         test_harness = "//sw/host/tests/sival/rv_core_ibex_isa_smoke_harness",
     ),
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_with_fake_keys": None,
+        "//hw/top_earlgrey:silicon_creator": None,
     },
+    silicon = silicon_jtag_params(
+        test_cmd = "--elf={firmware}",
+        test_harness = "//sw/host/tests/sival/rv_core_ibex_isa_smoke_harness",
+    ),
     deps = [
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:otp_ctrl_testutils",

@@ -7,7 +7,7 @@ load("@rules_rust//rust:defs.bzl", "rust_binary")
 package(default_visibility = ["//visibility:public"])
 
 rust_binary(
-    name = "ibex_isa_smoke_harness",
+    name = "rv_core_ibex_isa_smoke_harness",
     srcs = [
         "src/main.rs",
     ],

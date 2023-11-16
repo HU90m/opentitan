@@ -19,11 +19,11 @@ load("//rules:otp.bzl", "otp_image")
 load("//rules:splice.bzl", "bitstream_splice")
 
 opentitan_test(
-    name = "ibex_isa_smoke_test_functest",
+    name = "rv_core_ibex_isa_smoke_test_functest",
     srcs = ["//sw/device/silicon_creator/manuf/tests:idle_functest.c"],
     cw310 = cw310_jtag_params(
         binaries = {
-            ":ibex_isa_smoke_test": "sram_program",
+            ":rv_core_ibex_isa_smoke_test": "sram_program",
         },
         bitstream = \
             "//sw/device/silicon_creator/manuf/tests:bitstream_rom_exec_disabled_test_unlocked0",
@@ -31,7 +31,7 @@ opentitan_test(
         test_cmd = """
             --elf={sram_program}
         """,
-        test_harness = "//sw/host/tests/sival/ibex_isa_smoke_harness",
+        test_harness = "//sw/host/tests/sival/rv_core_ibex_isa_smoke_harness",
     ),
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_with_fake_keys": None,
@@ -45,9 +45,9 @@ opentitan_test(
 )
 
 opentitan_binary(
-    name = "ibex_isa_smoke_test",
+    name = "rv_core_ibex_isa_smoke_test",
     testonly = True,
-    srcs = ["ibex_isa_smoke_test.S", "ibex_isa_smoke_test.c"],
+    srcs = ["rv_core_ibex_isa_smoke_test.S", "rv_core_ibex_isa_smoke_test.c"],
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_with_fake_keys": None,
     },

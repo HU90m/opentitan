@@ -7,6 +7,8 @@
 #include "sw/device/lib/testing/test_framework/check.h"
 #include "sw/device/lib/testing/test_framework/ottf_test_config.h"
 #include "sw/device/lib/testing/test_framework/status.h"
+#include "sw/device/silicon_creator/lib/dbg_print.h"
+#include "sw/device/silicon_creator/lib/epmp_defs.h"
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
 
@@ -66,19 +68,26 @@ static void setup_sram(void) {
   CHECK(result == kPmpRegionConfigureOk,
         "Load configuration failed, error code = %d", result);
 
-  unlock_sram();
-  // clear the write permissions
+  //unlock_sram();
+  const uint32_t region = 11;
+  //const uint32_t region_offset = region % 4 * 8 - 1;
+  const uint32_t x_bit_offset = 26;//region_offset + EPMP_CFG_X;
   uint32_t csr;
-  CSR_CLEAR_BITS(CSR_REG_PMPCFG3, 1 << 25);
-  CSR_SET_BITS(CSR_REG_PMPCFG3, 1 << 31);
-  CSR_READ(CSR_REG_PMPCFG3, &csr);
-  CHECK(!((csr >> 25) & 1), "Couldn't remove write access to PMP region 15.");
-  CHECK(csr >> 31, "Couldn't lock PMP region 15.");
-
+  LOG_INFO("Removing execute access to %d, offset = %d", region, x_bit_offset);
+  CSR_CLEAR_BITS(CSR_REG_PMPCFG2, 1 << x_bit_offset);
   CSR_READ(CSR_REG_PMPCFG2, &csr);
-  LOG_INFO("pmpcfg2 %x", csr);
-  CSR_READ(CSR_REG_PMPCFG3, &csr);
-  LOG_INFO("pmpcfg3 %x", csr);
+  CHECK(!((csr >> x_bit_offset) & 1), "Couldn't remove execute access to PMP region %d.", region);
+
+  // clear the write permissions
+  for (uint32_t region = 13; region < 16; region += 2) {
+    const uint32_t region_offset = region % 4 * 8 - 1;
+    const uint32_t write_bit_offset = region_offset + EPMP_CFG_W;
+    uint32_t csr;
+    LOG_INFO("Removing write access to %d, offset = %d", region, write_bit_offset);
+    CSR_CLEAR_BITS(CSR_REG_PMPCFG3, 1 << write_bit_offset);
+    CSR_READ(CSR_REG_PMPCFG3, &csr);
+    CHECK(!((csr >> write_bit_offset) & 1), "Couldn't remove write access to PMP region %d.", region);
+  }
 }
 
 static void check_rlb(void) {
@@ -108,7 +117,9 @@ static void check_rlb(void) {
 }
 
 static void epmp_test(void) {
+  dbg_print_epmp();
   setup_sram();
+  dbg_print_epmp();
 
   LOG_INFO("rodata %p", __rodata_end);
   //uint32_t a_register;
@@ -121,8 +132,19 @@ static void epmp_test(void) {
   //unlock_sram();
   check_rlb();
 
+  uint32_t pc1, pc2;
+  asm volatile(
+    "auipc %0, 0\n"
+    "auipc %1, 0\n"
+    : "=r" (pc1), "=r" (pc2)
+  );
+  LOG_INFO("PC1 %08x", pc1);
+  LOG_INFO("PC2 %08x", pc2);
+
   LOG_INFO("Enable Machine Mode Lockdown");
   CSR_SET_BITS(CSR_REG_MSECCFG, 1 << 0);
+  LOG_INFO("urm");
+  //asm volatile("c.ebreak");
   return;
 
   pmp_region_config_t config = {

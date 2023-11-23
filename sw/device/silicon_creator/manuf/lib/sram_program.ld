@@ -39,6 +39,7 @@ SECTIONS {
    * everything else. For this reason, we separate the sram start+crt code from the
    * rest. */
   .sram_start ORIGIN(ram_main) + _static_critical_size : ALIGN(4) {
+    __executable_start = .;
     _crc_start = .;
     /* Place the entry point of the SRAM program to the start of the main SRAM
      * so that we don't have to maintain a separate offset from the start of
@@ -57,12 +58,14 @@ SECTIONS {
     KEEP(*(.text))
     KEEP(*(.text.*))
     . = ALIGN(4);
+    __etext = .;
   } > ram_main
 
   .rodata : ALIGN(4) {
     KEEP(*(.rodata))
     KEEP(*(.rodata.*))
     . = ALIGN(4);
+    __rodata_end = .;
   } > ram_main
 
   .data : ALIGN(4) {
@@ -86,6 +89,7 @@ SECTIONS {
     KEEP(*(.sdata.*))
     . = ALIGN(4);
     _crc_end = .;
+    __data_end = .;
   } > ram_main
 
   /**

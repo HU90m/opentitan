@@ -95,7 +95,10 @@ opentitan_test(
 opentitan_binary(
     name = "rv_core_ibex_epmp_test",
     testonly = True,
-    srcs = ["rv_core_ibex_epmp_test.c"],
+    srcs = [
+      "rv_core_ibex_epmp_test.c",
+      "rv_core_ibex_epmp_test.S",
+    ],
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_with_fake_keys": None,
     },
@@ -106,6 +109,7 @@ opentitan_binary(
         "//sw/device/lib/arch:device",
         "//sw/device/lib/base:macros",
         "//sw/device/lib/runtime:log",
+        "//sw/device/lib/runtime:pmp",
         "//sw/device/lib/testing:otp_ctrl_testutils",
         "//sw/device/lib/testing:pinmux_testutils",
         "//sw/device/lib/testing/test_framework:check",

@@ -81,6 +81,7 @@ cc_library(
         "//sw/device/lib/base:bitfield",
         "//sw/device/lib/base:csr",
         "//sw/device/lib/base:macros",
+        ":log",
     ],
 )
 

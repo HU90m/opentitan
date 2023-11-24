@@ -20,6 +20,9 @@
 OTTF_DEFINE_TEST_CONFIG();
 
 extern char __rodata_end[];
+extern char i_am_become_user[];
+extern char i_am_become_user_end[];
+//extern char kIAmBecomeUserSize[];
 
 extern void (*finish_test)(void);
 
@@ -29,11 +32,8 @@ static dif_pinmux_t pinmux;
 #define NUM_LOCS 4
 volatile uint32_t test_locations[NUM_LOCS];
 
-//static volatile bool pmp_load_exception;
-
 void ottf_load_store_fault_handler(void) {
   LOG_INFO("In exception handler");
-//  pmp_load_exception = true;
 }
 
 void ottf_user_ecall_handler(void) {
@@ -41,166 +41,81 @@ void ottf_user_ecall_handler(void) {
   finish_test();
 }
 
-static void unlock_sram(void) {
-  uint32_t csr;
-  CSR_READ(CSR_REG_MSECCFG, &csr);
-  CHECK(csr & 0x4, "Expect Rule Locking Bypass to be enabled.");
-
-  CSR_CLEAR_BITS(CSR_REG_PMPCFG3, 1 << 31);
-  CSR_READ(CSR_REG_PMPCFG3, &csr);
-  CHECK(!(csr >> 31), "Couldn't unlock PMP region 15.");
+inline uint32_t tor_address(uint32_t addr) {
+  return addr >> 2;
 }
 
-static void setup_sram(void) {
+inline uint32_t region_pmpcfg(uint32_t region) {
+  switch (region / 4) {
+    case 0: return CSR_REG_PMPCFG0;
+    case 1: return CSR_REG_PMPCFG1;
+    case 2: return CSR_REG_PMPCFG2;
+    case 3: return CSR_REG_PMPCFG3;
+    default: OT_UNREACHABLE();
+  };
+}
 
+inline uint32_t region_offset(uint32_t region) {
+  return region % 4 * 8;
+}
 
+static void pmp_setup_machine_area(void) {
   const uint32_t rodata_end = (uint32_t) __rodata_end;
   const uint32_t sram_end = TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR
                           + TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES;
 
-  pmp_region_config_t config = {
-      .lock = kPmpRegionLockLocked,
-      .permissions = kPmpRegionPermissionsReadWrite,
-  };
-  pmp_region_configure_result_t result = pmp_region_configure_tor(
-      9, config, rodata_end, sram_end
-  );
-  CHECK(result == kPmpRegionConfigureOk,
-        "Load configuration failed, error code = %d", result);
+  CSR_WRITE(CSR_REG_PMPADDR8, tor_address(rodata_end));
+  CSR_WRITE(CSR_REG_PMPADDR9, tor_address(sram_end));
 
-  //unlock_sram();
-  const uint32_t region = 11;
-  //const uint32_t region_offset = region % 4 * 8 - 1;
-  const uint32_t x_bit_offset = 26;//region_offset + EPMP_CFG_X;
+  const uint32_t pmp9cfg = EPMP_CFG_A_TOR | EPMP_CFG_LRW;
+  CSR_SET_BITS(region_pmpcfg(9), pmp9cfg << region_offset(1));
+
+  // clear the execution permissions on region 11
+  CSR_CLEAR_BITS(region_pmpcfg(11), EPMP_CFG_X << region_offset(11));
   uint32_t csr;
-  LOG_INFO("Removing execute access to %d, offset = %d", region, x_bit_offset);
-  CSR_CLEAR_BITS(CSR_REG_PMPCFG2, 1 << x_bit_offset);
-  CSR_READ(CSR_REG_PMPCFG2, &csr);
-  CHECK(!((csr >> x_bit_offset) & 1), "Couldn't remove execute access to PMP region %d.", region);
+  CSR_READ(region_pmpcfg(11), &csr);
+  CHECK(!((csr >> region_offset(11)) & EPMP_CFG_X),
+        "Couldn't remove execute access to PMP region 11.");
 
-  // clear the write permissions
-  for (uint32_t region = 13; region < 16; region += 2) {
-    const uint32_t region_offset = region % 4 * 8 - 1;
-    const uint32_t write_bit_offset = region_offset + EPMP_CFG_W;
-    uint32_t csr;
-    LOG_INFO("Removing write access to %d, offset = %d", region, write_bit_offset);
-    CSR_CLEAR_BITS(CSR_REG_PMPCFG3, 1 << write_bit_offset);
-    CSR_READ(CSR_REG_PMPCFG3, &csr);
-    CHECK(!((csr >> write_bit_offset) & 1), "Couldn't remove write access to PMP region %d.", region);
-  }
+  // clear the write permissions on regions 13 and 15
+  CSR_CLEAR_BITS(region_pmpcfg(13), EPMP_CFG_W << region_offset(13));
+  CSR_CLEAR_BITS(region_pmpcfg(15), EPMP_CFG_W << region_offset(15));
+  CSR_READ(region_pmpcfg(13), &csr);
+  CHECK(!((csr >> region_offset(13)) & EPMP_CFG_W),
+        "Couldn't remove write access from PMP region 15.");
+  CHECK(!((csr >> region_offset(15)) & EPMP_CFG_W),
+        "Couldn't remove write access from PMP region 15.");
 }
 
-static void check_rlb(void) {
-  uint32_t csr;
-  CSR_READ(CSR_REG_PMPCFG0, &csr);
-  CHECK((csr >> 23) & 1, "Expected PMP region 2 to be locked.");
+static void pmp_setup_user_area(void) {
+  const uintptr_t start = (uintptr_t) i_am_become_user;
+  const uintptr_t end =  (uintptr_t) i_am_become_user_end;
 
-  CSR_CLEAR_BITS(CSR_REG_PMPCFG0, 1 << 23);
-  CSR_READ(CSR_REG_PMPCFG0, &csr);
-  CHECK(!((csr >> 23) & 1), "Cloudn't unlock region 2.");
+  CSR_WRITE(CSR_REG_PMPADDR0, tor_address(start));
+  CSR_WRITE(CSR_REG_PMPADDR1, tor_address(end));
 
-  CSR_SET_BITS(CSR_REG_PMPCFG0, 1 << 23);
-  CSR_READ(CSR_REG_PMPCFG0, &csr);
-  CHECK((csr >> 23) & 1, "Cloudn't lock region 2.");
-
-  LOG_INFO("Disable Rule Locking Bypass");
-  CSR_CLEAR_BITS(CSR_REG_MSECCFG, 1 << 2);
-  CSR_READ(CSR_REG_MSECCFG, &csr);
-  CHECK(!(csr & 0x4), "Expect Rule Locking Bypass to be disabled.");
-
-  CSR_CLEAR_BITS(CSR_REG_PMPCFG0, 1 << 23);
-  CSR_READ(CSR_REG_PMPCFG0, &csr);
-  CHECK(
-    (csr >> 23) & 1,
-    "Expected unlock to have no effect when Rule Locking Bypass isn't enabled."
-  );
+  const uint32_t pmp1cfg = (EPMP_CFG_A_TOR | EPMP_CFG_LRWX) ^ EPMP_CFG_R;
+  CSR_SET_BITS(region_pmpcfg(1), pmp1cfg << region_offset(1));
 }
 
-static void epmp_test(void) {
-  dbg_print_epmp();
-  setup_sram();
-  dbg_print_epmp();
+static void pmp_setup_test_locations(void) {
+  CSR_WRITE(CSR_REG_PMPADDR3, tor_address((uintptr_t)(test_locations + 0)));
+  CSR_WRITE(CSR_REG_PMPADDR4, tor_address((uintptr_t)(test_locations + 1)));
+  CSR_WRITE(CSR_REG_PMPADDR5, tor_address((uintptr_t)(test_locations + 2)));
+  CSR_WRITE(CSR_REG_PMPADDR6, tor_address((uintptr_t)(test_locations + 3)));
+  CSR_WRITE(CSR_REG_PMPADDR7, tor_address((uintptr_t)(test_locations + 4)));
 
-  LOG_INFO("rodata %p", __rodata_end);
-  //uint32_t a_register;
-  //CSR_READ(CSR_REG_MSECCFG, &a_register);
-  //LOG_INFO("mseccfg %x", a_register);
-
-  // Unlock SRAM,
-  // so we can enable Machine Mode Lockdown
-  // and still execute SRAM in machine mode.
-  //unlock_sram();
-  check_rlb();
-
-  uint32_t pc1, pc2;
-  asm volatile(
-    "auipc %0, 0\n"
-    "auipc %1, 0\n"
-    : "=r" (pc1), "=r" (pc2)
-  );
-  LOG_INFO("PC1 %08x", pc1);
-  LOG_INFO("PC2 %08x", pc2);
-
-  LOG_INFO("Enable Machine Mode Lockdown");
-  CSR_SET_BITS(CSR_REG_MSECCFG, 1 << 0);
-  LOG_INFO("urm");
-  //asm volatile("c.ebreak");
-  return;
-
-  pmp_region_config_t config = {
-      .lock = kPmpRegionLockLocked,
-      .permissions = kPmpRegionPermissionsNone,
-  };
-
-  LOG_INFO("%d", test_locations[0]);
-  pmp_region_configure_result_t pmp_result = pmp_region_configure_tor(
-    4,
-    config,
-    (uintptr_t) (test_locations),
-    (uintptr_t) (test_locations + 1)
-  );
-  CHECK(pmp_result == kPmpRegionConfigureOk,
-        "Load configuration failed, error code = %d", pmp_result);
-
-  LOG_INFO("one");
-  LOG_INFO("%d", test_locations[0]);
-
-  test_locations[0] = 77;
-
-  LOG_INFO("two");
-
-  test_locations[1] = 23;
-
-  LOG_INFO("1.     %08x", test_locations);
-  LOG_INFO("2.     %08x", test_locations + 1);
-  LOG_INFO("3.     %08x", test_locations + 2);
-  LOG_INFO("4.     %08x", test_locations + 3);
-
-  const uint32_t rodata_top = (uint32_t) __rodata_end;
-  const uint32_t sram_top = TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR
-                          + TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES;
-
-  LOG_INFO("5.     %08x", rodata_top);
-  LOG_INFO("6.     %08x", sram_top);
-  LOG_INFO("7.     %08x", sram_top - rodata_top);
-
-  void (*rom_ret_gadget)(void) = (void(*)(void)) 0x844a;
-
-  LOG_INFO("This should work");
-  rom_ret_gadget();
-
-  // User mode part of the test
-  asm volatile (
-    "la t0, i_am_become_user\n"
-    "csrw mepc, t0\n"
-    "mret\n"
-    : // The clobber doesn't really matter,
-    : // we're not comming back.
-    : "t0"
-  );
+  uint32_t cfg = EPMP_CFG_A_TOR | EPMP_CFG_R;
+  CSR_SET_BITS(region_pmpcfg(4), cfg << region_offset(4));
+  cfg = EPMP_CFG_A_TOR | EPMP_CFG_LR;
+  CSR_SET_BITS(region_pmpcfg(5), cfg << region_offset(5));
+  cfg = EPMP_CFG_A_TOR | EPMP_CFG_L | EPMP_CFG_W;
+  CSR_SET_BITS(region_pmpcfg(6), cfg << region_offset(6));
+  cfg = EPMP_CFG_A_TOR | EPMP_CFG_X | EPMP_CFG_W;
+  CSR_SET_BITS(region_pmpcfg(7), cfg << region_offset(7));
 }
 
-static void setup(void) {
+static void setup_uart(void) {
   // Initialise DIF handles
   CHECK_DIF_OK(dif_pinmux_init(
     mmio_region_from_addr(TOP_EARLGREY_PINMUX_AON_BASE_ADDR),
@@ -229,9 +144,27 @@ static void setup(void) {
 }
 
 void sram_main(void) {
-  setup();
+  setup_uart();
+  pmp_setup_machine_area();
 
-  epmp_test();
+  LOG_INFO("Enable Machine Mode Lockdown");
+  CSR_SET_BITS(CSR_REG_MSECCFG, EPMP_MSECCFG_MML);
 
-  test_status_set(kTestStatusPassed);
+  pmp_setup_user_area();
+  pmp_setup_test_locations();
+
+  LOG_INFO("The PMP Config:");
+  dbg_print_epmp();
+
+  // User mode part of the test
+  LOG_INFO("I'm going to become a user.");
+  asm volatile (
+    "la t0, i_am_become_user\n"
+    "csrw mepc, t0\n"
+    "mret\n"
+    : // The clobber doesn't really matter,
+    : // we're not comming back.
+    : "t0"
+  );
+  OT_UNREACHABLE();
 }

@@ -1,56 +1,47 @@
 #include "sw/device/silicon_creator/manuf/lib/sram_start.h"
 
   /**
-   * The size of the `i_am_become_user` function in bytes.
+   * The User Mode test function.
+   *
+   * This will be the only area, other than test location(s),
+   * that will be executable by the user.
+   *
+   * An `ecall` is used to ask the Machine Mode to finish the test.
    */
   .balign 4
   .global i_am_become_user
   .type i_am_become_user, @function
 i_am_become_user:
   la t0, test_locations
-
   addi t1, t0, 4 * 4 // test_location + (4 * NUM_LOCATIONS)
 1:
-  ecall
   lw t2, 0(t0)
   sw t2, 0(t0)
   jalr   0(t0)
 
-  .global exp_u_instr_acc_fault_ret
-exp_u_instr_acc_fault_ret:
+  // The address to return to after an expected
+  // instruction access fault has occurred.
+  .global kExpUInstrAccFaultRet
+kExpUInstrAccFaultRet:
   add t0, t0, 4
   blt t0, t1, 1b
 
-
-/*
-  lw t2, 0(t1)
-  sw t2, 0(t1)
-  //jalr ra, t1, 0
-
-  lw t2, 4(t1)
-  sw t2, 4(t1)
-  //jalr ra, t1, 4
-
-  lw t2, 8(t1)
-  sw t2, 8(t1)
-  jalr ra, t1, 8
-
-  lw t2, 12(t1)
-  sw t2, 12(t1)
-  jalr   12(t1)
-  */
-
-  .global sys_print
-sys_print:
+  // Calls machine mode to finish the test.
   ecall
   .size i_am_become_user, .-i_am_become_user
 
+  /**
+   * The address past the end of the `i_am_become_user` function.
+   */
   .balign 4
-  .global i_am_become_user_end
-i_am_become_user_end:
+  .global kIAmBecomeUserEnd
+kIAmBecomeUserEnd:
 
   /**
-   * Goodbye
+   * Finishes SRAM execution, indicating a successful run.
+   *
+   * Sets the stack pointer to a magic number
+   * to indicate execution finished successfully.
    */
   .balign 4
   .global finish_test

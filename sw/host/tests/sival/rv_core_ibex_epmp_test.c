@@ -14,30 +14,52 @@
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
 
-// TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR
-// TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES
-
 OTTF_DEFINE_TEST_CONFIG();
 
+/**
+ * Labels
+ */
+// The end of the rodata region.
+// This is set in the linker script.
 extern const char __rodata_end[];
+// The start and the end of the user's test function.
 extern const char i_am_become_user[];
-extern const char i_am_become_user_end[];
+extern const char kIAmBecomeUserEnd[];
 // Expected U Mode Instruction Access Fault Return Address
-extern const char exp_u_instr_acc_fault_ret[];
+extern const char kExpUInstrAccFaultRet[];
 // Expected M Mode Instruction Access Fault Return Address
 extern const char kExpMInstrAccFaultRet[];
-extern const char sys_print[];
 
 extern void (*finish_test)(void);
 
+/**
+ * Diff handles
+ */
 static dif_uart_t uart0;
 static dif_pinmux_t pinmux;
 
+/**
+ * The location in memory which will be used to test permissions.
+ *
+ * They are set up by `pmp_setup_test_locations` as such:
+ *
+ * | Location | L | R | W | X | U Mode | M Mode |
+ * |----------|---|---|---|---|--------|--------|
+ * |     0    | 0 | 1 | 0 | 0 |  R     |        |
+ * |     1    | 1 | 1 | 1 | 0 |        |  RW    |
+ * |     2    | 0 | 0 | 1 | 0 |  R     |  RW    |
+ * |     3    | 1 | 0 | 1 | 1 |    X   |  R X   |
+ *
+ * Note: mseccfg.MML is set in this test,
+ * so permissions differ from standard (non-MML) PMP.
+ */
 #define NUM_LOCATIONS 4
 volatile uint32_t test_locations[NUM_LOCATIONS] = {
+    // Random Numbers
     [0] = 0x3779cdc5,
     [1] = 0x76bce080,
     [2] = 0xae8a4ed7,
+    // The `ret` instruction. (This region is executable.)
     [3] = 0x00008067,
 };
 
@@ -64,7 +86,6 @@ void ottf_exception_handler(void) {
 
   switch (mcause) {
     case kIbexExcLoadAccessFault:
-      LOG_INFO("Load Fault");
       if (m_mode_exception) {
         CHECK(mtval == (uint32_t)(test_locations + 0),
               "Unexpected M Mode Load Access Fault:"
@@ -79,7 +100,6 @@ void ottf_exception_handler(void) {
       };
       break;
     case kIbexExcStoreAccessFault:
-      LOG_INFO("Store Fault");
       if (m_mode_exception) {
         CHECK(mtval == (uint32_t)(test_locations + 0) |
                   mtval == (uint32_t)(test_locations + 3),
@@ -97,7 +117,6 @@ void ottf_exception_handler(void) {
       };
       break;
     case kIbexExcInstrAccessFault:
-      LOG_INFO("Instruction Fault");
       CHECK(mtval == (uint32_t)(test_locations + 0) |
                 mtval == (uint32_t)(test_locations + 1) |
                 mtval == (uint32_t)(test_locations + 2),
@@ -106,13 +125,9 @@ void ottf_exception_handler(void) {
             mpec, mtval);
       *mepc_stack_addr = m_mode_exception
                              ? (uintptr_t)kExpMInstrAccFaultRet
-                             : (uintptr_t)exp_u_instr_acc_fault_ret;
+                             : (uintptr_t)kExpUInstrAccFaultRet;
       break;
     case kIbexExcUserECall:
-      if (mpec <= (uint32_t)sys_print) {
-        LOG_INFO("Checkpoint");
-        break;
-      }
       test_status_set(kTestStatusPassed);
       finish_test();
       OT_UNREACHABLE();
@@ -125,8 +140,20 @@ void ottf_exception_handler(void) {
   }
 }
 
+/**
+ * Converts an address to a TOR address field value.
+ *
+ * @param addr The address to convert.
+ * @return The given address encoded as a TOR address field value.
+ */
 inline uint32_t tor_address(uint32_t addr) { return addr >> 2; }
 
+/**
+ * Finds the pmpcfg CSR for a given PMP region.
+ *
+ * @param region PMP region.
+ * @return The address of the pmpcfg CSR of the given region.
+ */
 inline uint32_t region_pmpcfg(uint32_t region) {
   switch (region / 4) {
     case 0:
@@ -142,9 +169,30 @@ inline uint32_t region_pmpcfg(uint32_t region) {
   };
 }
 
+/**
+ * Finds offset of a region's configuration in it's pmpcfg CSR.
+ *
+ * @param region PMP region.
+ * @return pmpcfg offset.
+ */
 inline uint32_t region_offset(uint32_t region) { return region % 4 * 8; }
 
+/**
+ * Sets up the execution area of Machine Mode.
+ *
+ * This configuration adjusts the existing configuration from the
+ * [reset PMP configuration](/hw/ip/rv_core_ibex/rtl/ibex_pmp_reset.svh)
+ * and [SRAM loader](/sw/host/opentitanlib/src/test_utils/load_sram_program.rs).
+ *
+ * These changes are needed before mseccfg.MML is enabled,
+ * because LRWX permissions become read only for machine mode.
+ */
 static void pmp_setup_machine_area(void) {
+  // Set up the writeable section of the SRAM executable.
+  //
+  // Note: this overlaps a region covering the whole of SRAM (region 15),
+  // but is in a lower PMP register so region 15's configuration
+  // will be ignored in this area.
   const uint32_t rodata_end = (uint32_t)__rodata_end;
   const uint32_t sram_end = TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR +
                             TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES;
@@ -155,14 +203,14 @@ static void pmp_setup_machine_area(void) {
   const uint32_t pmp9cfg = EPMP_CFG_A_TOR | EPMP_CFG_LRW;
   CSR_SET_BITS(region_pmpcfg(9), pmp9cfg << region_offset(1));
 
-  // clear the execution permissions on region 11
+  // Clear the execution permissions on region 11 (MMIO)
   CSR_CLEAR_BITS(region_pmpcfg(11), EPMP_CFG_X << region_offset(11));
   uint32_t csr;
   CSR_READ(region_pmpcfg(11), &csr);
   CHECK(!((csr >> region_offset(11)) & EPMP_CFG_X),
         "Couldn't remove execute access to PMP region 11.");
 
-  // clear the write permissions on regions 13 and 15
+  // Clear the write permissions on regions 13 (DV ROM) and 15 (all SRAM)
   CSR_CLEAR_BITS(region_pmpcfg(13), EPMP_CFG_W << region_offset(13));
   CSR_CLEAR_BITS(region_pmpcfg(15), EPMP_CFG_W << region_offset(15));
   CSR_READ(region_pmpcfg(13), &csr);
@@ -172,9 +220,14 @@ static void pmp_setup_machine_area(void) {
         "Couldn't remove write access from PMP region 15.");
 }
 
+/**
+ * Sets up the User Mode test function to be executable in user mode.
+ *
+ * *It wouldn't be very useful if it wasn't.*
+ */
 static void pmp_setup_user_area(void) {
   const uintptr_t start = (uintptr_t)i_am_become_user;
-  const uintptr_t end = (uintptr_t)i_am_become_user_end;
+  const uintptr_t end = (uintptr_t)kIAmBecomeUserEnd;
 
   CSR_WRITE(CSR_REG_PMPADDR0, tor_address(start));
   CSR_WRITE(CSR_REG_PMPADDR1, tor_address(end));
@@ -183,13 +236,11 @@ static void pmp_setup_user_area(void) {
   CSR_SET_BITS(region_pmpcfg(1), pmp1cfg << region_offset(1));
 }
 
-/*
- * | Location | L | R | W | X | U Mode | M Mode |
- * |----------|---|---|---|---|--------|--------|
- * |     0    | 0 | 1 | 0 | 0 |  R     |        |
- * |     1    | 1 | 1 | 1 | 0 |        |  RW    |
- * |     2    | 0 | 0 | 1 | 0 |  R     |  RW    |
- * |     3    | 1 | 0 | 1 | 1 |    X   |  R X   |
+/**
+ * Sets up the permissions for the test locations.
+ *
+ * See the declaration of `test_locations`
+ * to see the desired permission settings.
  */
 static void pmp_setup_test_locations(void) {
   CSR_WRITE(CSR_REG_PMPADDR3, tor_address((uintptr_t)(test_locations + 0)));
@@ -208,6 +259,9 @@ static void pmp_setup_test_locations(void) {
   CSR_SET_BITS(region_pmpcfg(7), cfg << region_offset(7));
 }
 
+/**
+ * Sets up the UART connection.
+ */
 static void setup_uart(void) {
   // Initialise DIF handles
   CHECK_DIF_OK(dif_pinmux_init(
@@ -232,8 +286,16 @@ static void setup_uart(void) {
   base_uart_stdout(&uart0);
 }
 
+/**
+ * The entry point of the SRAM program.
+ *
+ * *Control flow passed from `sram_start`.*
+ */
 void sram_main(void) {
   setup_uart();
+
+  // Must set up the Machine Mode Area Correctly
+  // before entering Machine Mode Lockdown.
   pmp_setup_machine_area();
 
   LOG_INFO("Enable Machine Mode Lockdown");
@@ -245,25 +307,26 @@ void sram_main(void) {
   LOG_INFO("The PMP Config:");
   dbg_print_epmp();
 
+  LOG_INFO("Machine Mode Tests");
   uint32_t load;
-
-  LOG_INFO("M Mode Tests");
   for (int loc = 0; loc < NUM_LOCATIONS; ++loc) {
     test_locations[loc] = 42;
     load = test_locations[loc];
     ((void (*)(void))(test_locations + loc))();
+    // The address to return to after an expected
+    // instruction access fault has occurred.
     OT_ADDRESSABLE_LABEL(kExpMInstrAccFaultRet);
   };
-
   // Pretending to use load
   (void)load;
 
-  LOG_INFO("U Mode Tests");
+  LOG_INFO("User Mode Tests");
+  // Jump to the user area to perform user tests.
   asm volatile(
       "la t0, i_am_become_user\n"
       "csrw mepc, t0\n"
       "mret\n"
-      :  // The clobber doesn't really matter,
+      :  // The clobber doesn't really matter;
       :  // we're not comming back.
       : "t0");
   OT_UNREACHABLE();

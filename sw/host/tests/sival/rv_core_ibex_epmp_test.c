@@ -1,6 +1,7 @@
 #include "sw/device/lib/arch/device.h"
 #include "sw/device/lib/base/csr.h"
 #include "sw/device/lib/dif/dif_uart.h"
+#include "sw/device/lib/runtime/ibex.h"
 #include "sw/device/lib/runtime/log.h"
 #include "sw/device/lib/runtime/pmp.h"
 #include "sw/device/lib/runtime/print.h"
@@ -18,24 +19,110 @@
 
 OTTF_DEFINE_TEST_CONFIG();
 
-extern char __rodata_end[];
-extern char i_am_become_user[];
-extern char i_am_become_user_end[];
-// extern char kIAmBecomeUserSize[];
+extern const char __rodata_end[];
+extern const char i_am_become_user[];
+extern const char i_am_become_user_end[];
+// Expected U Mode Instruction Access Fault Return Address
+extern const char exp_u_instr_acc_fault_ret[];
+// Expected M Mode Instruction Access Fault Return Address
+extern const char kExpMInstrAccFaultRet[];
+extern const char sys_print[];
 
 extern void (*finish_test)(void);
 
 static dif_uart_t uart0;
 static dif_pinmux_t pinmux;
 
-#define NUM_LOCS 4
-volatile uint32_t test_locations[NUM_LOCS];
+#define NUM_LOCATIONS 4
+volatile uint32_t test_locations[NUM_LOCATIONS] = {
+    [0] = 0x3779cdc5,
+    [1] = 0x76bce080,
+    [2] = 0xae8a4ed7,
+    [3] = 0x00008067,
+};
 
-void ottf_load_store_fault_handler(void) { LOG_INFO("In exception handler"); }
+static inline bool was_in_machine_mode(void) {
+  uint32_t mstatus;
+  CSR_READ(CSR_REG_MSTATUS, &mstatus);
+  // If no MPP bits are set, then I was in machine mode.
+  const uint32_t mpp_offset = 10;
+  return ((mstatus >> mpp_offset) & 0x3) ? true : false;
+}
 
-void ottf_user_ecall_handler(void) {
-  test_status_set(kTestStatusPassed);
-  finish_test();
+void ottf_exception_handler(void) {
+  uint32_t mtval = ibex_mtval_read();
+  ibex_exc_t mcause = ibex_mcause_read();
+  bool m_mode_exception = was_in_machine_mode();
+
+  // The frame address is the address of the stack location that holds the
+  // `mepc`, since the OTTF exception handler entry code saves the `mepc` to
+  // the top of the stack before transferring control flow to the exception
+  // handler function (which is overridden here). See the `handler_exception`
+  // subroutine in `sw/device/lib/testing/testing/ottf_isrs.S` for more details.
+  uintptr_t *mepc_stack_addr = (uintptr_t *)OT_FRAME_ADDR();
+  uint32_t mpec = *mepc_stack_addr;
+
+  switch (mcause) {
+    case kIbexExcLoadAccessFault:
+      LOG_INFO("Load Fault");
+      if (m_mode_exception) {
+        CHECK(mtval == (uint32_t)(test_locations + 0),
+              "Unexpected M Mode Load Access Fault:"
+              " mpec = 0x%08x, mtval = 0x%08x",
+              mpec, mtval);
+      } else {
+        CHECK(mtval == (uint32_t)(test_locations + 1) |
+                  mtval == (uint32_t)(test_locations + 3),
+              "Unexpected U Mode Load Access Fault:"
+              " mpec = 0x%08x, mtval = 0x%08x",
+              mpec, mtval);
+      };
+      break;
+    case kIbexExcStoreAccessFault:
+      LOG_INFO("Store Fault");
+      if (m_mode_exception) {
+        CHECK(mtval == (uint32_t)(test_locations + 0) |
+                  mtval == (uint32_t)(test_locations + 3),
+              "Unexpected M Mode Store Access Fault:"
+              " mpec = 0x%08x, mtval = 0x%08x",
+              mpec, mtval);
+      } else {
+        CHECK(mtval == (uint32_t)(test_locations + 0) |
+                  mtval == (uint32_t)(test_locations + 1) |
+                  mtval == (uint32_t)(test_locations + 2) |
+                  mtval == (uint32_t)(test_locations + 3),
+              "Unexpected U Mode Store Access Fault:"
+              " mpec = 0x%08x, mtval = 0x%08x",
+              mpec, mtval);
+      };
+      break;
+    case kIbexExcInstrAccessFault:
+      LOG_INFO("Instruction Fault");
+      CHECK(mtval == (uint32_t)(test_locations + 0) |
+                mtval == (uint32_t)(test_locations + 1) |
+                mtval == (uint32_t)(test_locations + 2),
+            "Unexpected Instruction Access Fault:"
+            " mpec = 0x%08x, mtval = 0x%08x",
+            mpec, mtval);
+      *mepc_stack_addr = m_mode_exception
+                             ? (uintptr_t)kExpMInstrAccFaultRet
+                             : (uintptr_t)exp_u_instr_acc_fault_ret;
+      break;
+    case kIbexExcUserECall:
+      if (mpec <= (uint32_t)sys_print) {
+        LOG_INFO("Checkpoint");
+        break;
+      }
+      test_status_set(kTestStatusPassed);
+      finish_test();
+      OT_UNREACHABLE();
+    default:
+      CHECK(false,
+            "Unexpected Exception:"
+            " mcause = 0x%x, mpec 0x%x, mtval = 0x%x",
+            mcause, mpec, mtval);
+      OT_UNREACHABLE();
+  }
 }
 
 inline uint32_t tor_address(uint32_t addr) { return addr >> 2; }
@@ -96,6 +183,14 @@ static void pmp_setup_user_area(void) {
   CSR_SET_BITS(region_pmpcfg(1), pmp1cfg << region_offset(1));
 }
 
+/*
+ * | Location | L | R | W | X | U Mode | M Mode |
+ * |----------|---|---|---|---|--------|--------|
+ * |     0    | 0 | 1 | 0 | 0 |  R     |        |
+ * |     1    | 1 | 1 | 1 | 0 |        |  RW    |
+ * |     2    | 0 | 0 | 1 | 0 |  R     |  RW    |
+ * |     3    | 1 | 0 | 1 | 1 |    X   |  R X   |
+ */
 static void pmp_setup_test_locations(void) {
   CSR_WRITE(CSR_REG_PMPADDR3, tor_address((uintptr_t)(test_locations + 0)));
   CSR_WRITE(CSR_REG_PMPADDR4, tor_address((uintptr_t)(test_locations + 1)));
@@ -105,11 +200,11 @@ static void pmp_setup_test_locations(void) {
 
   uint32_t cfg = EPMP_CFG_A_TOR | EPMP_CFG_R;
   CSR_SET_BITS(region_pmpcfg(4), cfg << region_offset(4));
-  cfg = EPMP_CFG_A_TOR | EPMP_CFG_LR;
+  cfg = EPMP_CFG_A_TOR | EPMP_CFG_LRW;
   CSR_SET_BITS(region_pmpcfg(5), cfg << region_offset(5));
-  cfg = EPMP_CFG_A_TOR | EPMP_CFG_L | EPMP_CFG_W;
+  cfg = EPMP_CFG_A_TOR | EPMP_CFG_W;
   CSR_SET_BITS(region_pmpcfg(6), cfg << region_offset(6));
-  cfg = EPMP_CFG_A_TOR | EPMP_CFG_X | EPMP_CFG_W;
+  cfg = EPMP_CFG_A_TOR | EPMP_CFG_L | EPMP_CFG_X | EPMP_CFG_W;
   CSR_SET_BITS(region_pmpcfg(7), cfg << region_offset(7));
 }
 
@@ -150,8 +245,20 @@ void sram_main(void) {
   LOG_INFO("The PMP Config:");
   dbg_print_epmp();
 
-  // User mode part of the test
-  LOG_INFO("I'm going to become a user.");
+  uint32_t load;
+
+  LOG_INFO("M Mode Tests");
+  for (int loc = 0; loc < NUM_LOCATIONS; ++loc) {
+    test_locations[loc] = 42;
+    load = test_locations[loc];
+    ((void (*)(void))(test_locations + loc))();
+    OT_ADDRESSABLE_LABEL(kExpMInstrAccFaultRet);
+  };
+
+  // Pretending to use load
+  (void)load;
+
+  LOG_INFO("U Mode Tests");
   asm volatile(
       "la t0, i_am_become_user\n"
       "csrw mepc, t0\n"

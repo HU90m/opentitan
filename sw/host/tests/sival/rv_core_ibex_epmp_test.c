@@ -1,8 +1,9 @@
 #include "sw/device/lib/arch/device.h"
+#include "sw/device/lib/base/csr.h"
 #include "sw/device/lib/dif/dif_uart.h"
 #include "sw/device/lib/runtime/log.h"
-#include "sw/device/lib/runtime/print.h"
 #include "sw/device/lib/runtime/pmp.h"
+#include "sw/device/lib/runtime/print.h"
 #include "sw/device/lib/testing/pinmux_testutils.h"
 #include "sw/device/lib/testing/test_framework/check.h"
 #include "sw/device/lib/testing/test_framework/ottf_test_config.h"
@@ -12,8 +13,6 @@
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
 
-#include "sw/device/lib/base/csr.h"
-
 // TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR
 // TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES
 
@@ -22,7 +21,7 @@ OTTF_DEFINE_TEST_CONFIG();
 extern char __rodata_end[];
 extern char i_am_become_user[];
 extern char i_am_become_user_end[];
-//extern char kIAmBecomeUserSize[];
+// extern char kIAmBecomeUserSize[];
 
 extern void (*finish_test)(void);
 
@@ -32,37 +31,36 @@ static dif_pinmux_t pinmux;
 #define NUM_LOCS 4
 volatile uint32_t test_locations[NUM_LOCS];
 
-void ottf_load_store_fault_handler(void) {
-  LOG_INFO("In exception handler");
-}
+void ottf_load_store_fault_handler(void) { LOG_INFO("In exception handler"); }
 
 void ottf_user_ecall_handler(void) {
   test_status_set(kTestStatusPassed);
   finish_test();
 }
 
-inline uint32_t tor_address(uint32_t addr) {
-  return addr >> 2;
-}
+inline uint32_t tor_address(uint32_t addr) { return addr >> 2; }
 
 inline uint32_t region_pmpcfg(uint32_t region) {
   switch (region / 4) {
-    case 0: return CSR_REG_PMPCFG0;
-    case 1: return CSR_REG_PMPCFG1;
-    case 2: return CSR_REG_PMPCFG2;
-    case 3: return CSR_REG_PMPCFG3;
-    default: OT_UNREACHABLE();
+    case 0:
+      return CSR_REG_PMPCFG0;
+    case 1:
+      return CSR_REG_PMPCFG1;
+    case 2:
+      return CSR_REG_PMPCFG2;
+    case 3:
+      return CSR_REG_PMPCFG3;
+    default:
+      OT_UNREACHABLE();
   };
 }
 
-inline uint32_t region_offset(uint32_t region) {
-  return region % 4 * 8;
-}
+inline uint32_t region_offset(uint32_t region) { return region % 4 * 8; }
 
 static void pmp_setup_machine_area(void) {
-  const uint32_t rodata_end = (uint32_t) __rodata_end;
-  const uint32_t sram_end = TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR
-                          + TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES;
+  const uint32_t rodata_end = (uint32_t)__rodata_end;
+  const uint32_t sram_end = TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_BASE_ADDR +
+                            TOP_EARLGREY_SRAM_CTRL_MAIN_RAM_SIZE_BYTES;
 
   CSR_WRITE(CSR_REG_PMPADDR8, tor_address(rodata_end));
   CSR_WRITE(CSR_REG_PMPADDR9, tor_address(sram_end));
@@ -88,8 +86,8 @@ static void pmp_setup_machine_area(void) {
 }
 
 static void pmp_setup_user_area(void) {
-  const uintptr_t start = (uintptr_t) i_am_become_user;
-  const uintptr_t end =  (uintptr_t) i_am_become_user_end;
+  const uintptr_t start = (uintptr_t)i_am_become_user;
+  const uintptr_t end = (uintptr_t)i_am_become_user_end;
 
   CSR_WRITE(CSR_REG_PMPADDR0, tor_address(start));
   CSR_WRITE(CSR_REG_PMPADDR1, tor_address(end));
@@ -118,13 +116,9 @@ static void pmp_setup_test_locations(void) {
 static void setup_uart(void) {
   // Initialise DIF handles
   CHECK_DIF_OK(dif_pinmux_init(
-    mmio_region_from_addr(TOP_EARLGREY_PINMUX_AON_BASE_ADDR),
-    &pinmux
-  ));
+      mmio_region_from_addr(TOP_EARLGREY_PINMUX_AON_BASE_ADDR), &pinmux));
   CHECK_DIF_OK(dif_uart_init(
-    mmio_region_from_addr(TOP_EARLGREY_UART0_BASE_ADDR),
-    &uart0
-  ));
+      mmio_region_from_addr(TOP_EARLGREY_UART0_BASE_ADDR), &uart0));
 
   // Initialise UART console.
   pinmux_testutils_init(&pinmux);
@@ -158,13 +152,12 @@ void sram_main(void) {
 
   // User mode part of the test
   LOG_INFO("I'm going to become a user.");
-  asm volatile (
-    "la t0, i_am_become_user\n"
-    "csrw mepc, t0\n"
-    "mret\n"
-    : // The clobber doesn't really matter,
-    : // we're not comming back.
-    : "t0"
-  );
+  asm volatile(
+      "la t0, i_am_become_user\n"
+      "csrw mepc, t0\n"
+      "mret\n"
+      :  // The clobber doesn't really matter,
+      :  // we're not comming back.
+      : "t0");
   OT_UNREACHABLE();
 }

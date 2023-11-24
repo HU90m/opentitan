@@ -8,10 +8,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "sw/device/lib/runtime/log.h"
 #include "sw/device/lib/base/bitfield.h"
 #include "sw/device/lib/base/csr.h"
 #include "sw/device/lib/base/macros.h"
+#include "sw/device/lib/runtime/log.h"
 
 // "Volume II: RISC-V Privileged Architectures V20190608-Priv-MSU-Ratified",
 // "3.6.1 Physical Memory Protection CSRs",

@@ -15,6 +15,8 @@ def _mdbook_build_impl(ctx):
     for (idx, pp) in enumerate(ctx.attr.preprocessors):
         env[ENV_PP_KEY.format(idx)] = pp.files_to_run.executable.path
 
+    env["RUNFILES_DIR"] = "util/"
+
     MAKE_ABS = 'abs() {\necho "$(cd "$(dirname "$1")" && pwd -P)/$(basename "$1")";\n};\n'
     cmd = MAKE_ABS
 
@@ -31,11 +33,8 @@ def _mdbook_build_impl(ctx):
     #                  "book-theme/recursive.css"]
     #additional-js  = ["book-theme/pagetoc.js"]
 
-    book_root = ctx.files.dir[0].path
-
-    cmd += "{} build {} -d $(abs {});".format(
+    cmd += "{} build -d $(abs {});".format(
         ctx.executable._mdbook.path,
-        book_root,
         output_dir.path,
     )
 
@@ -74,7 +73,6 @@ def _mdbook_build_impl(ctx):
 mdbook_build = rule(
     implementation = _mdbook_build_impl,
     attrs = {
-        "dir": attr.label(doc = "Book root", allow_single_file=True, mandatory=True),
         "srcs": attr.label_list(doc = "Input files", mandatory=True),
         "preprocessors": attr.label_list(
             doc = "mdBook preprocessors",

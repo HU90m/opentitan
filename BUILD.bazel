@@ -11,6 +11,14 @@ exports_files([
 ])
 
 filegroup(
+  name = "mdbook_config",
+  srcs = [
+    "book.toml",
+    "SUMMARY.md",
+  ]
+)
+
+filegroup(
     name = "cores",
     srcs = [
         "check_tool_requirements.core",

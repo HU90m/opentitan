@@ -17,19 +17,19 @@ edit-url-template = "https://github.com/lowrisc/opentitan/edit/master/{path}"
 curly-quotes = true
 mathjax-support = true
 
-additional-js = [
-    "./util/mdbook/wavejson/default.js",
-    "./util/mdbook/wavejson/wavedrom.min.js",
-    "./util/mdbook/wavejson/wavejson.js",
-    "./site/book-theme/pagetoc.js",
-]
+#additional-js = [
+#    "./util/mdbook/wavejson/default.js",
+#    "./util/mdbook/wavejson/wavedrom.min.js",
+#    "./util/mdbook/wavejson/wavejson.js",
+#    "./site/book-theme/pagetoc.js",
+#]
 
-additional-css = [
-    "./util/mdbook/wavejson/wavejson.css",
-    "./site/book-theme/pagetoc.css",
-    "./site/book-theme/recursive.css",
-    "./site/book-theme/tweaks.css",
-]
+#additional-css = [
+#    "./util/mdbook/wavejson/wavejson.css",
+#    "./site/book-theme/pagetoc.css",
+#    "./site/book-theme/recursive.css",
+#    "./site/book-theme/tweaks.css",
+#]
 
 [output.html.print]
 enable = false
@@ -37,33 +37,33 @@ enable = false
 [preprocessor.readme2index]
 command = "./util/mdbook_readme2index.py"
 
-[preprocessor.wavejson]
-command = "./util/mdbook_wavejson.py"
-
-[preprocessor.reggen]
-command = "./util/mdbook_reggen.py"
-# Python RegEx identifying ip block config paths.
-ip-cfg-py-regex = '(ip|ip_autogen)/.+/data/(?!.+_testplan).+\.hjson'
-
-[preprocessor.testplan]
-command = "./util/mdbook_testplan.py"
-# Python RegEx identifying testplan paths.
-testplan-py-regex = '.+_testplan\.hjson'
-
-[preprocessor.otbn]
-command = "./util/mdbook_otbn.py"
-
-[preprocessor.dashboard]
-command = "./util/mdbook_dashboard.py"
-
-[preprocessor.code-snippet]
-command = "./util/mdbook_code_snippet.py"
-
-[preprocessor.doxygen]
-command = "./util/mdbook_doxygen.py"
-out-dir = "build-site/gen"
-html-out-dir = "gen/doxy"
-dif-src-py-regex = 'dif_\S*\.h'
-
-[preprocessor.toolversion]
-command = "./util/mdbook_toolversion.py"
+#[preprocessor.wavejson]
+#command = "./util/mdbook_wavejson.py"
+#
+#[preprocessor.reggen]
+#command = "./util/mdbook_reggen.py"
+## Python RegEx identifying ip block config paths.
+#ip-cfg-py-regex = '(ip|ip_autogen)/.+/data/(?!.+_testplan).+\.hjson'
+#
+#[preprocessor.testplan]
+#command = "./util/mdbook_testplan.py"
+## Python RegEx identifying testplan paths.
+#testplan-py-regex = '.+_testplan\.hjson'
+#
+#[preprocessor.otbn]
+#command = "./util/mdbook_otbn.py"
+#
+#[preprocessor.dashboard]
+#command = "./util/mdbook_dashboard.py"
+#
+#[preprocessor.code-snippet]
+#command = "./util/mdbook_code_snippet.py"
+#
+#[preprocessor.doxygen]
+#command = "./util/mdbook_doxygen.py"
+#out-dir = "build-site/gen"
+#html-out-dir = "gen/doxy"
+#dif-src-py-regex = 'dif_\S*\.h'
+#
+#[preprocessor.toolversion]
+#command = "./util/mdbook_toolversion.py"

@@ -103,8 +103,13 @@ py_library(
 
 py_binary(
     name = "mdbook_readme2index",
-    srcs = ["mdbook_readme2index.py"],
-    deps = [":mdbook"],
+    srcs = [
+      "mdbook_readme2index.py",
+      #"//util/mdbook:all_files",
+    ],
+    deps = [
+      ":mdbook",
+    ],
 )
 
 py_binary(

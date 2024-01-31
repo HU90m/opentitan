@@ -3,8 +3,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_doc", "rust_library", "rust_test")
+load("//rules:doc.bzl", "doc_files")
 
 package(default_visibility = ["//visibility:public"])
+
+doc_files()
 
 rust_library(
     name = "hsmlib",

@@ -5,9 +5,22 @@
 """Documentation rules for OpenTitan.
 """
 
+def doc_files(
+  include = ["**/*.md", "**/*.svg"],
+  exclude = [],
+):
+  native.filegroup(
+    name = "doc_files",
+    srcs = native.glob(
+      include = include,
+      exclude = exclude,
+    ),
+    visibility = ["//site:__pkg__"],
+  )
+
 def _mdbook_build_impl(ctx):
     output_dir = ctx.actions.declare_directory("book")
-    output = ctx.actions.declare_file("book.tar.gz")
+    #output = ctx.actions.declare_file("book.tar.gz")
 
     ENV_PP_KEY = "MDBOOK_PREPROCESSOR__{}__COMMAND"
 
@@ -37,28 +50,71 @@ def _mdbook_build_impl(ctx):
         ctx.executable._mdbook.path,
         output_dir.path,
     )
-
-    print(cmd)
-
+    cmd += "rm -r {}/bazel-out\n".format(output_dir.path)
 
     ctx.actions.run_shell(
         mnemonic = "mdBook",
         progress_message = "Generating mdBook: {}".format(ctx.label),
         outputs = [output_dir],
-        inputs = ctx.files.srcs + [ctx.executable._mdbook] + ctx.files.preprocessors,
+        inputs = ctx.files.srcs + [ctx.executable._mdbook],
+        tools = [preproc[DefaultInfo].files_to_run for preproc in ctx.attr.preprocessors],
         command = cmd,
-        #"{} build {} && mv {}/book/* {}".format(
-        #    ctx.executable._mdbook.path,
-        #    book_root,
-        #    book_root,
-        #    output_dir.path,
-        #),
         env = env,
     )
 
+    #ctx.actions.run(
+    #    mnemonic = "mdBookTar",
+    #    progress_message = "Collecting mdBook: {}".format(ctx.label),
+    #    outputs = [output],
+    #    executable = ctx.executable._tar,
+    #    inputs = [output_dir],
+    #    arguments = [
+    #        output_dir.path,
+    #        output.path,
+    #        "-e",
+    #        "bazel-out",
+    #    ],
+    #)
+
+    return [DefaultInfo(files = depset([output_dir]))]
+
+
+mdbook_build = rule(
+    implementation = _mdbook_build_impl,
+    attrs = {
+        "srcs": attr.label_list(doc = "Input files", mandatory=True),
+        "preprocessors": attr.label_list(
+            doc = "mdBook preprocessors",
+        ),
+        "theme": attr.label(allow_single_file=True),
+        "_mdbook": attr.label(default=Label("@crate_index//:mdbook__mdbook"), allow_files=True, executable=True, cfg="host"),
+        "_tar": attr.label(default=Label("//rules/scripts:tar"), allow_files=True, executable=True, cfg="host"),
+    },
+)
+
+def _compile_site_impl(ctx):
+    output_dir = ctx.actions.declare_directory("site")
+
+    print(ctx.attr.mapping)
+
+    cmd = ""
+    for (target, destination) in ctx.attr.mapping.items():
+      dest = "{}/{}".format(output_dir.path, destination)
+      cmd += "mkdir -p {}\n".format(dest)
+      cmd += "cp -rL {}/* {}\n".format(target.files.to_list()[0].path, dest)
+
+    ctx.actions.run_shell(
+        mnemonic = "Site",
+        progress_message = "Collating Site: {}".format(ctx.label),
+        outputs = [output_dir],
+        inputs = ctx.files.mapping,
+        command = cmd,
+    )
+
+    output = ctx.actions.declare_file("site.tar.gz")
     ctx.actions.run(
-        mnemonic = "mdBookTar",
-        progress_message = "Collecting mdBook: {}".format(ctx.label),
+        mnemonic = "SiteTar",
+        progress_message = "Collecting Site: {}".format(ctx.label),
         outputs = [output],
         executable = ctx.executable._tar,
         inputs = [output_dir],
@@ -68,18 +124,17 @@ def _mdbook_build_impl(ctx):
         ],
     )
 
-    return [DefaultInfo(files = depset([output]))]
+    return [
+      DefaultInfo(files = depset([output_dir])),
+      OutputGroupInfo(site_tar = depset([output])),
+    ]
 
-mdbook_build = rule(
-    implementation = _mdbook_build_impl,
+compile_site = rule(
+    implementation = _compile_site_impl,
     attrs = {
-        "srcs": attr.label_list(doc = "Input files", mandatory=True),
-        "preprocessors": attr.label_list(
-            doc = "mdBook preprocessors",
-            #providers=["FilesToRunProvider"],
-        ),
-        "theme": attr.label(allow_single_file=True),
-        "_mdbook": attr.label(default=Label("@crate_index//:mdbook__mdbook"), allow_files=True, executable=True, cfg="host"),
-        "_tar": attr.label(default=Label("//rules/scripts:tar"), allow_files=True, executable=True, cfg="host"),
+      "mapping": attr.label_keyed_string_dict(
+        allow_empty=False,
+      ),
+      "_tar": attr.label(default=Label("//rules/scripts:tar"), allow_files=True, executable=True, cfg="host"),
     },
 )

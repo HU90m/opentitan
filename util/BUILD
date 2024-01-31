@@ -4,6 +4,9 @@
 
 load("@rules_python//python:defs.bzl", "py_binary")
 load("@ot_python_deps//:requirements.bzl", "all_requirements", "requirement")
+load("//rules:doc.bzl", "doc_files")
+
+doc_files()
 
 package(default_visibility = ["//visibility:public"])
 
@@ -101,19 +104,14 @@ py_library(
     srcs = ["//util/mdbook:all_files"],
 )
 
-py_binary(
-    name = "mdbook_readme2index",
-    srcs = [
-      "mdbook_readme2index.py",
-      #"//util/mdbook:all_files",
-    ],
-    deps = [
-      ":mdbook",
-    ],
-)
-
-py_binary(
-    name = "mdbook_toolversion",
-    srcs = ["mdbook_toolversion.py"],
-    deps = [":mdbook"],
-)
+[
+  py_binary(
+      name = preproc,
+      srcs = [preproc + ".py"],
+      deps = [":mdbook"],
+  )
+  for preproc in [
+    "mdbook_readme2index",
+    "mdbook_toolversion",
+  ]
+]

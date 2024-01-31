@@ -14,8 +14,11 @@ load(
     "sim_dv",
     "sim_verilator",
 )
+load("//rules:doc.bzl", "doc_files")
 
 package(default_visibility = ["//visibility:public"])
+
+doc_files()
 
 autogen_hjson_header(
     name = "rv_plic_regs",

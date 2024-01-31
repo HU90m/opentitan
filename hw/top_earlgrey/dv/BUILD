@@ -4,6 +4,10 @@
 
 package(default_visibility = ["//visibility:public"])
 
+load("//rules:doc.bzl", "doc_files")
+
+doc_files()
+
 filegroup(
     name = "config",
     srcs = [

@@ -4,6 +4,9 @@
 
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 load("//rules:fusesoc.bzl", "fusesoc_build")
+load("//rules:doc.bzl", "doc_files")
+
+doc_files()
 
 # This configuration exposes fusesoc's "verilator_options" option to the
 # command line. This is intended to allow CI to specifically build a single
